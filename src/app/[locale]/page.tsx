@@ -1,8 +1,10 @@
 import { hasLocale } from 'next-intl'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { routing } from '@/i18n/routing'
+import { sanityFetch } from '@/sanity/lib/live'
+import { PAGE_BY_SLUG_QUERY } from '@/sanity/lib/queries'
+import { PageBuilder, type PageSection } from '@/blocks/PageBuilder'
 
 export default async function HomePage({
   params,
@@ -17,17 +19,25 @@ export default async function HomePage({
 
   setRequestLocale(locale)
 
-  const t = await getTranslations('hero')
+  // Fetch homepage from Sanity — uses locale for language-aware query
+  const { data: page } = await sanityFetch({
+    query: PAGE_BY_SLUG_QUERY,
+    params: { slug: 'home', language: locale },
+  })
+
+  if (!page) {
+    return (
+      <main className="min-h-screen flex items-center justify-center p-8">
+        <p className="text-muted-foreground text-lg text-center">
+          Kein Inhalt konfiguriert. Bitte erstelle eine &ldquo;home&rdquo;-Seite im Sanity Studio.
+        </p>
+      </main>
+    )
+  }
 
   return (
-    <main className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center gap-6 p-8">
-      <h1 className="text-4xl font-bold tracking-tight text-center max-w-2xl">
-        {t('title')}
-      </h1>
-      <p className="text-muted-foreground text-lg text-center max-w-xl">
-        {t('subtitle')}
-      </p>
-      <Button>{t('cta')}</Button>
+    <main>
+      <PageBuilder sections={(page.sections ?? []) as PageSection[]} />
     </main>
   )
 }
