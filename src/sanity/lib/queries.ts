@@ -23,22 +23,54 @@ export const SITE_SETTINGS_QUERY = defineQuery(
   }`
 )
 
+export const SITE_SETTINGS_SEO_QUERY = defineQuery(
+  `*[_type == "siteSettings"][0]{
+    siteName,
+    tagline,
+    defaultCtaHref,
+    seo{ title, description, ogImage }
+  }`
+)
+
 export const ALL_POSTS_QUERY = defineQuery(
-  `*[_type == "post" && language == $language] | order(publishedAt desc){
+  `*[_type == "post" && language == $language && defined(publishedAt)] | order(publishedAt desc){
     _id,
     title,
     slug,
     publishedAt,
     excerpt,
     mainImage,
-    author
+    category,
+    tags,
+    "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),
+    "author": author->{ name, image }
+  }`
+)
+
+export const ALL_POSTS_FOR_SITEMAP_QUERY = defineQuery(
+  `*[_type == "post" && defined(publishedAt) && defined(slug.current)]{
+    slug,
+    _updatedAt,
+    language
   }`
 )
 
 // Fetch post by slug with language fallback to "es" (Spanish as base).
 export const POST_BY_SLUG_QUERY = defineQuery(
   `coalesce(
-    *[_type == "post" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo },
-    *[_type == "post" && slug.current == $slug && language == "es"][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo }
+    *[_type == "post" && slug.current == $slug && language == $language][0]{
+      _id, title, slug, language, publishedAt, _updatedAt, mainImage, excerpt, body,
+      category, tags,
+      "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),
+      "author": author->{ name, bio, image },
+      seo
+    },
+    *[_type == "post" && slug.current == $slug && language == "es"][0]{
+      _id, title, slug, language, publishedAt, _updatedAt, mainImage, excerpt, body,
+      category, tags,
+      "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),
+      "author": author->{ name, bio, image },
+      seo
+    }
   )`
 )

@@ -643,8 +643,31 @@ export type SITE_SETTINGS_QUERYResult = {
     }> | null;
   } | null;
 } | null;
+// Variable: SITE_SETTINGS_SEO_QUERY
+// Query: *[_type == "siteSettings"][0]{    siteName,    tagline,    defaultCtaHref,    seo{ title, description, ogImage }  }
+export type SITE_SETTINGS_SEO_QUERYResult = {
+  siteName: string | null;
+  tagline: string | null;
+  defaultCtaHref: string | null;
+  seo: {
+    title: string | null;
+    description: string | null;
+    ogImage: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  } | null;
+} | null;
 // Variable: ALL_POSTS_QUERY
-// Query: *[_type == "post" && language == $language] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,    excerpt,    mainImage,    author  }
+// Query: *[_type == "post" && language == $language && defined(publishedAt)] | order(publishedAt desc){    _id,    title,    slug,    publishedAt,    excerpt,    mainImage,    category,    tags,    "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),    "author": author->{ name, image }  }
 export type ALL_POSTS_QUERYResult = Array<{
   _id: string;
   title: string | null;
@@ -663,21 +686,41 @@ export type ALL_POSTS_QUERYResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
+  category: "fallstudien" | "tipps" | null;
+  tags: Array<string> | null;
+  estimatedReadingTime: number;
   author: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
+    name: string | null;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
   } | null;
 }>;
+// Variable: ALL_POSTS_FOR_SITEMAP_QUERY
+// Query: *[_type == "post" && defined(publishedAt) && defined(slug.current)]{    slug,    _updatedAt,    language  }
+export type ALL_POSTS_FOR_SITEMAP_QUERYResult = Array<{
+  slug: Slug | null;
+  _updatedAt: string;
+  language: string | null;
+}>;
 // Variable: POST_BY_SLUG_QUERY
-// Query: coalesce(    *[_type == "post" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo },    *[_type == "post" && slug.current == $slug && language == "es"][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo }  )
+// Query: coalesce(    *[_type == "post" && slug.current == $slug && language == $language][0]{      _id, title, slug, language, publishedAt, _updatedAt, mainImage, excerpt, body,      category, tags,      "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),      "author": author->{ name, bio, image },      seo    },    *[_type == "post" && slug.current == $slug && language == "es"][0]{      _id, title, slug, language, publishedAt, _updatedAt, mainImage, excerpt, body,      category, tags,      "estimatedReadingTime": round(length(pt::text(body)) / 5 / 180),      "author": author->{ name, bio, image },      seo    }  )
 export type POST_BY_SLUG_QUERYResult = {
   _id: string;
   title: string | null;
   slug: Slug | null;
   language: string | null;
   publishedAt: string | null;
+  _updatedAt: string;
   mainImage: {
     asset?: {
       _ref: string;
@@ -723,11 +766,24 @@ export type POST_BY_SLUG_QUERYResult = {
     _type: "image";
     _key: string;
   }> | null;
+  category: "fallstudien" | "tipps" | null;
+  tags: Array<string> | null;
+  estimatedReadingTime: number;
   author: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
+    name: string | null;
+    bio: string | null;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
   } | null;
   seo: {
     title?: string;
@@ -742,7 +798,9 @@ declare module "@sanity/client" {
     "coalesce(\n    *[_type == \"page\" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, sections[]{ ..., _type, _key } },\n    *[_type == \"page\" && slug.current == $slug && language == \"es\"][0]{ _id, title, slug, language, sections[]{ ..., _type, _key } }\n  )": PAGE_BY_SLUG_QUERYResult;
     "*[_type == \"page\" && defined(slug.current)]{ slug, language }": ALL_PAGES_QUERYResult;
     "*[_type == \"siteSettings\"][0]{\n    siteName,\n    tagline,\n    defaultCtaHref,\n    navigation[]{ label, href, _key },\n    footer{ socialLinks[]{ platform, url, _key } }\n  }": SITE_SETTINGS_QUERYResult;
-    "*[_type == \"post\" && language == $language] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n    excerpt,\n    mainImage,\n    author\n  }": ALL_POSTS_QUERYResult;
-    "coalesce(\n    *[_type == \"post\" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo },\n    *[_type == \"post\" && slug.current == $slug && language == \"es\"][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo }\n  )": POST_BY_SLUG_QUERYResult;
+    "*[_type == \"siteSettings\"][0]{\n    siteName,\n    tagline,\n    defaultCtaHref,\n    seo{ title, description, ogImage }\n  }": SITE_SETTINGS_SEO_QUERYResult;
+    "*[_type == \"post\" && language == $language && defined(publishedAt)] | order(publishedAt desc){\n    _id,\n    title,\n    slug,\n    publishedAt,\n    excerpt,\n    mainImage,\n    category,\n    tags,\n    \"estimatedReadingTime\": round(length(pt::text(body)) / 5 / 180),\n    \"author\": author->{ name, image }\n  }": ALL_POSTS_QUERYResult;
+    "*[_type == \"post\" && defined(publishedAt) && defined(slug.current)]{\n    slug,\n    _updatedAt,\n    language\n  }": ALL_POSTS_FOR_SITEMAP_QUERYResult;
+    "coalesce(\n    *[_type == \"post\" && slug.current == $slug && language == $language][0]{\n      _id, title, slug, language, publishedAt, _updatedAt, mainImage, excerpt, body,\n      category, tags,\n      \"estimatedReadingTime\": round(length(pt::text(body)) / 5 / 180),\n      \"author\": author->{ name, bio, image },\n      seo\n    },\n    *[_type == \"post\" && slug.current == $slug && language == \"es\"][0]{\n      _id, title, slug, language, publishedAt, _updatedAt, mainImage, excerpt, body,\n      category, tags,\n      \"estimatedReadingTime\": round(length(pt::text(body)) / 5 / 180),\n      \"author\": author->{ name, bio, image },\n      seo\n    }\n  )": POST_BY_SLUG_QUERYResult;
   }
 }
