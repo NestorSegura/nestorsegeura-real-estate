@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 3 of 5 (Landing Page) — In progress
-Plan: 2 of 4 in current phase
+Plan: 1 of 4 in current phase completed (03-01 navbar + section IDs)
 Status: In progress
-Last activity: 2026-03-15 — Completed 03-02-PLAN.md (website analysis tool)
+Last activity: 2026-03-15 — Completed 03-01-PLAN.md (navbar and section anchors)
 
 Progress: [█████░░░░░] 56% (9/16 plans total)
 
@@ -76,6 +76,10 @@ Recent decisions affecting current work:
 - [03-02]: Server/client split for analyse page — page.tsx (server) fetches ctaHref from Sanity, AnalysePageClient.tsx (client) handles form/animation state
 - [03-02]: SVG gauge animation uses CSS stroke-dashoffset transition (1s ease 0.2s) triggered by useEffect setTimeout — no framer-motion
 - [03-02]: @base-ui/react is correct package name (not @base-ui-components/react) for drawer component
+- [03-01]: @base-ui/react subpath import for Drawer is @base-ui/react/drawer (not @base-ui-components/react/drawer)
+- [03-01]: Navbar server/client split — Navbar.tsx (server) fetches Sanity, NavbarClient.tsx (client) handles interaction
+- [03-01]: IntersectionObserver sentinel pattern for sticky scroll detection — sentinel div in NavbarClient, no scroll event listener
+- [03-01]: sectionId prop pattern on block components — optional override, falls back to deterministic ID matching navbar hrefs
 
 ### Pending Todos
 
@@ -88,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T19:40:11Z
-Stopped at: Completed 03-02-PLAN.md — website analysis tool (/api/analyze + /analyse page) done
+Last session: 2026-03-15T19:44:31Z
+Stopped at: Completed 03-01-PLAN.md — navbar (server/client split, Drawer, locale switcher) and section anchor IDs on all blocks
 Resume file: None
