@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 2 of 5 (CMS and Page Builder) — In progress
-Plan: 4 of 6 in current phase (plans 01-04 complete)
+Plan: 5 of 6 in current phase (plans 01-02 and 04 complete, plan 02 just completed)
 Status: In progress
-Last activity: 2026-03-15 — Completed 02-04-PLAN.md (data fetching layer)
+Last activity: 2026-03-15 — Completed 02-02-PLAN.md (page builder block schemas and TypeGen)
 
-Progress: [███░░░░░░░] 25% (4/16 plans total)
+Progress: [████░░░░░░] 31% (5/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 6 min
-- Total execution time: 0.37 hours
+- Total execution time: 0.43 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 21 min | 7 min |
-| 02-cms-and-page-builder | 1/6 | 2 min | 2 min |
+| 02-cms-and-page-builder | 2/6 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 9 min, 4 min, 8 min, 2 min
+- Last 5 plans: 9 min, 4 min, 8 min, 2 min, 4 min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -64,6 +64,10 @@ Recent decisions affecting current work:
 - [02-01]: siteSettings excluded from i18n schemaTypes — global singleton, one document for all locales
 - [02-01]: sections array on Page left empty (of: []) — Plan 02 populates with block type references
 - [02-01]: defaultCtaHref on SiteSettings is a url field — global booking URL individual blocks can override
+- [02-02]: Root sanity.config.ts re-export required — Sanity CLI only resolves sanity.config.(js|ts) at project root, not src/sanity/config.ts
+- [02-02]: GROQ ?? operator unsupported by TypeGen parser — use coalesce() function instead for typed query results
+- [02-02]: Block schemas must be registered in schemaTypes (not just page.sections) for TypeGen to generate typed interfaces
+- [02-02]: TypeGen workflow: npx sanity schema extract && npx sanity typegen generate — produces src/types/sanity.types.ts
 
 ### Pending Todos
 
@@ -76,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:23:01Z
-Stopped at: Completed 02-01-PLAN.md — document schemas, i18n plugin, Studio config, singleton enforcement, draft mode routes
+Last session: 2026-03-15T18:30:24Z
+Stopped at: Completed 02-02-PLAN.md — page builder block schemas, TypeGen, Page.sections wired
 Resume file: None
