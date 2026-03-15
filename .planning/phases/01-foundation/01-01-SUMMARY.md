@@ -98,7 +98,7 @@ Each task was committed atomically:
 1. **Task 1: Scaffold Next.js 15 and install all Phase 1 dependencies** - `8d2001f` (feat)
 2. **Task 2: Configure brand tokens, ThemeProvider, and directory skeleton** - `1680944` (feat)
 
-**Plan metadata:** (will be added in final commit)
+**Plan metadata:** `af4de70` (docs: complete plan)
 
 ## Files Created/Modified
 
@@ -167,3 +167,5 @@ None — no external service configuration required for this plan.
 ---
 *Phase: 01-foundation*
 *Completed: 2026-03-15*
+
+## Self-Check: PASSED
