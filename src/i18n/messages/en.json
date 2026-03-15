@@ -1,0 +1,144 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "cta": "Book a call"
+  },
+  "hero": {
+    "title": "More Leads. More Clients. More Revenue.",
+    "subtitle": "Professional websites for real estate agents in Germany — turning visitors into paying clients.",
+    "cta": "Request a free consultation",
+    "trustSignal": "Trusted by over 30 real estate agents"
+  },
+  "features": {
+    "title": "What makes us different?",
+    "subtitle": "We know the challenges real estate agents face — and we build websites designed specifically for them.",
+    "items": [
+      {
+        "title": "Local market expertise",
+        "description": "We understand the German real estate market and speak the language of your clients."
+      },
+      {
+        "title": "Conversion-optimized",
+        "description": "Every element of your website is designed to turn visitors into qualified leads."
+      },
+      {
+        "title": "Fast & reliable",
+        "description": "Lightning-fast load times and 99.9% uptime — so you never miss an inquiry."
+      }
+    ]
+  },
+  "problem": {
+    "title": "Sound familiar?",
+    "subtitle": "Many real estate agents struggle with the same problems every day.",
+    "items": [
+      {
+        "title": "Your website isn't generating inquiries",
+        "description": "Visitors come, but nobody fills out the contact form."
+      },
+      {
+        "title": "You're losing clients to competitors",
+        "description": "Potential sellers choose the agent with the more convincing online presence."
+      },
+      {
+        "title": "No time for marketing",
+        "description": "As an agent, your day is already full — there's no time left for website maintenance."
+      }
+    ]
+  },
+  "solution": {
+    "title": "Our solution",
+    "subtitle": "A professional website that works for you around the clock.",
+    "items": [
+      {
+        "title": "Design that builds trust",
+        "description": "Modern, professional design that communicates your expertise at first glance."
+      },
+      {
+        "title": "Copy that converts",
+        "description": "Targeted content that clearly highlights your unique selling points."
+      },
+      {
+        "title": "Technology that works",
+        "description": "Fast, mobile-optimized, and search-engine friendly — from day one."
+      }
+    ]
+  },
+  "services": {
+    "title": "Our services",
+    "subtitle": "Everything you need for a successful online presence.",
+    "items": [
+      {
+        "title": "Website creation",
+        "description": "A custom website for your agency — from concept to launch."
+      },
+      {
+        "title": "Website analysis",
+        "description": "We analyze your current website and identify concrete areas for improvement."
+      },
+      {
+        "title": "Ongoing support",
+        "description": "Regular updates, new content, and technical support — so you can focus on real estate."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "subtitle": "Real results from real estate agents."
+  },
+  "references": {
+    "title": "References",
+    "subtitle": "Websites we have built for real estate agents across Germany."
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": [
+      {
+        "question": "How long does it take to build my website?",
+        "answer": "Typically 2–4 weeks from the first conversation to launch — depending on the scope and how quickly you provide content."
+      },
+      {
+        "question": "What does a professional agent website cost?",
+        "answer": "Our projects start from €1,500 one-time. In a free initial consultation, we create a customized quote for your requirements."
+      },
+      {
+        "question": "Can I manage the website myself later?",
+        "answer": "Yes. We work with a user-friendly CMS — so you can update text and images yourself at any time, without technical knowledge."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready for more inquiries?",
+    "subtitle": "Start today with a free website analysis or a no-obligation consultation.",
+    "buttonText": "Get started for free"
+  },
+  "contact": {
+    "title": "Get in touch",
+    "name": "Your name",
+    "email": "Your email address",
+    "message": "Your message",
+    "submit": "Send message"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint"
+  },
+  "analysis": {
+    "title": "Free website analysis",
+    "subtitle": "Enter the URL of your current website — we'll show you in seconds where there's room for improvement.",
+    "placeholder": "https://your-agent-website.com",
+    "submit": "Analyze website",
+    "loading": "Analysis in progress...",
+    "resultTitle": "Your analysis results"
+  },
+  "common": {
+    "readMore": "Read more",
+    "learnMore": "Learn more",
+    "bookAppointment": "Book an appointment",
+    "backToHome": "Back to home"
+  }
+}
