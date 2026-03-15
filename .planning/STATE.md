@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 3 of 5 (Landing Page) — In progress
-Plan: 1 of 4 in current phase completed (03-01 navbar + section IDs)
+Plan: 3 of 4 in current phase completed (03-01 navbar, 03-02 analyse tool, 03-03 seed content + verify)
 Status: In progress
-Last activity: 2026-03-15 — Completed 03-01-PLAN.md (navbar and section anchors)
+Last activity: 2026-03-15 — Completed 03-03-PLAN.md (seed content, full landing page visual verification)
 
-Progress: [█████░░░░░] 56% (9/16 plans total)
+Progress: [██████░░░░] 69% (11/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 11
 - Average duration: 5 min
-- Total execution time: 0.65 hours
+- Total execution time: 0.78 hours
 
 **By Phase:**
 
@@ -29,7 +29,7 @@ Progress: [█████░░░░░] 56% (9/16 plans total)
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 21 min | 7 min |
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
-| 03-landing-page | 2/4 | 10 min | 5 min |
+| 03-landing-page | 3/4 | 18 min | 6 min |
 
 **Recent Trend:**
 - Last 5 plans: 2 min, 4 min, 4 min, 3 min, 5 min
@@ -80,6 +80,10 @@ Recent decisions affecting current work:
 - [03-01]: Navbar server/client split — Navbar.tsx (server) fetches Sanity, NavbarClient.tsx (client) handles interaction
 - [03-01]: IntersectionObserver sentinel pattern for sticky scroll detection — sentinel div in NavbarClient, no scroll event listener
 - [03-01]: sectionId prop pattern on block components — optional override, falls back to deterministic ID matching navbar hrefs
+- [03-03]: Cal.com URL used as default CTA href: https://cal.com/nestorsegura/erstgespraech — all CTAs across all locales link here
+- [03-03]: Navigation includes /analyse link (not anchor) alongside anchor links — navbar handles both patterns via href value
+- [03-03]: Fictional testimonials/references used as placeholder content — flagged for replacement before launch
+- [03-03]: Seed script uses createOrReplace for full idempotency — safe to re-run after schema changes
 
 ### Pending Todos
 
@@ -92,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T19:44:31Z
-Stopped at: Completed 03-01-PLAN.md — navbar (server/client split, Drawer, locale switcher) and section anchor IDs on all blocks
+Last session: 2026-03-15
+Stopped at: Completed 03-03-PLAN.md — Sanity seed script for all 3 locales + siteSettings, full landing page visual verification (all 8 sections, mobile drawer, analyse tool), drawer animation fix
 Resume file: None
