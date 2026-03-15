@@ -75,7 +75,7 @@ Each task was committed atomically:
 1. **Task 1: Create Sanity config, client, and embedded Studio route** - `ce4cfae` (feat)
 2. **Task 2: Create env template and configure .gitignore** - `75fd69c` (feat)
 
-**Plan metadata:** _(pending docs commit)_
+**Plan metadata:** `99bd547` (docs: complete plan)
 
 ## Files Created/Modified
 
