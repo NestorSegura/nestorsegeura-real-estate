@@ -168,6 +168,22 @@ export type SiteSettings = {
   siteName?: string;
   tagline?: string;
   defaultCtaHref?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  };
   navigation?: Array<{
     label?: string;
     href?: string;
@@ -180,6 +196,22 @@ export type SiteSettings = {
       _key: string;
     }>;
   };
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
 };
 
 export type TranslationMetadata = {
@@ -251,28 +283,55 @@ export type Post = {
     level?: number;
     _type: "block";
     _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
   }>;
-  author?: string;
+  author?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "author";
+  };
+  category?: "tipps" | "fallstudien";
+  tags?: Array<string>;
   seo?: {
     title?: string;
     description?: string;
   };
 };
 
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+export type Author = {
+  _id: string;
+  _type: "author";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  bio?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 };
 
 export type Slug = {
@@ -409,7 +468,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = ReferencesBlock | FaqBlock | ServicesBlock | ProblemSolutionBlock | CtaBlock | TestimonialsBlock | FeatureStrip | HeroSection | SiteSettings | TranslationMetadata | InternationalizedArrayReference | InternationalizedArrayReferenceValue | Post | SanityImageCrop | SanityImageHotspot | Slug | Page | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = ReferencesBlock | FaqBlock | ServicesBlock | ProblemSolutionBlock | CtaBlock | TestimonialsBlock | FeatureStrip | HeroSection | SiteSettings | SanityImageCrop | SanityImageHotspot | TranslationMetadata | InternationalizedArrayReference | InternationalizedArrayReferenceValue | Post | Author | Slug | Page | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: PAGE_BY_SLUG_QUERY
@@ -604,7 +663,12 @@ export type ALL_POSTS_QUERYResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
-  author: string | null;
+  author: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "author";
+  } | null;
 }>;
 // Variable: POST_BY_SLUG_QUERY
 // Query: coalesce(    *[_type == "post" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo },    *[_type == "post" && slug.current == $slug && language == "es"][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo }  )
@@ -644,8 +708,27 @@ export type POST_BY_SLUG_QUERYResult = {
     level?: number;
     _type: "block";
     _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
   }> | null;
-  author: string | null;
+  author: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "author";
+  } | null;
   seo: {
     title?: string;
     description?: string;

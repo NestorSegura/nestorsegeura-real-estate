@@ -23,6 +23,32 @@ export const siteSettingsType = defineType({
       description: 'Global calendar booking URL — individual blocks can override this',
     }),
     defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Default SEO Title',
+          type: 'string',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Default SEO Description',
+          type: 'text',
+          rows: 3,
+        }),
+        defineField({
+          name: 'ogImage',
+          title: 'Default OG Image',
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+        }),
+      ],
+    }),
+    defineField({
       name: 'navigation',
       title: 'Navigation',
       type: 'array',

@@ -54,12 +54,47 @@ export const postType = defineType({
         {
           type: 'block',
         },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+            }),
+          ],
+        },
       ],
     }),
     defineField({
       name: 'author',
       title: 'Author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
       type: 'string',
+      options: {
+        list: ['tipps', 'fallstudien'],
+        layout: 'radio',
+      },
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
     }),
     defineField({
       name: 'seo',

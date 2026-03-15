@@ -1,6 +1,7 @@
 import { type SchemaTypeDefinition } from 'sanity'
 import { pageType } from './documents/page'
 import { postType } from './documents/post'
+import { authorType } from './documents/author'
 import { siteSettingsType } from './documents/siteSettings'
 import { heroSectionType } from './blocks/heroSection'
 import { featureStripType } from './blocks/featureStrip'
@@ -15,6 +16,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   // Documents
   pageType,
   postType,
+  authorType,
   siteSettingsType,
   // Page Builder Blocks
   heroSectionType,
