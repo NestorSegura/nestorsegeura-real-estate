@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -12,6 +13,7 @@ import { extractHeadings } from '@/lib/blog'
 import { PortableTextRenderer } from '@/components/blog/PortableTextRenderer'
 import { TableOfContents } from '@/components/blog/TableOfContents'
 import { AuthorCard } from '@/components/blog/AuthorCard'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { Link } from '@/i18n/navigation'
 
 export async function generateStaticParams() {
@@ -22,6 +24,40 @@ export async function generateStaticParams() {
       locale: post.language as string,
       slug: post.slug!.current as string,
     }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>
+}): Promise<Metadata> {
+  const { locale, slug } = await params
+  const { data } = await sanityFetch({
+    query: POST_BY_SLUG_QUERY,
+    params: { slug, language: locale },
+  })
+
+  const mainImageUrl = data?.mainImage
+    ? urlFor(data.mainImage).width(1200).height(630).url()
+    : '/og-default.png'
+
+  return {
+    title: data?.seo?.title ?? data?.title ?? slug,
+    description: data?.seo?.description ?? data?.excerpt ?? '',
+    openGraph: {
+      images: [mainImageUrl],
+      type: 'article',
+      publishedTime: data?.publishedAt ?? undefined,
+      modifiedTime: data?._updatedAt ?? undefined,
+    },
+    alternates: {
+      languages: {
+        de: `https://nestorsegura.com/blog/${slug}`,
+        en: `https://nestorsegura.com/en/blog/${slug}`,
+        es: `https://nestorsegura.com/es/blog/${slug}`,
+      },
+    },
+  }
 }
 
 export default async function BlogPostPage({
@@ -79,10 +115,7 @@ export default async function BlogPostPage({
   return (
     <>
       {/* Article JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
-      />
+      <JsonLd data={articleJsonLd} />
 
       <main>
         <div className="max-w-5xl mx-auto px-4 py-12">

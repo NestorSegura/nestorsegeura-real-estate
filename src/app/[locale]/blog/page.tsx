@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -5,6 +6,40 @@ import { routing } from '@/i18n/routing'
 import { sanityFetch } from '@/sanity/lib/live'
 import { ALL_POSTS_QUERY } from '@/sanity/lib/queries'
 import { BlogListing } from '@/components/blog/BlogListing'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+
+  const titles: Record<string, string> = {
+    de: 'Blog',
+    en: 'Blog',
+    es: 'Blog',
+  }
+
+  const descriptions: Record<string, string> = {
+    de: 'Tipps, Fallstudien und Einblicke für Immobilienmakler – von Nestor Segura aus Hamburg.',
+    en: 'Tips, case studies and insights for real estate agents – by Nestor Segura from Hamburg.',
+    es: 'Consejos, casos de estudio e ideas para agentes inmobiliarios – por Nestor Segura de Hamburgo.',
+  }
+
+  return {
+    title: titles[locale] ?? 'Blog',
+    description:
+      descriptions[locale] ??
+      'Tipps, Fallstudien und Einblicke für Immobilienmakler.',
+    alternates: {
+      languages: {
+        de: 'https://nestorsegura.com/blog',
+        en: 'https://nestorsegura.com/en/blog',
+        es: 'https://nestorsegura.com/es/blog',
+      },
+    },
+  }
+}
 
 export default async function BlogPage({
   params,
