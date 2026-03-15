@@ -48,6 +48,10 @@ Recent decisions affecting current work:
 - [01-01]: Use sanity@^4 + next-sanity@^11 — next-sanity@12 requires Next.js 16 (not yet released). Same Sanity Studio v3 generation, identical APIs.
 - [01-01]: HTML lang="de" — German market target
 - [01-01]: OKLCH primary light oklch(0.45 0.18 290), dark oklch(0.72 0.14 290) — jibemates purple
+- [01-02]: defaultLocale: 'de', localePrefix: 'as-needed' — / serves German without prefix, /en and /es get prefixes
+- [01-02]: Middleware matcher excludes api|studio|_next|_vercel — /studio exclusion critical for Sanity Studio
+- [01-02]: de.json is AppConfig.Messages type source (German is source language)
+- [01-02]: All app navigation must use @/i18n/navigation exports, never next/link or next/navigation directly
 - [01-03]: Studio route at src/app/studio/[[...tool]]/ is outside [locale]/ so i18n middleware does not intercept it
 - [01-03]: .gitignore negation !.env.local.template allows committing the template while .env.local stays secret
 - [01-03]: sanityFetch<T> at src/sanity/lib/fetch.ts is the Phase 2 data-fetching entry point
@@ -63,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T15:47:13Z
-Stopped at: Completed 01-03-PLAN.md — Sanity CMS bootstrap, Studio at /studio, env template
+Last session: 2026-03-15T15:48:14Z
+Stopped at: Completed 01-02-PLAN.md — next-intl v4 i18n routing, all three locales verified
 Resume file: None
