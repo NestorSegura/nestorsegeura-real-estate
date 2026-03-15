@@ -12,7 +12,7 @@ A multilingual B2B landing page that converts German real estate agents (Immobil
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Working Next.js 15 + next-intl + Sanity skeleton with correct i18n routing and dev environment
+- [x] **Phase 1: Foundation** - Working Next.js 15 + next-intl + Sanity skeleton with correct i18n routing and dev environment
 - [ ] **Phase 2: CMS and Page Builder** - Sanity schemas locked in and all block components rendering from typed data
 - [ ] **Phase 3: Landing Page** - German conversion page live with all sections, CTAs, and analysis API stub
 - [ ] **Phase 4: Blog and SEO** - Blog routes functional and all SEO metadata, sitemap, and structured data in place
@@ -33,9 +33,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Next.js 15 with Tailwind v4, shadcn/ui, brand tokens, and directory skeleton
-- [ ] 01-02-PLAN.md — Configure next-intl v4 with 3 locales, middleware exclusions, and translation files
-- [ ] 01-03-PLAN.md — Bootstrap Sanity Studio at /studio and document all environment variables
+- [x] 01-01-PLAN.md — Scaffold Next.js 15 with Tailwind v4, shadcn/ui, brand tokens, and directory skeleton
+- [x] 01-02-PLAN.md — Configure next-intl v4 with 3 locales, middleware exclusions, and translation files
+- [x] 01-03-PLAN.md — Bootstrap Sanity Studio at /studio and document all environment variables
 
 ### Phase 2: CMS and Page Builder
 **Goal**: All eight Page Builder block schemas exist in Sanity Studio, TypeGen produces typed interfaces, and each block renders a React component from live Sanity data dispatched through PageBuilder.tsx.
@@ -116,7 +116,7 @@ Note: Phase 4 depends on Phase 2 (not Phase 3), so Phases 3 and 4 can be worked 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Planned | - |
+| 1. Foundation | 3/3 | ✓ Complete | 2026-03-15 |
 | 2. CMS and Page Builder | 0/4 | Not started | - |
 | 3. Landing Page | 0/3 | Not started | - |
 | 4. Blog and SEO | 0/3 | Not started | - |

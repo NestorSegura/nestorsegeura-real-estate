@@ -7,12 +7,12 @@
 
 ### Foundation (FOUN)
 
-- [ ] **FOUN-01**: Next.js 15 App Router project with TypeScript strict mode, Tailwind v4, shadcn/ui
-- [ ] **FOUN-02**: src/ directory structure matching specified layout (app/, components/, sanity/, i18n/)
-- [ ] **FOUN-03**: next-intl v4 configured with 3 locales (en default, es, de), localePrefix 'as-needed'
-- [ ] **FOUN-04**: Middleware excludes /studio and /api routes from i18n processing
-- [ ] **FOUN-05**: All translation keys exist in en.json, es.json, and de.json
-- [ ] **FOUN-06**: Environment variables configured (.env.local template with all required vars)
+- [x] **FOUN-01**: Next.js 15 App Router project with TypeScript strict mode, Tailwind v4, shadcn/ui
+- [x] **FOUN-02**: src/ directory structure matching specified layout (app/, components/, sanity/, i18n/)
+- [x] **FOUN-03**: next-intl v4 configured with 3 locales (en default, es, de), localePrefix 'as-needed'
+- [x] **FOUN-04**: Middleware excludes /studio and /api routes from i18n processing
+- [x] **FOUN-05**: All translation keys exist in en.json, es.json, and de.json
+- [x] **FOUN-06**: Environment variables configured (.env.local template with all required vars)
 
 ### Sanity CMS (CMS)
 
@@ -114,12 +114,12 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | Phase 1 | Pending |
-| FOUN-02 | Phase 1 | Pending |
-| FOUN-03 | Phase 1 | Pending |
-| FOUN-04 | Phase 1 | Pending |
-| FOUN-05 | Phase 1 | Pending |
-| FOUN-06 | Phase 1 | Pending |
+| FOUN-01 | Phase 1 | Complete |
+| FOUN-02 | Phase 1 | Complete |
+| FOUN-03 | Phase 1 | Complete |
+| FOUN-04 | Phase 1 | Complete |
+| FOUN-05 | Phase 1 | Complete |
+| FOUN-06 | Phase 1 | Complete |
 | CMS-01 | Phase 2 | Pending |
 | CMS-02 | Phase 2 | Pending |
 | CMS-03 | Phase 2 | Pending |
