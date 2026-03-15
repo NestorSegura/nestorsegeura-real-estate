@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 2 of 5 (CMS and Page Builder) — In progress
-Plan: 5 of 6 in current phase (plans 01-02 and 04 complete, plan 02 just completed)
+Plan: 6 of 6 in current phase (plans 01, 02, 03, 04 complete — plan 05 remaining)
 Status: In progress
-Last activity: 2026-03-15 — Completed 02-02-PLAN.md (page builder block schemas and TypeGen)
+Last activity: 2026-03-15 — Completed 02-03-PLAN.md (PageBuilder, all 8 block components, homepage route)
 
-Progress: [████░░░░░░] 31% (5/16 plans total)
+Progress: [████░░░░░░] 38% (6/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 6 min
-- Total execution time: 0.43 hours
+- Total plans completed: 6
+- Average duration: 5 min
+- Total execution time: 0.50 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 21 min | 7 min |
-| 02-cms-and-page-builder | 2/6 | 6 min | 3 min |
+| 02-cms-and-page-builder | 3/6 | 10 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 9 min, 4 min, 8 min, 2 min, 4 min
+- Last 5 plans: 4 min, 8 min, 2 min, 4 min, 4 min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -68,6 +68,10 @@ Recent decisions affecting current work:
 - [02-02]: GROQ ?? operator unsupported by TypeGen parser — use coalesce() function instead for typed query results
 - [02-02]: Block schemas must be registered in schemaTypes (not just page.sections) for TypeGen to generate typed interfaces
 - [02-02]: TypeGen workflow: npx sanity schema extract && npx sanity typegen generate — produces src/types/sanity.types.ts
+- [02-03]: CSS-only animations enforced — Intersection Observer + CSS transitions, no framer-motion/GSAP/@motionone in blocks
+- [02-03]: PageBuilder uses local PageSection type (not TypeGen union) to avoid discriminated union spreading issues
+- [02-03]: Block color styling uses inline OKLCH styles (not Tailwind dark: variants) so each block controls its own dark/light scheme
+- [02-03]: Image rendering in Testimonials/References uses placeholders — Sanity image URL builder needed when real images are added
 
 ### Pending Todos
 
@@ -80,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:30:24Z
-Stopped at: Completed 02-02-PLAN.md — page builder block schemas, TypeGen, Page.sections wired
+Last session: 2026-03-15T18:39:06Z
+Stopped at: Completed 02-03-PLAN.md — PageBuilder, 8 block components, useRevealOnScroll hook, homepage wired to Sanity
 Resume file: None
