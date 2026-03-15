@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { FaqBlock as FaqBlockType } from '@/types/sanity.types'
 
-type FaqBlockProps = FaqBlockType & { _key?: string }
+type FaqBlockProps = FaqBlockType & { _key?: string; sectionId?: string }
 
 /**
  * FAQ accordion block.
@@ -19,6 +19,7 @@ export function FaqBlock({
   faqs,
   colorScheme = 'light',
   spacing,
+  sectionId,
 }: FaqBlockProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const containerRef = useRef<HTMLElement | null>(null)
@@ -39,6 +40,7 @@ export function FaqBlock({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'faq'}
       className={`${spacingClass} px-6`}
       style={{
         background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',

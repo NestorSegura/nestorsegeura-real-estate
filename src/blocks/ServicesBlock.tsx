@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { ServicesBlock as ServicesBlockType } from '@/types/sanity.types'
 
-type ServicesBlockProps = ServicesBlockType & { _key?: string }
+type ServicesBlockProps = ServicesBlockType & { _key?: string; sectionId?: string }
 
 /**
  * Services block — card layout, 1 col mobile, 2 cols lg.
@@ -17,6 +17,7 @@ export function ServicesBlock({
   services,
   colorScheme = 'light',
   spacing,
+  sectionId,
 }: ServicesBlockProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   useRevealOnScroll(containerRef)
@@ -32,6 +33,7 @@ export function ServicesBlock({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'leistungen'}
       className={`${spacingClass} px-6`}
       style={{
         background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',

@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { ProblemSolutionBlock as ProblemSolutionBlockType } from '@/types/sanity.types'
 
-type ProblemSolutionBlockProps = ProblemSolutionBlockType & { _key?: string }
+type ProblemSolutionBlockProps = ProblemSolutionBlockType & { _key?: string; sectionId?: string }
 
 /**
  * Problem/solution block — numbered list layout.
@@ -17,6 +17,7 @@ export function ProblemSolutionBlock({
   problems,
   colorScheme = 'light',
   spacing,
+  sectionId,
 }: ProblemSolutionBlockProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   useRevealOnScroll(containerRef)
@@ -32,6 +33,7 @@ export function ProblemSolutionBlock({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'problem'}
       className={`${spacingClass} px-6`}
       style={{
         background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',

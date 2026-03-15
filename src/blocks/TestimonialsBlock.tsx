@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { TestimonialsBlock as TestimonialsBlockType } from '@/types/sanity.types'
 
-type TestimonialsBlockProps = TestimonialsBlockType & { _key?: string }
+type TestimonialsBlockProps = TestimonialsBlockType & { _key?: string; sectionId?: string }
 
 /**
  * Testimonials grid with quote cards.
@@ -16,6 +16,7 @@ export function TestimonialsBlock({
   testimonials,
   colorScheme = 'light',
   spacing,
+  sectionId,
 }: TestimonialsBlockProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   useRevealOnScroll(containerRef)
@@ -31,6 +32,7 @@ export function TestimonialsBlock({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'referenzen'}
       className={`${spacingClass} px-6`}
       style={{
         background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',

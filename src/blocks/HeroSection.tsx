@@ -153,6 +153,7 @@ export function HeroSection({
         {ctaHref && ctaLabel && (
           <a
             href={ctaHref}
+            {...(ctaHref.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className="reveal inline-block bg-[oklch(0.72_0.14_290)] hover:bg-[oklch(0.65_0.16_290)] text-white font-semibold text-lg px-10 py-4 rounded-full transition-colors duration-200"
             style={{ '--reveal-delay': `${words.length * 80 + 300}ms` } as React.CSSProperties}
           >

@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { CtaBlock as CtaBlockType } from '@/types/sanity.types'
 
-type CtaBlockProps = CtaBlockType & { _key?: string }
+type CtaBlockProps = CtaBlockType & { _key?: string; sectionId?: string }
 
 /**
  * CTA block — centered headline + subtext + button.
@@ -21,6 +21,7 @@ export function CtaBlock({
   variant = 'primary',
   colorScheme = 'dark',
   spacing,
+  sectionId,
 }: CtaBlockProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   useRevealOnScroll(containerRef)
@@ -36,6 +37,7 @@ export function CtaBlock({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'kontakt'}
       className={`${spacingClass} px-6 text-center`}
       style={{
         background: isPrimary
@@ -84,6 +86,7 @@ export function CtaBlock({
           return (
             <a
               href={ctaHref}
+              {...(ctaHref.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               className="reveal inline-block font-semibold text-lg px-10 py-4 rounded-full transition-all duration-200"
               style={ctaStyle as React.CSSProperties}
             >

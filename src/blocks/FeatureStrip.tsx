@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { FeatureStrip as FeatureStripType } from '@/types/sanity.types'
 
-type FeatureStripProps = FeatureStripType & { _key?: string }
+type FeatureStripProps = FeatureStripType & { _key?: string; sectionId?: string }
 
 /**
  * Feature strip — grid of icon + title + description cards.
@@ -16,6 +16,7 @@ export function FeatureStrip({
   features,
   colorScheme = 'light',
   spacing,
+  sectionId,
 }: FeatureStripProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   useRevealOnScroll(containerRef)
@@ -31,6 +32,7 @@ export function FeatureStrip({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'features'}
       className={`${spacingClass} px-6`}
       style={{
         background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',

@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 import type { ReferencesBlock as ReferencesBlockType } from '@/types/sanity.types'
 
-type ReferencesBlockProps = ReferencesBlockType & { _key?: string }
+type ReferencesBlockProps = ReferencesBlockType & { _key?: string; sectionId?: string }
 
 /**
  * References/portfolio block — grid of cards with image, name, description, optional link.
@@ -16,6 +16,7 @@ export function ReferencesBlock({
   references,
   colorScheme = 'light',
   spacing,
+  sectionId,
 }: ReferencesBlockProps) {
   const containerRef = useRef<HTMLElement | null>(null)
   useRevealOnScroll(containerRef)
@@ -31,6 +32,7 @@ export function ReferencesBlock({
   return (
     <section
       ref={containerRef}
+      id={sectionId ?? 'projekte'}
       className={`${spacingClass} px-6`}
       style={{
         background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',
