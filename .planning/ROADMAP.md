@@ -47,13 +47,13 @@ Plans:
   3. Creating a Page document in Studio with every block type results in those blocks rendering on the corresponding locale route
   4. PageBuilder.tsx logs a warning (not error) for any unknown block `_type` rather than crashing
   5. All block components use only CSS transitions — no heavy motion library calls visible in the network tab
-**Plans**: TBD
+**Plans:** 4 plans
 
 Plans:
-- [ ] 02-01: Define Sanity document schemas (Page, Post, SiteSettings) with i18n fields and document-internationalization plugin
-- [ ] 02-02: Define all eight Page Builder block schemas and run TypeGen
-- [ ] 02-03: Build PageBuilder.tsx dispatcher and all eight block React components
-- [ ] 02-04: Wire sanityFetch with CDN/non-CDN split and cache tag constants
+- [ ] 02-01-PLAN.md — Define Sanity document schemas (Page, Post, SiteSettings) with i18n plugin, singleton enforcement, and Presentation tool
+- [ ] 02-02-PLAN.md — Define all eight Page Builder block schemas with style fields and run TypeGen
+- [ ] 02-03-PLAN.md — Build PageBuilder dispatcher, eight block React components with CSS animations, and wire homepage
+- [ ] 02-04-PLAN.md — Wire sanityFetch with defineLive, CDN split, GROQ queries, and TypeGen config
 
 ### Phase 3: Landing Page
 **Goal**: A visitor reaching `/de` immediately sees the full German conversion page — hero through FAQ — with working appointment CTAs, a functional website analysis form returning mock scores, and a fully responsive layout.
@@ -116,7 +116,7 @@ Note: Phase 4 depends on Phase 2 (not Phase 3), so Phases 3 and 4 can be worked 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 3/3 | ✓ Complete | 2026-03-15 |
+| 1. Foundation | 3/3 | Complete | 2026-03-15 |
 | 2. CMS and Page Builder | 0/4 | Not started | - |
 | 3. Landing Page | 0/3 | Not started | - |
 | 4. Blog and SEO | 0/3 | Not started | - |
