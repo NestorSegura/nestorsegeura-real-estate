@@ -288,6 +288,7 @@ export default function AnalysePageClient({ ctaHref }: { ctaHref: string }) {
             <div style={{ marginTop: '3rem', textAlign: 'center' }}>
               <a
                 href={ctaHref}
+                {...(ctaHref.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 style={{
                   display: 'inline-block',
                   padding: '0.875rem 2.5rem',

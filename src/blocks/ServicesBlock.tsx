@@ -113,6 +113,7 @@ export function ServicesBlock({
               {service.ctaHref && service.ctaLabel && (
                 <a
                   href={service.ctaHref}
+                  {...(service.ctaHref.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   className="mt-auto inline-flex items-center gap-2 font-semibold text-sm transition-colors duration-200"
                   style={{ color: isDark ? 'oklch(0.72 0.14 290)' : 'oklch(0.45 0.18 290)' }}
                 >
