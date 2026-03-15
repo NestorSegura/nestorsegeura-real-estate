@@ -1,3 +1,4 @@
+// DEPRECATED: Use sanityFetch from ./live.ts instead. Kept as fallback.
 import { client } from './client'
 
 export async function sanityFetch<T>({
