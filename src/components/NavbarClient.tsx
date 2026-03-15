@@ -155,12 +155,12 @@ export function NavbarClient({ navLinks, ctaHref, siteName }: NavbarClientProps)
 
               <Drawer.Portal>
                 <Drawer.Backdrop
-                  className="fixed inset-0"
+                  className="fixed inset-0 z-[60] transition-opacity duration-300 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0"
                   style={{ background: 'oklch(0 0 0 / 0.4)' }}
                 />
-                <Drawer.Viewport className="fixed inset-y-0 right-0">
+                <Drawer.Viewport className="fixed inset-y-0 right-0 z-[70]">
                   <Drawer.Popup
-                    className="h-full w-72 flex flex-col p-6 gap-8"
+                    className="h-full w-72 flex flex-col p-6 gap-8 transition-transform duration-300 ease-out data-[starting-style]:translate-x-full data-[ending-style]:translate-x-full"
                     style={{ background: 'oklch(0.12 0 0)', color: 'oklch(0.97 0.003 80)' }}
                   >
                     {/* Drawer header */}
