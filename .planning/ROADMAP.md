@@ -66,12 +66,12 @@ Plans:
   4. Submitting a URL to the website analysis form returns a JSON response with mock scores (performance, seo, mobile, conversion) within 2 seconds
   5. The layout is usable on a 375px viewport without horizontal overflow or broken components
   6. The navigation bar renders with logo, menu items, and a CTA button on all locales
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 03-01: Populate Sanity with German landing page content and wire the homepage route to PageBuilder
-- [ ] 03-02: Build `/api/analyze` stub endpoint with input validation, mock response, and CORS restriction
-- [ ] 03-03: Finalize English and Spanish page content and verify responsive layout across breakpoints
+- [ ] 03-01-PLAN.md — Build navbar with sticky scroll, mobile drawer, locale switcher, and add section anchor IDs to block components
+- [ ] 03-02-PLAN.md — Build /api/analyze POST endpoint and /analyse page with score gauges
+- [ ] 03-03-PLAN.md — Seed Sanity content for all 3 locales and verify complete landing page
 
 ### Phase 4: Blog and SEO
 **Goal**: The blog is navigable and readable, every page has correct metadata pulled from Sanity, the sitemap covers all locales with hreflang, and Google can crawl the site without indexing `/studio`.
