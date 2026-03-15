@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 2 complete — ready for Phase 3
+**Current focus:** Phase 3 in progress — analysis tool and landing page
 
 ## Current Position
 
-Phase: 2 of 5 (CMS and Page Builder) — COMPLETE
-Plan: 4 of 4 in current phase
-Status: Phase 2 verified and complete (5/5 must-haves passed)
-Last activity: 2026-03-15 — Phase 2 executed and verified
+Phase: 3 of 5 (Landing Page) — In progress
+Plan: 2 of 4 in current phase
+Status: In progress
+Last activity: 2026-03-15 — Completed 03-02-PLAN.md (website analysis tool)
 
-Progress: [████░░░░░░] 44% (7/16 plans total)
+Progress: [█████░░░░░] 56% (9/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 9
 - Average duration: 5 min
-- Total execution time: 0.55 hours
+- Total execution time: 0.65 hours
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [████░░░░░░] 44% (7/16 plans total)
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 21 min | 7 min |
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
+| 03-landing-page | 2/4 | 10 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 8 min, 2 min, 4 min, 4 min, 3 min
+- Last 5 plans: 2 min, 4 min, 4 min, 3 min, 5 min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -71,6 +72,10 @@ Recent decisions affecting current work:
 - [02-03]: PageBuilder uses local PageSection type (not TypeGen union) to avoid discriminated union spreading issues
 - [02-03]: Block color styling uses inline OKLCH styles (not Tailwind dark: variants) so each block controls its own scheme
 - [02-03]: Image rendering in Testimonials/References uses placeholders — Sanity image URL builder needed when real images are added
+- [03-02]: Mock score ranges (35-84) chosen to be mediocre but realistic — motivates improvement without looking fake
+- [03-02]: Server/client split for analyse page — page.tsx (server) fetches ctaHref from Sanity, AnalysePageClient.tsx (client) handles form/animation state
+- [03-02]: SVG gauge animation uses CSS stroke-dashoffset transition (1s ease 0.2s) triggered by useEffect setTimeout — no framer-motion
+- [03-02]: @base-ui/react is correct package name (not @base-ui-components/react) for drawer component
 
 ### Pending Todos
 
@@ -78,11 +83,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- [Pre-Phase 3]: The external API for the real website analysis tool (Google PageSpeed Insights vs Lighthouse CI vs third-party) is not yet decided. This is flagged in research/SUMMARY.md as a research spike needed before Phase 3 planning.
+- [Pre-Phase 3 - RESOLVED]: Website analysis tool ships as mock scores stub. Real PageSpeed API integration is v2 scope. TODO comments placed in route.ts.
 - [Pre-Phase 5]: PDF generation approach for the v2 paid report is unresolved — not blocking v1 but should be decided before Phase 5 ships to avoid architectural rework.
 
 ## Session Continuity
 
-Last session: 2026-03-15
-Stopped at: Phase 2 complete and verified. Ready for Phase 3 planning via /gsd:plan-phase 3
+Last session: 2026-03-15T19:40:11Z
+Stopped at: Completed 03-02-PLAN.md — website analysis tool (/api/analyze + /analyse page) done
 Resume file: None
