@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 3 complete — ready for Phase 4
+**Current focus:** Phase 4 in progress — blog listing and post detail routes complete
 
 ## Current Position
 
 Phase: 4 of 5 (Blog and SEO) — In progress
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-03-15 — Completed 04-01-PLAN.md
+Last activity: 2026-03-15 — Completed 04-02-PLAN.md
 
-Progress: [██████░░░░] 69% (11/16 plans total)
+Progress: [███████░░░] 75% (12/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 5 min
-- Total execution time: 0.78 hours
+- Total execution time: 0.83 hours
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [██████░░░░] 69% (11/16 plans total)
 | 01-foundation | 3/3 | 21 min | 7 min |
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
 | 03-landing-page | 3/3 | 24 min | 8 min |
-| 04-blog-and-seo | 1/4 | 3 min | 3 min |
+| 04-blog-and-seo | 2/4 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 2 min, 4 min, 4 min, 3 min, 5 min
+- Last 5 plans: 4 min, 4 min, 3 min, 5 min, 3 min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -88,6 +88,9 @@ Recent decisions affecting current work:
 - [04-01]: SanityImageSource imported from @sanity/image-url directly (not subpath /lib/types/types — path doesn't exist in installed package)
 - [04-01]: Author is locale-neutral — not in documentInternationalization schemaTypes
 - [04-01]: Blog reading time computed in GROQ via pt::text() not in JavaScript
+- [04-02]: @tailwindcss/typography not installed — manual Tailwind classes used in PortableTextRenderer (no prose utility)
+- [04-02]: TypeGen body type cast as unknown as PortableTextBlock[] — children is optional in TypeGen, required in @portabletext/react; runtime shape is compatible
+- [04-02]: generateStaticParams uses client.fetch (not sanityFetch) — sanityFetch is runtime live client, client.fetch is for build-time static generation
 
 ### Pending Todos
 
@@ -101,5 +104,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-15
-Stopped at: Completed 04-01-PLAN.md (Sanity schemas, queries, utilities foundation)
+Stopped at: Completed 04-02-PLAN.md (Blog listing page + blog post detail page)
 Resume file: None
