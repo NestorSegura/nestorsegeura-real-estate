@@ -48,9 +48,9 @@
 
 ### Blog (BLOG)
 
-- [ ] **BLOG-01**: Blog listing page at /[locale]/blog showing published posts
-- [ ] **BLOG-02**: Blog post page at /[locale]/blog/[slug] with portable text rendering
-- [ ] **BLOG-03**: Blog posts pulled from Sanity with locale-aware content
+- [x] **BLOG-01**: Blog listing page at /[locale]/blog showing published posts
+- [x] **BLOG-02**: Blog post page at /[locale]/blog/[slug] with portable text rendering
+- [x] **BLOG-03**: Blog posts pulled from Sanity with locale-aware content
 
 ### Lead Generation (LEAD)
 
@@ -62,11 +62,11 @@
 
 ### SEO (SEO)
 
-- [ ] **SEO-01**: generateMetadata() in every [locale]/page.tsx pulling from Sanity siteSettings
-- [ ] **SEO-02**: sitemap.ts covering all locales with hreflang (nestorsegura.com, /es, /de)
-- [ ] **SEO-03**: robots.ts blocking /studio from crawling
-- [ ] **SEO-04**: OpenGraph tags with Sanity image URLs
-- [ ] **SEO-05**: Person JSON-LD structured data on homepage (Nestor Segura, not Organization)
+- [x] **SEO-01**: generateMetadata() in every [locale]/page.tsx pulling from Sanity siteSettings
+- [x] **SEO-02**: sitemap.ts covering all locales with hreflang (nestorsegura.com, /es, /de)
+- [x] **SEO-03**: robots.ts blocking /studio from crawling
+- [x] **SEO-04**: OpenGraph tags with Sanity image URLs
+- [x] **SEO-05**: Person JSON-LD structured data on homepage (Nestor Segura, not Organization)
 
 ### Operations (OPS)
 
@@ -143,19 +143,19 @@
 | LAND-04 | Phase 3 | Pending |
 | LAND-05 | Phase 3 | Pending |
 | LAND-06 | Phase 3 | Pending |
-| BLOG-01 | Phase 4 | Pending |
-| BLOG-02 | Phase 4 | Pending |
-| BLOG-03 | Phase 4 | Pending |
+| BLOG-01 | Phase 4 | Complete |
+| BLOG-02 | Phase 4 | Complete |
+| BLOG-03 | Phase 4 | Complete |
 | LEAD-01 | Phase 3 | Pending |
 | LEAD-02 | Phase 3 | Pending |
 | LEAD-03 | Phase 3 | Pending |
 | LEAD-04 | Phase 3 | Pending |
 | LEAD-05 | Phase 3 | Pending |
-| SEO-01 | Phase 4 | Pending |
-| SEO-02 | Phase 4 | Pending |
-| SEO-03 | Phase 4 | Pending |
-| SEO-04 | Phase 4 | Pending |
-| SEO-05 | Phase 4 | Pending |
+| SEO-01 | Phase 4 | Complete |
+| SEO-02 | Phase 4 | Complete |
+| SEO-03 | Phase 4 | Complete |
+| SEO-04 | Phase 4 | Complete |
+| SEO-05 | Phase 4 | Complete |
 | OPS-01 | Phase 5 | Pending |
 | OPS-02 | Phase 5 | Pending |
 | OPS-03 | Phase 5 | Pending |

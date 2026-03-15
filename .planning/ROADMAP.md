@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Working Next.js 15 + next-intl + Sanity skeleton with correct i18n routing and dev environment
 - [x] **Phase 2: CMS and Page Builder** - Sanity schemas locked in and all block components rendering from typed data
 - [x] **Phase 3: Landing Page** - German conversion page live with all sections, CTAs, and analysis API stub
-- [ ] **Phase 4: Blog and SEO** - Blog routes functional and all SEO metadata, sitemap, and structured data in place
+- [x] **Phase 4: Blog and SEO** - Blog routes functional and all SEO metadata, sitemap, and structured data in place
 - [ ] **Phase 5: Deployment** - Production VPS deployment working with PM2, standalone output, and revalidation webhook
 
 ## Phase Details
@@ -87,9 +87,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Update Sanity schemas (author, post, siteSettings), create image builder, extend GROQ queries, blog utilities
-- [ ] 04-02-PLAN.md — Build blog listing and post detail pages with portable text, TOC sidebar, and author card
-- [ ] 04-03-PLAN.md — Add generateMetadata, sitemap with hreflang, robots.txt, JSON-LD structured data, and OG tags
+- [x] 04-01-PLAN.md — Update Sanity schemas (author, post, siteSettings), create image builder, extend GROQ queries, blog utilities
+- [x] 04-02-PLAN.md — Build blog listing and post detail pages with portable text, TOC sidebar, and author card
+- [x] 04-03-PLAN.md — Add generateMetadata, sitemap with hreflang, robots.txt, JSON-LD structured data, and OG tags
 
 ### Phase 5: Deployment
 **Goal**: The site is running in production on the Hostinger VPS behind PM2, static assets are served correctly, and the Sanity revalidation webhook clears Next.js cache when content changes.
@@ -123,5 +123,5 @@ Note: Phase 4 depends on Phase 2 (not Phase 3), so Phases 3 and 4 can be worked 
 | 1. Foundation | 3/3 | Complete | 2026-03-15 |
 | 2. CMS and Page Builder | 4/4 | Complete | 2026-03-15 |
 | 3. Landing Page | 3/3 | Complete | 2026-03-15 |
-| 4. Blog and SEO | 0/3 | Not started | - |
+| 4. Blog and SEO | 3/3 | Complete | 2026-03-15 |
 | 5. Deployment | 0/3 | Not started | - |
