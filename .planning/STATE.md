@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 1 of 3 in current phase
-Status: In progress
-Last activity: 2026-03-15 — Completed 01-01-PLAN.md (Next.js scaffold + brand tokens)
+Plan: 3 of 3 in current phase
+Status: Phase 1 complete (pending 01-02 i18n parallel plan)
+Last activity: 2026-03-15 — Completed 01-03-PLAN.md (Sanity CMS bootstrap)
 
-Progress: [█░░░░░░░░░] 7% (1/15 plans total)
+Progress: [██░░░░░░░░] 13% (2/15 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 9 min
-- Total execution time: 0.15 hours
+- Total plans completed: 2
+- Average duration: 8.5 min
+- Total execution time: 0.28 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation | 1/3 | 9 min | 9 min |
+| 01-foundation | 2/3 | 17 min | 8.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 9 min
-- Trend: —
+- Last 5 plans: 9 min, 8 min
+- Trend: stable
 
 *Updated after each plan completion*
 
@@ -48,6 +48,9 @@ Recent decisions affecting current work:
 - [01-01]: Use sanity@^4 + next-sanity@^11 — next-sanity@12 requires Next.js 16 (not yet released). Same Sanity Studio v3 generation, identical APIs.
 - [01-01]: HTML lang="de" — German market target
 - [01-01]: OKLCH primary light oklch(0.45 0.18 290), dark oklch(0.72 0.14 290) — jibemates purple
+- [01-03]: Studio route at src/app/studio/[[...tool]]/ is outside [locale]/ so i18n middleware does not intercept it
+- [01-03]: .gitignore negation !.env.local.template allows committing the template while .env.local stays secret
+- [01-03]: sanityFetch<T> at src/sanity/lib/fetch.ts is the Phase 2 data-fetching entry point
 
 ### Pending Todos
 
@@ -60,6 +63,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T15:40:28Z
-Stopped at: Completed 01-01-PLAN.md — scaffold + brand tokens done. Next: 01-02 (i18n + Sanity config)
+Last session: 2026-03-15T15:47:13Z
+Stopped at: Completed 01-03-PLAN.md — Sanity CMS bootstrap, Studio at /studio, env template
 Resume file: None
