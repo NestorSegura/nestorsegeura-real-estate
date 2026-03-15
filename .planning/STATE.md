@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 2 in progress — CMS and page builder
+**Current focus:** Phase 2 complete — ready for Phase 3
 
 ## Current Position
 
-Phase: 2 of 5 (CMS and Page Builder) — In progress
-Plan: 6 of 6 in current phase (plans 01, 02, 03, 04 complete — plan 05 remaining)
-Status: In progress
-Last activity: 2026-03-15 — Completed 02-03-PLAN.md (PageBuilder, all 8 block components, homepage route)
+Phase: 2 of 5 (CMS and Page Builder) — COMPLETE
+Plan: 4 of 4 in current phase
+Status: Phase 2 verified and complete (5/5 must-haves passed)
+Last activity: 2026-03-15 — Phase 2 executed and verified
 
-Progress: [████░░░░░░] 38% (6/16 plans total)
+Progress: [████░░░░░░] 44% (7/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 5 min
-- Total execution time: 0.50 hours
+- Total execution time: 0.55 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 21 min | 7 min |
-| 02-cms-and-page-builder | 3/6 | 10 min | 3 min |
+| 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min, 8 min, 2 min, 4 min, 4 min
+- Last 5 plans: 8 min, 2 min, 4 min, 4 min, 3 min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -55,22 +55,21 @@ Recent decisions affecting current work:
 - [01-02]: All app navigation must use @/i18n/navigation exports, never next/link or next/navigation directly
 - [01-03]: Studio route at src/app/studio/[[...tool]]/ is outside [locale]/ so i18n middleware does not intercept it
 - [01-03]: .gitignore negation !.env.local.template allows committing the template while .env.local stays secret
-- [01-03]: sanityFetch<T> at src/sanity/lib/fetch.ts is the Phase 2 data-fetching entry point (now DEPRECATED — use live.ts)
+- [01-03]: sanityFetch<T> at src/sanity/lib/fetch.ts is DEPRECATED — use live.ts
 - [02-04]: defineLive from next-sanity/live (subpath import) confirmed available in next-sanity@^11
 - [02-04]: defineQuery from next-sanity (not groq) is the TypeGen-compatible GROQ wrapper
 - [02-04]: SanityLive in locale layout; data-fetching entrypoint is now @/sanity/lib/live (sanityFetch + SanityLive)
-- [02-04]: TypeGen generates src/types/sanity.types.ts — cannot run until block schemas registered (next plans)
+- [02-04]: TypeGen generates src/types/sanity.types.ts
 - [02-01]: @sanity/document-internationalization pinned to 3.3.3 (not 6.x) — v5+/v6+ require React 19.2, project has React 19.1
 - [02-01]: siteSettings excluded from i18n schemaTypes — global singleton, one document for all locales
-- [02-01]: sections array on Page left empty (of: []) — Plan 02 populates with block type references
 - [02-01]: defaultCtaHref on SiteSettings is a url field — global booking URL individual blocks can override
-- [02-02]: Root sanity.config.ts re-export required — Sanity CLI only resolves sanity.config.(js|ts) at project root, not src/sanity/config.ts
+- [02-02]: Root sanity.config.ts re-export required — Sanity CLI only resolves sanity.config.(js|ts) at project root
 - [02-02]: GROQ ?? operator unsupported by TypeGen parser — use coalesce() function instead for typed query results
-- [02-02]: Block schemas must be registered in schemaTypes (not just page.sections) for TypeGen to generate typed interfaces
-- [02-02]: TypeGen workflow: npx sanity schema extract && npx sanity typegen generate — produces src/types/sanity.types.ts
-- [02-03]: CSS-only animations enforced — Intersection Observer + CSS transitions, no framer-motion/GSAP/@motionone in blocks
+- [02-02]: Block schemas must be registered in schemaTypes (not just page.sections) for TypeGen
+- [02-02]: TypeGen workflow: npx sanity schema extract && npx sanity typegen generate
+- [02-03]: CSS-only animations enforced — Intersection Observer + CSS transitions, no framer-motion/GSAP/@motionone
 - [02-03]: PageBuilder uses local PageSection type (not TypeGen union) to avoid discriminated union spreading issues
-- [02-03]: Block color styling uses inline OKLCH styles (not Tailwind dark: variants) so each block controls its own dark/light scheme
+- [02-03]: Block color styling uses inline OKLCH styles (not Tailwind dark: variants) so each block controls its own scheme
 - [02-03]: Image rendering in Testimonials/References uses placeholders — Sanity image URL builder needed when real images are added
 
 ### Pending Todos
@@ -84,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:39:06Z
-Stopped at: Completed 02-03-PLAN.md — PageBuilder, 8 block components, useRevealOnScroll hook, homepage wired to Sanity
+Last session: 2026-03-15
+Stopped at: Phase 2 complete and verified. Ready for Phase 3 planning via /gsd:plan-phase 3
 Resume file: None

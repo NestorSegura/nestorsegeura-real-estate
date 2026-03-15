@@ -16,26 +16,26 @@
 
 ### Sanity CMS (CMS)
 
-- [ ] **CMS-01**: Sanity Studio v3 embedded and accessible at /studio
-- [ ] **CMS-02**: Page document schema with Page Builder pattern (title, slug, seo, sections array)
-- [ ] **CMS-03**: Post document schema (title, slug, publishedAt, mainImage, excerpt, body, author, seo)
-- [ ] **CMS-04**: SiteSettings singleton schema (siteName, tagline i18n, navigation i18n, footer social links)
-- [ ] **CMS-05**: Sanity TypeGen configured for type-safe schema access
-- [ ] **CMS-06**: Sanity client with separate CDN (read) and non-CDN (revalidation) configurations
-- [ ] **CMS-07**: Internationalized fields using @sanity/document-internationalization plugin
+- [x] **CMS-01**: Sanity Studio v3 embedded and accessible at /studio
+- [x] **CMS-02**: Page document schema with Page Builder pattern (title, slug, seo, sections array)
+- [x] **CMS-03**: Post document schema (title, slug, publishedAt, mainImage, excerpt, body, author, seo)
+- [x] **CMS-04**: SiteSettings singleton schema (siteName, tagline i18n, navigation i18n, footer social links)
+- [x] **CMS-05**: Sanity TypeGen configured for type-safe schema access
+- [x] **CMS-06**: Sanity client with separate CDN (read) and non-CDN (revalidation) configurations
+- [x] **CMS-07**: Internationalized fields using @sanity/document-internationalization plugin
 
 ### Page Builder Blocks (BLCK)
 
-- [ ] **BLCK-01**: heroSection block — headline (i18n), subheadline (i18n), ctaLabel (i18n), ctaHref, backgroundImage
-- [ ] **BLCK-02**: featureStrip block — title (i18n), features[] with icon, title (i18n), description (i18n)
-- [ ] **BLCK-03**: testimonialsBlock — title (i18n), testimonials[] with quote (i18n), author, role, avatar
-- [ ] **BLCK-04**: ctaBlock — headline (i18n), subtext (i18n), ctaLabel (i18n), ctaHref, variant (primary|secondary)
-- [ ] **BLCK-05**: problemSolutionBlock — title (i18n), problems[] with number, headline (i18n), description (i18n)
-- [ ] **BLCK-06**: servicesBlock — title (i18n), services[] with number, name (i18n), description (i18n), features[] (i18n), ctaLabel (i18n), ctaHref
-- [ ] **BLCK-07**: faqBlock — title (i18n), faqs[] with question (i18n), answer (i18n) — accordion UI
-- [ ] **BLCK-08**: referencesBlock — title (i18n), references[] with name, description (i18n), image, url
-- [ ] **BLCK-09**: PageBuilder.tsx component mapping _type to React components with unknown-type warning
-- [ ] **BLCK-10**: All block components use minimal animations (performance-first, no heavy motion libraries)
+- [x] **BLCK-01**: heroSection block — headline (i18n), subheadline (i18n), ctaLabel (i18n), ctaHref, backgroundImage
+- [x] **BLCK-02**: featureStrip block — title (i18n), features[] with icon, title (i18n), description (i18n)
+- [x] **BLCK-03**: testimonialsBlock — title (i18n), testimonials[] with quote (i18n), author, role, avatar
+- [x] **BLCK-04**: ctaBlock — headline (i18n), subtext (i18n), ctaLabel (i18n), ctaHref, variant (primary|secondary)
+- [x] **BLCK-05**: problemSolutionBlock — title (i18n), problems[] with number, headline (i18n), description (i18n)
+- [x] **BLCK-06**: servicesBlock — title (i18n), services[] with number, name (i18n), description (i18n), features[] (i18n), ctaLabel (i18n), ctaHref
+- [x] **BLCK-07**: faqBlock — title (i18n), faqs[] with question (i18n), answer (i18n) — accordion UI
+- [x] **BLCK-08**: referencesBlock — title (i18n), references[] with name, description (i18n), image, url
+- [x] **BLCK-09**: PageBuilder.tsx component mapping _type to React components with unknown-type warning
+- [x] **BLCK-10**: All block components use minimal animations (performance-first, no heavy motion libraries)
 
 ### Landing Page (LAND)
 
@@ -120,23 +120,23 @@
 | FOUN-04 | Phase 1 | Complete |
 | FOUN-05 | Phase 1 | Complete |
 | FOUN-06 | Phase 1 | Complete |
-| CMS-01 | Phase 2 | Pending |
-| CMS-02 | Phase 2 | Pending |
-| CMS-03 | Phase 2 | Pending |
-| CMS-04 | Phase 2 | Pending |
-| CMS-05 | Phase 2 | Pending |
-| CMS-06 | Phase 2 | Pending |
-| CMS-07 | Phase 2 | Pending |
-| BLCK-01 | Phase 2 | Pending |
-| BLCK-02 | Phase 2 | Pending |
-| BLCK-03 | Phase 2 | Pending |
-| BLCK-04 | Phase 2 | Pending |
-| BLCK-05 | Phase 2 | Pending |
-| BLCK-06 | Phase 2 | Pending |
-| BLCK-07 | Phase 2 | Pending |
-| BLCK-08 | Phase 2 | Pending |
-| BLCK-09 | Phase 2 | Pending |
-| BLCK-10 | Phase 2 | Pending |
+| CMS-01 | Phase 2 | Complete |
+| CMS-02 | Phase 2 | Complete |
+| CMS-03 | Phase 2 | Complete |
+| CMS-04 | Phase 2 | Complete |
+| CMS-05 | Phase 2 | Complete |
+| CMS-06 | Phase 2 | Complete |
+| CMS-07 | Phase 2 | Complete |
+| BLCK-01 | Phase 2 | Complete |
+| BLCK-02 | Phase 2 | Complete |
+| BLCK-03 | Phase 2 | Complete |
+| BLCK-04 | Phase 2 | Complete |
+| BLCK-05 | Phase 2 | Complete |
+| BLCK-06 | Phase 2 | Complete |
+| BLCK-07 | Phase 2 | Complete |
+| BLCK-08 | Phase 2 | Complete |
+| BLCK-09 | Phase 2 | Complete |
+| BLCK-10 | Phase 2 | Complete |
 | LAND-01 | Phase 3 | Pending |
 | LAND-02 | Phase 3 | Pending |
 | LAND-03 | Phase 3 | Pending |

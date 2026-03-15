@@ -13,7 +13,7 @@ A multilingual B2B landing page that converts German real estate agents (Immobil
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Working Next.js 15 + next-intl + Sanity skeleton with correct i18n routing and dev environment
-- [ ] **Phase 2: CMS and Page Builder** - Sanity schemas locked in and all block components rendering from typed data
+- [x] **Phase 2: CMS and Page Builder** - Sanity schemas locked in and all block components rendering from typed data
 - [ ] **Phase 3: Landing Page** - German conversion page live with all sections, CTAs, and analysis API stub
 - [ ] **Phase 4: Blog and SEO** - Blog routes functional and all SEO metadata, sitemap, and structured data in place
 - [ ] **Phase 5: Deployment** - Production VPS deployment working with PM2, standalone output, and revalidation webhook
@@ -50,10 +50,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Define Sanity document schemas (Page, Post, SiteSettings) with i18n plugin, singleton enforcement, and Presentation tool
-- [ ] 02-02-PLAN.md — Define all eight Page Builder block schemas with style fields and run TypeGen
-- [ ] 02-03-PLAN.md — Build PageBuilder dispatcher, eight block React components with CSS animations, and wire homepage
-- [ ] 02-04-PLAN.md — Wire sanityFetch with defineLive, CDN split, GROQ queries, and TypeGen config
+- [x] 02-01-PLAN.md — Define Sanity document schemas (Page, Post, SiteSettings) with i18n plugin, singleton enforcement, and Presentation tool
+- [x] 02-02-PLAN.md — Define all eight Page Builder block schemas with style fields and run TypeGen
+- [x] 02-03-PLAN.md — Build PageBuilder dispatcher, eight block React components with CSS animations, and wire homepage
+- [x] 02-04-PLAN.md — Wire sanityFetch with defineLive, CDN split, GROQ queries, and TypeGen config
 
 ### Phase 3: Landing Page
 **Goal**: A visitor reaching `/de` immediately sees the full German conversion page — hero through FAQ — with working appointment CTAs, a functional website analysis form returning mock scores, and a fully responsive layout.
@@ -117,7 +117,7 @@ Note: Phase 4 depends on Phase 2 (not Phase 3), so Phases 3 and 4 can be worked 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-03-15 |
-| 2. CMS and Page Builder | 0/4 | Not started | - |
+| 2. CMS and Page Builder | 4/4 | Complete | 2026-03-15 |
 | 3. Landing Page | 0/3 | Not started | - |
 | 4. Blog and SEO | 0/3 | Not started | - |
 | 5. Deployment | 0/3 | Not started | - |
