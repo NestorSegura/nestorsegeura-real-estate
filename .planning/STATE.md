@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 
 ## Current Position
 
-Phase: 3 of 5 (Landing Page) — COMPLETE
-Plan: 3 of 3 in current phase
-Status: Phase 3 verified and complete (6/6 success criteria passed after gap fixes)
-Last activity: 2026-03-15 — Phase 3 executed and verified
+Phase: 4 of 5 (Blog and SEO) — In progress
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-03-15 — Completed 04-01-PLAN.md
 
-Progress: [██████░░░░] 63% (10/16 plans total)
+Progress: [██████░░░░] 69% (11/16 plans total)
 
 ## Performance Metrics
 
@@ -30,6 +30,7 @@ Progress: [██████░░░░] 63% (10/16 plans total)
 | 01-foundation | 3/3 | 21 min | 7 min |
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
 | 03-landing-page | 3/3 | 24 min | 8 min |
+| 04-blog-and-seo | 1/4 | 3 min | 3 min |
 
 **Recent Trend:**
 - Last 5 plans: 2 min, 4 min, 4 min, 3 min, 5 min
@@ -84,6 +85,9 @@ Recent decisions affecting current work:
 - [03-03]: Navigation includes /analyse link (not anchor) alongside anchor links — navbar handles both patterns via href value
 - [03-03]: Fictional testimonials/references used as placeholder content — flagged for replacement before launch
 - [03-03]: Seed script uses createOrReplace for full idempotency — safe to re-run after schema changes
+- [04-01]: SanityImageSource imported from @sanity/image-url directly (not subpath /lib/types/types — path doesn't exist in installed package)
+- [04-01]: Author is locale-neutral — not in documentInternationalization schemaTypes
+- [04-01]: Blog reading time computed in GROQ via pt::text() not in JavaScript
 
 ### Pending Todos
 
@@ -97,5 +101,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-15
-Stopped at: Phase 3 complete and verified. Ready for Phase 4 planning via /gsd:plan-phase 4
+Stopped at: Completed 04-01-PLAN.md (Sanity schemas, queries, utilities foundation)
 Resume file: None
