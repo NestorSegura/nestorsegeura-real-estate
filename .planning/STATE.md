@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 4 of 5 (Blog and SEO) — In progress
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-03-15 — Completed 04-02-PLAN.md
+Last activity: 2026-03-15 — Completed 04-03-PLAN.md
 
-Progress: [███████░░░] 75% (12/16 plans total)
+Progress: [████████░░] 81% (13/16 plans total)
 
 ## Performance Metrics
 
@@ -30,7 +30,7 @@ Progress: [███████░░░] 75% (12/16 plans total)
 | 01-foundation | 3/3 | 21 min | 7 min |
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
 | 03-landing-page | 3/3 | 24 min | 8 min |
-| 04-blog-and-seo | 2/4 | 6 min | 3 min |
+| 04-blog-and-seo | 3/4 | 10 min | 3 min |
 
 **Recent Trend:**
 - Last 5 plans: 4 min, 4 min, 3 min, 5 min, 3 min
@@ -91,6 +91,10 @@ Recent decisions affecting current work:
 - [04-02]: @tailwindcss/typography not installed — manual Tailwind classes used in PortableTextRenderer (no prose utility)
 - [04-02]: TypeGen body type cast as unknown as PortableTextBlock[] — children is optional in TypeGen, required in @portabletext/react; runtime shape is compatible
 - [04-02]: generateStaticParams uses client.fetch (not sanityFetch) — sanityFetch is runtime live client, client.fetch is for build-time static generation
+- [04-03]: sitemap.ts uses client.fetch not sanityFetch — sitemap is build-time generation, not a live runtime route
+- [04-03]: getPathname from @/i18n/navigation handles localePrefix: as-needed — no manual prefix logic needed in sitemap
+- [04-03]: JsonLd component pattern for JSON-LD injection — all structured data uses src/components/seo/JsonLd.tsx
+- [04-03]: /og-default.png referenced as OG fallback — user must place actual 1200x630 image in public/ before launch
 
 ### Pending Todos
 
@@ -104,5 +108,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-15
-Stopped at: Completed 04-02-PLAN.md (Blog listing page + blog post detail page)
+Stopped at: Completed 04-03-PLAN.md (SEO metadata, sitemap, robots, JSON-LD)
 Resume file: None
