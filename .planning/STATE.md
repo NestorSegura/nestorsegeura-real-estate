@@ -60,6 +60,10 @@ Recent decisions affecting current work:
 - [02-04]: defineQuery from next-sanity (not groq) is the TypeGen-compatible GROQ wrapper
 - [02-04]: SanityLive in locale layout; data-fetching entrypoint is now @/sanity/lib/live (sanityFetch + SanityLive)
 - [02-04]: TypeGen generates src/types/sanity.types.ts — cannot run until block schemas registered (next plans)
+- [02-01]: @sanity/document-internationalization pinned to 3.3.3 (not 6.x) — v5+/v6+ require React 19.2, project has React 19.1
+- [02-01]: siteSettings excluded from i18n schemaTypes — global singleton, one document for all locales
+- [02-01]: sections array on Page left empty (of: []) — Plan 02 populates with block type references
+- [02-01]: defaultCtaHref on SiteSettings is a url field — global booking URL individual blocks can override
 
 ### Pending Todos
 
@@ -72,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15T18:22:30Z
-Stopped at: Completed 02-04-PLAN.md — data fetching layer (defineLive + GROQ queries + TypeGen config)
+Last session: 2026-03-15T18:23:01Z
+Stopped at: Completed 02-01-PLAN.md — document schemas, i18n plugin, Studio config, singleton enforcement, draft mode routes
 Resume file: None
