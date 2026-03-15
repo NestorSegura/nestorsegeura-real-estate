@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { ThemeProvider } from '@/components/theme-provider'
 import { routing } from '@/i18n/routing'
+import { SanityLive } from '@/sanity/lib/live'
 
 export const metadata: Metadata = {
   title: 'nestorsegura.com — Web Design for Real Estate Agents',
@@ -40,6 +41,7 @@ export default async function LocaleLayout({
         disableTransitionOnChange
       >
         {children}
+        <SanityLive />
       </ThemeProvider>
     </NextIntlClientProvider>
   )
