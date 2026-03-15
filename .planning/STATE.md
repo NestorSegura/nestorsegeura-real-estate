@@ -5,32 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 1 complete — ready for Phase 2
+**Current focus:** Phase 2 in progress — CMS and page builder
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation) — COMPLETE
-Plan: 3 of 3 in current phase
-Status: Phase 1 verified and complete
-Last activity: 2026-03-15 — Phase 1 executed and verified (5/5 must-haves passed)
+Phase: 2 of 5 (CMS and Page Builder) — In progress
+Plan: 4 of 6 in current phase (plans 01-04 complete)
+Status: In progress
+Last activity: 2026-03-15 — Completed 02-04-PLAN.md (data fetching layer)
 
-Progress: [██░░░░░░░░] 20% (3/16 plans total)
+Progress: [███░░░░░░░] 25% (4/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 7 min
-- Total execution time: 0.35 hours
+- Total plans completed: 4
+- Average duration: 6 min
+- Total execution time: 0.37 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3/3 | 21 min | 7 min |
+| 02-cms-and-page-builder | 1/6 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 9 min, 4 min, 8 min
+- Last 5 plans: 9 min, 4 min, 8 min, 2 min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -54,7 +55,11 @@ Recent decisions affecting current work:
 - [01-02]: All app navigation must use @/i18n/navigation exports, never next/link or next/navigation directly
 - [01-03]: Studio route at src/app/studio/[[...tool]]/ is outside [locale]/ so i18n middleware does not intercept it
 - [01-03]: .gitignore negation !.env.local.template allows committing the template while .env.local stays secret
-- [01-03]: sanityFetch<T> at src/sanity/lib/fetch.ts is the Phase 2 data-fetching entry point
+- [01-03]: sanityFetch<T> at src/sanity/lib/fetch.ts is the Phase 2 data-fetching entry point (now DEPRECATED — use live.ts)
+- [02-04]: defineLive from next-sanity/live (subpath import) confirmed available in next-sanity@^11
+- [02-04]: defineQuery from next-sanity (not groq) is the TypeGen-compatible GROQ wrapper
+- [02-04]: SanityLive in locale layout; data-fetching entrypoint is now @/sanity/lib/live (sanityFetch + SanityLive)
+- [02-04]: TypeGen generates src/types/sanity.types.ts — cannot run until block schemas registered (next plans)
 
 ### Pending Todos
 
@@ -67,6 +72,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-15
-Stopped at: Phase 1 complete and verified. Ready for Phase 2 planning via /gsd:plan-phase 2
+Last session: 2026-03-15T18:22:30Z
+Stopped at: Completed 02-04-PLAN.md — data fetching layer (defineLive + GROQ queries + TypeGen config)
 Resume file: None
