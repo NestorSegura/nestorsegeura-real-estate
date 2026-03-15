@@ -5,7 +5,9 @@
     "about": "Über uns",
     "contact": "Kontakt",
     "blog": "Blog",
-    "cta": "Termin buchen"
+    "cta": "Erstgespräch vereinbaren",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen"
   },
   "hero": {
     "title": "Mehr Anfragen. Mehr Kunden. Mehr Umsatz.",

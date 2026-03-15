@@ -5,7 +5,9 @@
     "about": "Nosotros",
     "contact": "Contacto",
     "blog": "Blog",
-    "cta": "Reservar llamada"
+    "cta": "Agendar consulta",
+    "menuOpen": "Abrir menú",
+    "menuClose": "Cerrar menú"
   },
   "hero": {
     "title": "Más consultas. Más clientes. Más ingresos.",

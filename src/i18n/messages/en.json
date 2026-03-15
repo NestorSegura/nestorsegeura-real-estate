@@ -5,7 +5,9 @@
     "about": "About",
     "contact": "Contact",
     "blog": "Blog",
-    "cta": "Book a call"
+    "cta": "Book Consultation",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
   },
   "hero": {
     "title": "More Leads. More Clients. More Revenue.",
