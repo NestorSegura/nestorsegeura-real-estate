@@ -1,9 +1,12 @@
 import { defineQuery } from 'next-sanity'
 
+// Fetch page by slug with language fallback to "es" (Spanish as base).
+// Uses coalesce: preferred language first, fallback to "es" if not found.
 export const PAGE_BY_SLUG_QUERY = defineQuery(
-  `*[_type == "page" && slug.current == $slug && language == $language][0]
-  ?? *[_type == "page" && slug.current == $slug && language == "es"][0]
-  { _id, title, slug, language, sections[]{ ..., _type, _key } }`
+  `coalesce(
+    *[_type == "page" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, sections[]{ ..., _type, _key } },
+    *[_type == "page" && slug.current == $slug && language == "es"][0]{ _id, title, slug, language, sections[]{ ..., _type, _key } }
+  )`
 )
 
 export const ALL_PAGES_QUERY = defineQuery(
@@ -32,8 +35,10 @@ export const ALL_POSTS_QUERY = defineQuery(
   }`
 )
 
+// Fetch post by slug with language fallback to "es" (Spanish as base).
 export const POST_BY_SLUG_QUERY = defineQuery(
-  `*[_type == "post" && slug.current == $slug && language == $language][0]
-  ?? *[_type == "post" && slug.current == $slug && language == "es"][0]
-  { _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo }`
+  `coalesce(
+    *[_type == "post" && slug.current == $slug && language == $language][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo },
+    *[_type == "post" && slug.current == $slug && language == "es"][0]{ _id, title, slug, language, publishedAt, mainImage, excerpt, body, author, seo }
+  )`
 )
