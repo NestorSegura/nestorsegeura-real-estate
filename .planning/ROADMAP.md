@@ -84,12 +84,12 @@ Plans:
   4. `GET /sitemap.xml` returns entries for all three locales including correct `xhtml:link` hreflang self-references
   5. `GET /robots.txt` disallows `/studio` and allows all other paths
   6. The homepage `<head>` contains a `<script type="application/ld+json">` with Person structured data for Nestor Segura
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 04-01: Build blog listing and post pages with Sanity portable text rendering
-- [ ] 04-02: Implement generateMetadata in all locale pages pulling from Sanity siteSettings
-- [ ] 04-03: Generate sitemap with hreflang, robots.txt blocking /studio, OpenGraph tags, and Person JSON-LD
+- [ ] 04-01-PLAN.md — Update Sanity schemas (author, post, siteSettings), create image builder, extend GROQ queries, blog utilities
+- [ ] 04-02-PLAN.md — Build blog listing and post detail pages with portable text, TOC sidebar, and author card
+- [ ] 04-03-PLAN.md — Add generateMetadata, sitemap with hreflang, robots.txt, JSON-LD structured data, and OG tags
 
 ### Phase 5: Deployment
 **Goal**: The site is running in production on the Hostinger VPS behind PM2, static assets are served correctly, and the Sanity revalidation webhook clears Next.js cache when content changes.
@@ -107,6 +107,10 @@ Plans:
 - [ ] 05-01: Configure next.config.ts standalone output and write deploy.sh with static asset copy steps
 - [ ] 05-02: Write PM2 ecosystem.config.js and document production environment variable setup
 - [ ] 05-03: Implement /api/revalidate webhook handler with HMAC verification and revalidateTag calls, then end-to-end test
+
+## Backlog
+
+- **Install Google Stitch stack** — Set up Stitch MCP server + agent skills (stitch-design, react-components, enhance-prompt, shadcn-ui) from `google-labs-code/stitch-skills` for design-to-React workflow. Relevant for any future design-heavy phase (v2 redesign, new page variants). Install: `npx skills add google-labs-code/stitch-skills --skill stitch-design --global`
 
 ## Progress
 
