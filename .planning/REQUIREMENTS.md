@@ -39,12 +39,12 @@
 
 ### Landing Page (LAND)
 
-- [ ] **LAND-01**: Homepage renders via PageBuilder with all block types functional
-- [ ] **LAND-02**: German (/de) page is the primary conversion page with full content
-- [ ] **LAND-03**: English (/) and Spanish (/es) pages render with translated content
-- [ ] **LAND-04**: Single clear CTA per screen section (appointment booking links)
-- [ ] **LAND-05**: Mobile-first responsive design across all breakpoints
-- [ ] **LAND-06**: Navigation bar with logo, menu items, and CTA button
+- [x] **LAND-01**: Homepage renders via PageBuilder with all block types functional
+- [x] **LAND-02**: German (/de) page is the primary conversion page with full content
+- [x] **LAND-03**: English (/) and Spanish (/es) pages render with translated content
+- [x] **LAND-04**: Single clear CTA per screen section (appointment booking links)
+- [x] **LAND-05**: Mobile-first responsive design across all breakpoints
+- [x] **LAND-06**: Navigation bar with logo, menu items, and CTA button
 
 ### Blog (BLOG)
 
@@ -54,11 +54,11 @@
 
 ### Lead Generation (LEAD)
 
-- [ ] **LEAD-01**: /api/analyze POST endpoint accepting { url: string } with input validation
-- [ ] **LEAD-02**: Stub response returning mock scores (performance, seo, mobile, conversion)
-- [ ] **LEAD-03**: CORS headers for same-origin only on analyze endpoint
-- [ ] **LEAD-04**: TODO comments indicating where PageSpeed Insights API call will go
-- [ ] **LEAD-05**: Appointment booking CTAs throughout the site linking to external calendar
+- [x] **LEAD-01**: /api/analyze POST endpoint accepting { url: string } with input validation
+- [x] **LEAD-02**: Stub response returning mock scores (performance, seo, mobile, conversion)
+- [x] **LEAD-03**: CORS headers for same-origin only on analyze endpoint
+- [x] **LEAD-04**: TODO comments indicating where PageSpeed Insights API call will go
+- [x] **LEAD-05**: Appointment booking CTAs throughout the site linking to external calendar
 
 ### SEO (SEO)
 

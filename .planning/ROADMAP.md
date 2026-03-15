@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Working Next.js 15 + next-intl + Sanity skeleton with correct i18n routing and dev environment
 - [x] **Phase 2: CMS and Page Builder** - Sanity schemas locked in and all block components rendering from typed data
-- [ ] **Phase 3: Landing Page** - German conversion page live with all sections, CTAs, and analysis API stub
+- [x] **Phase 3: Landing Page** - German conversion page live with all sections, CTAs, and analysis API stub
 - [ ] **Phase 4: Blog and SEO** - Blog routes functional and all SEO metadata, sitemap, and structured data in place
 - [ ] **Phase 5: Deployment** - Production VPS deployment working with PM2, standalone output, and revalidation webhook
 
@@ -69,9 +69,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Build navbar with sticky scroll, mobile drawer, locale switcher, and add section anchor IDs to block components
-- [ ] 03-02-PLAN.md — Build /api/analyze POST endpoint and /analyse page with score gauges
-- [ ] 03-03-PLAN.md — Seed Sanity content for all 3 locales and verify complete landing page
+- [x] 03-01-PLAN.md — Build navbar with sticky scroll, mobile drawer, locale switcher, and add section anchor IDs to block components
+- [x] 03-02-PLAN.md — Build /api/analyze POST endpoint and /analyse page with score gauges
+- [x] 03-03-PLAN.md — Seed Sanity content for all 3 locales and verify complete landing page
 
 ### Phase 4: Blog and SEO
 **Goal**: The blog is navigable and readable, every page has correct metadata pulled from Sanity, the sitemap covers all locales with hreflang, and Google can crawl the site without indexing `/studio`.
@@ -118,6 +118,6 @@ Note: Phase 4 depends on Phase 2 (not Phase 3), so Phases 3 and 4 can be worked 
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-03-15 |
 | 2. CMS and Page Builder | 4/4 | Complete | 2026-03-15 |
-| 3. Landing Page | 0/3 | Not started | - |
+| 3. Landing Page | 3/3 | Complete | 2026-03-15 |
 | 4. Blog and SEO | 0/3 | Not started | - |
 | 5. Deployment | 0/3 | Not started | - |
