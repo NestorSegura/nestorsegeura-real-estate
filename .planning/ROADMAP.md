@@ -101,12 +101,12 @@ Plans:
   3. PM2 shows the process as `online` with the correct working directory after a server restart
   4. Updating a Page document in Sanity Studio and clicking "Publish" causes the live site to reflect the change within 60 seconds
   5. `GET /studio` returns the Studio UI and `GET /api/revalidate` with a wrong secret returns 401
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 05-01: Configure next.config.ts standalone output and write deploy.sh with static asset copy steps
-- [ ] 05-02: Write PM2 ecosystem.config.js and document production environment variable setup
-- [ ] 05-03: Implement /api/revalidate webhook handler with HMAC verification and revalidateTag calls, then end-to-end test
+- [ ] 05-01-PLAN.md — Configure next.config.ts standalone output and write deploy.sh with Nginx config
+- [ ] 05-02-PLAN.md — Create PM2 ecosystem.config.js and document production environment variables
+- [ ] 05-03-PLAN.md — Implement /api/revalidate webhook handler with HMAC verification and tag-based revalidation
 
 ## Backlog
 
