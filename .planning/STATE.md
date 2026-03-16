@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 4 complete — ready for Phase 5
+**Current focus:** Phase 5 in progress — deploy config complete, server setup next
 
 ## Current Position
 
 Phase: 5 of 5 (Deployment) — In progress
-Plan: 2 of 3 in current phase
+Plan: 1 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-16 — Completed 05-02-PLAN.md (PM2 config + env template)
+Last activity: 2026-03-16 — Completed 05-01-PLAN.md (standalone output + deploy.sh + nginx config)
 
-Progress: [█████████░] 94% (15/16 plans total)
+Progress: [████████░░] 88% (14/16 plans total)
 
 ## Performance Metrics
 
@@ -31,7 +31,7 @@ Progress: [█████████░] 94% (15/16 plans total)
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
 | 03-landing-page | 3/3 | 24 min | 8 min |
 | 04-blog-and-seo | 3/3 | 10 min | 3 min |
-| 05-deployment | 2/3 | 1 min | 0.5 min |
+| 05-deployment | 1/3 | 2 min | 2 min |
 
 **Recent Trend:**
 - Last 5 plans: 4 min, 4 min, 3 min, 5 min, 3 min
@@ -96,6 +96,9 @@ Recent decisions affecting current work:
 - [04-03]: getPathname from @/i18n/navigation handles localePrefix: as-needed — no manual prefix logic needed in sitemap
 - [04-03]: JsonLd component pattern for JSON-LD injection — all structured data uses src/components/seo/JsonLd.tsx
 - [04-03]: /og-default.png referenced as OG fallback — user must place actual 1200x630 image in public/ before launch
+- [05-01]: output: 'standalone' in next.config.ts — PM2 runs .next/standalone/server.js, static assets must be copied after each build
+- [05-01]: 127.0.0.1:3000 not localhost in Nginx proxy_pass — avoids IPv6 resolution issues on Linux servers
+- [05-01]: proxy_buffering off in Nginx — required for Next.js App Router streaming and SSE
 - [05-02]: PM2 fork mode, single instance, process name nestorsegura.com — ecosystem.config.js commits only NODE_ENV/PORT/HOSTNAME, never secrets
 - [05-02]: .env.production pattern — Next.js reads automatically at runtime when NODE_ENV=production; secrets stay on VPS, never in git
 
@@ -111,5 +114,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-16
-Stopped at: Completed 05-02-PLAN.md — PM2 ecosystem config and env template. Ready for 05-03 (deploy and go-live).
+Stopped at: Completed 05-01-PLAN.md — standalone config, deploy.sh, nginx config. Ready for 05-02 (server setup and PM2 config).
 Resume file: None
