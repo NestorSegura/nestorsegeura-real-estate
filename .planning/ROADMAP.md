@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: CMS and Page Builder** - Sanity schemas locked in and all block components rendering from typed data
 - [x] **Phase 3: Landing Page** - German conversion page live with all sections, CTAs, and analysis API stub
 - [x] **Phase 4: Blog and SEO** - Blog routes functional and all SEO metadata, sitemap, and structured data in place
-- [ ] **Phase 5: Deployment** - Production VPS deployment working with PM2, standalone output, and revalidation webhook
+- [x] **Phase 5: Deployment** - Production VPS deployment working with PM2, standalone output, and revalidation webhook
 
 ## Phase Details
 
@@ -104,9 +104,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Configure next.config.ts standalone output and write deploy.sh with Nginx config
-- [ ] 05-02-PLAN.md — Create PM2 ecosystem.config.js and document production environment variables
-- [ ] 05-03-PLAN.md — Implement /api/revalidate webhook handler with HMAC verification and tag-based revalidation
+- [x] 05-01-PLAN.md — Configure next.config.ts standalone output and write deploy.sh with Nginx config
+- [x] 05-02-PLAN.md — Create PM2 ecosystem.config.js and document production environment variables
+- [x] 05-03-PLAN.md — Implement /api/revalidate webhook handler with HMAC verification and tag-based revalidation
 
 ## Backlog
 
@@ -124,4 +124,4 @@ Note: Phase 4 depends on Phase 2 (not Phase 3), so Phases 3 and 4 can be worked 
 | 2. CMS and Page Builder | 4/4 | Complete | 2026-03-15 |
 | 3. Landing Page | 3/3 | Complete | 2026-03-15 |
 | 4. Blog and SEO | 3/3 | Complete | 2026-03-15 |
-| 5. Deployment | 0/3 | Not started | - |
+| 5. Deployment | 3/3 | Complete | 2026-03-16 |

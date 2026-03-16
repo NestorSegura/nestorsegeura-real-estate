@@ -70,13 +70,13 @@
 
 ### Operations (OPS)
 
-- [ ] **OPS-01**: /api/revalidate POST endpoint verifying SANITY_WEBHOOK_SECRET header
-- [ ] **OPS-02**: Revalidation calls revalidatePath/revalidateTag for affected paths by document _type
-- [ ] **OPS-03**: next.config.ts with output: 'standalone'
-- [ ] **OPS-04**: deploy.sh script (build, copy public/ + .next/static to standalone, PM2 start)
-- [ ] **OPS-05**: ecosystem.config.js for PM2 process management
-- [ ] **OPS-06**: npm run dev starts without errors
-- [ ] **OPS-07**: npm run build completes without TypeScript errors
+- [x] **OPS-01**: /api/revalidate POST endpoint verifying SANITY_WEBHOOK_SECRET header
+- [x] **OPS-02**: Revalidation calls revalidatePath/revalidateTag for affected paths by document _type
+- [x] **OPS-03**: next.config.ts with output: 'standalone'
+- [x] **OPS-04**: deploy.sh script (build, copy public/ + .next/static to standalone, PM2 start)
+- [x] **OPS-05**: ecosystem.config.js for PM2 process management
+- [x] **OPS-06**: npm run dev starts without errors
+- [x] **OPS-07**: npm run build completes without TypeScript errors
 
 ## v2 Requirements
 
