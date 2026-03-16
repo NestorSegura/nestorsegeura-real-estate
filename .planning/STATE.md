@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 5 in progress — deploy config complete, server setup next
+**Current focus:** All phases complete — project ready for production
 
 ## Current Position
 
-Phase: 5 of 5 (Deployment) — In progress
-Plan: 1 of 3 in current phase
-Status: In progress
-Last activity: 2026-03-16 — Completed 05-01-PLAN.md (standalone output + deploy.sh + nginx config)
+Phase: 5 of 5 (Deployment) — COMPLETE
+Plan: 3 of 3 in current phase
+Status: ALL PLANS COMPLETE — project complete
+Last activity: 2026-03-16 — Completed 05-03-PLAN.md (Sanity webhook revalidation endpoint)
 
-Progress: [████████░░] 88% (14/16 plans total)
+Progress: [██████████] 100% (16/16 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 5 min
-- Total execution time: 1.0 hours
+- Total plans completed: 16
+- Average duration: 4 min
+- Total execution time: ~1.1 hours
 
 **By Phase:**
 
@@ -31,7 +31,7 @@ Progress: [████████░░] 88% (14/16 plans total)
 | 02-cms-and-page-builder | 4/4 | 13 min | 3 min |
 | 03-landing-page | 3/3 | 24 min | 8 min |
 | 04-blog-and-seo | 3/3 | 10 min | 3 min |
-| 05-deployment | 1/3 | 2 min | 2 min |
+| 05-deployment | 3/3 | 3 min | 1 min |
 
 **Recent Trend:**
 - Last 5 plans: 4 min, 4 min, 3 min, 5 min, 3 min
@@ -101,6 +101,9 @@ Recent decisions affecting current work:
 - [05-01]: proxy_buffering off in Nginx — required for Next.js App Router streaming and SSE
 - [05-02]: PM2 fork mode, single instance, process name nestorsegura.com — ecosystem.config.js commits only NODE_ENV/PORT/HOSTNAME, never secrets
 - [05-02]: .env.production pattern — Next.js reads automatically at runtime when NODE_ENV=production; secrets stay on VPS, never in git
+- [05-03]: parseBody from next-sanity/webhook handles HMAC verification — no manual crypto needed
+- [05-03]: SANITY_WEBHOOK_SECRET is server-side only — no NEXT_PUBLIC_ prefix
+- [05-03]: revalidateTag(body._type) is the correct call — defineLive uses document _type as cache tag key
 
 ### Pending Todos
 
@@ -114,5 +117,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-16
-Stopped at: Completed 05-01-PLAN.md — standalone config, deploy.sh, nginx config. Ready for 05-02 (server setup and PM2 config).
+Stopped at: ALL PLANS COMPLETE. 05-03 was the final plan (Sanity webhook revalidation).
 Resume file: None
