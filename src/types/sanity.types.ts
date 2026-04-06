@@ -13,6 +13,131 @@
  */
 
 // Source: schema.json
+export type LandingCtaFinal = {
+  _type: "landingCtaFinal";
+  headline?: string;
+  copy?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  scarcityText?: string;
+  enabled?: boolean;
+};
+
+export type LandingFaq = {
+  _type: "landingFaq";
+  headline?: string;
+  faqs?: Array<{
+    question?: string;
+    answer?: string;
+    _key: string;
+  }>;
+  enabled?: boolean;
+};
+
+export type LandingTestimonials = {
+  _type: "landingTestimonials";
+  headline?: string;
+  subtitle?: string;
+  testimonials?: Array<{
+    name?: string;
+    role?: string;
+    quote?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _key: string;
+  }>;
+  enabled?: boolean;
+};
+
+export type LandingOffer = {
+  _type: "landingOffer";
+  headline?: string;
+  comparison?: Array<{
+    before?: string;
+    after?: string;
+    _key: string;
+  }>;
+  services?: Array<{
+    title?: string;
+    _key: string;
+  }>;
+  ctaLabel?: string;
+  ctaHref?: string;
+  enabled?: boolean;
+};
+
+export type LandingPlan = {
+  _type: "landingPlan";
+  headline?: string;
+  steps?: Array<{
+    number?: string;
+    title?: string;
+    description?: string;
+    _key: string;
+  }>;
+  enabled?: boolean;
+};
+
+export type LandingGuide = {
+  _type: "landingGuide";
+  headline?: string;
+  paragraphs?: Array<string>;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  testimonials?: Array<{
+    author?: string;
+    role?: string;
+    quote?: string;
+    _key: string;
+  }>;
+  enabled?: boolean;
+};
+
+export type LandingProblem = {
+  _type: "landingProblem";
+  headline?: string;
+  intro?: string;
+  problems?: Array<{
+    number?: string;
+    title?: string;
+    description?: string;
+    _key: string;
+  }>;
+  closing?: string;
+  enabled?: boolean;
+};
+
+export type LandingHero = {
+  _type: "landingHero";
+  headline?: string;
+  subtitle?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  ctaSecondaryLabel?: string;
+  ctaSecondaryHref?: string;
+  enabled?: boolean;
+};
+
 export type ReferencesBlock = {
   _type: "referencesBlock";
   title?: string;
@@ -137,11 +262,14 @@ export type FeatureStrip = {
 
 export type HeroSection = {
   _type: "heroSection";
+  badge?: string;
   headline?: string;
+  highlightedText?: string;
   subheadline?: string;
   ctaLabel?: string;
   ctaHref?: string;
-  backgroundImage?: {
+  ctaSecondaryText?: string;
+  portraitImage?: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -153,7 +281,6 @@ export type HeroSection = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  variant?: "svgPath" | "backgroundImage" | "textOnly";
   enabled?: boolean;
   colorScheme?: "light" | "dark";
   spacing?: "compact" | "normal" | "spacious";
@@ -369,7 +496,23 @@ export type Page = {
     _key: string;
   } & FaqBlock | {
     _key: string;
-  } & ReferencesBlock>;
+  } & ReferencesBlock | {
+    _key: string;
+  } & LandingHero | {
+    _key: string;
+  } & LandingProblem | {
+    _key: string;
+  } & LandingGuide | {
+    _key: string;
+  } & LandingPlan | {
+    _key: string;
+  } & LandingOffer | {
+    _key: string;
+  } & LandingTestimonials | {
+    _key: string;
+  } & LandingFaq | {
+    _key: string;
+  } & LandingCtaFinal>;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -468,7 +611,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = ReferencesBlock | FaqBlock | ServicesBlock | ProblemSolutionBlock | CtaBlock | TestimonialsBlock | FeatureStrip | HeroSection | SiteSettings | SanityImageCrop | SanityImageHotspot | TranslationMetadata | InternationalizedArrayReference | InternationalizedArrayReferenceValue | Post | Author | Slug | Page | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = LandingCtaFinal | LandingFaq | LandingTestimonials | LandingOffer | LandingPlan | LandingGuide | LandingProblem | LandingHero | ReferencesBlock | FaqBlock | ServicesBlock | ProblemSolutionBlock | CtaBlock | TestimonialsBlock | FeatureStrip | HeroSection | SiteSettings | SanityImageCrop | SanityImageHotspot | TranslationMetadata | InternationalizedArrayReference | InternationalizedArrayReferenceValue | Post | Author | Slug | Page | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: PAGE_BY_SLUG_QUERY
@@ -517,11 +660,14 @@ export type PAGE_BY_SLUG_QUERYResult = {
   } | {
     _key: string;
     _type: "heroSection";
+    badge?: string;
     headline?: string;
+    highlightedText?: string;
     subheadline?: string;
     ctaLabel?: string;
     ctaHref?: string;
-    backgroundImage?: {
+    ctaSecondaryText?: string;
+    portraitImage?: {
       asset?: {
         _ref: string;
         _type: "reference";
@@ -533,10 +679,126 @@ export type PAGE_BY_SLUG_QUERYResult = {
       crop?: SanityImageCrop;
       _type: "image";
     };
-    variant?: "backgroundImage" | "svgPath" | "textOnly";
     enabled?: boolean;
     colorScheme?: "dark" | "light";
     spacing?: "compact" | "normal" | "spacious";
+  } | {
+    _key: string;
+    _type: "landingCtaFinal";
+    headline?: string;
+    copy?: string;
+    ctaLabel?: string;
+    ctaHref?: string;
+    scarcityText?: string;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingFaq";
+    headline?: string;
+    faqs?: Array<{
+      question?: string;
+      answer?: string;
+      _key: string;
+    }>;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingGuide";
+    headline?: string;
+    paragraphs?: Array<string>;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    testimonials?: Array<{
+      author?: string;
+      role?: string;
+      quote?: string;
+      _key: string;
+    }>;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingHero";
+    headline?: string;
+    subtitle?: string;
+    ctaLabel?: string;
+    ctaHref?: string;
+    ctaSecondaryLabel?: string;
+    ctaSecondaryHref?: string;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingOffer";
+    headline?: string;
+    comparison?: Array<{
+      before?: string;
+      after?: string;
+      _key: string;
+    }>;
+    services?: Array<{
+      title?: string;
+      _key: string;
+    }>;
+    ctaLabel?: string;
+    ctaHref?: string;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingPlan";
+    headline?: string;
+    steps?: Array<{
+      number?: string;
+      title?: string;
+      description?: string;
+      _key: string;
+    }>;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingProblem";
+    headline?: string;
+    intro?: string;
+    problems?: Array<{
+      number?: string;
+      title?: string;
+      description?: string;
+      _key: string;
+    }>;
+    closing?: string;
+    enabled?: boolean;
+  } | {
+    _key: string;
+    _type: "landingTestimonials";
+    headline?: string;
+    subtitle?: string;
+    testimonials?: Array<{
+      name?: string;
+      role?: string;
+      quote?: string;
+      image?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      _key: string;
+    }>;
+    enabled?: boolean;
   } | {
     _key: string;
     _type: "problemSolutionBlock";

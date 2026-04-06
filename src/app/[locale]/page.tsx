@@ -8,6 +8,7 @@ import { PAGE_BY_SLUG_QUERY, SITE_SETTINGS_SEO_QUERY } from '@/sanity/lib/querie
 import { urlFor } from '@/sanity/lib/image'
 import { PageBuilder, type PageSection } from '@/blocks/PageBuilder'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { LandingPageES } from '@/components/sections/LandingPageES'
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data } = await sanityFetch({ query: SITE_SETTINGS_SEO_QUERY })
@@ -46,7 +47,12 @@ export default async function HomePage({
 
   setRequestLocale(locale)
 
-  // Fetch homepage from Sanity — uses locale for language-aware query
+  // ES locale uses the new dedicated landing page
+  if (locale === 'es') {
+    return <LandingPageES />
+  }
+
+  // Other locales: Sanity Page Builder
   const { data: page } = await sanityFetch({
     query: PAGE_BY_SLUG_QUERY,
     params: { slug: 'home', language: locale },

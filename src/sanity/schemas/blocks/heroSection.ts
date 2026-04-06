@@ -1,4 +1,4 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity'
 
 export const heroSectionType = defineType({
   name: 'heroSection',
@@ -11,11 +11,25 @@ export const heroSectionType = defineType({
   fields: [
     // Content fields
     defineField({
+      name: 'badge',
+      title: 'Badge Text',
+      type: 'string',
+      description: 'Small label displayed above the headline (e.g. "Exclusively for Real Estate Agents")',
+      group: 'content',
+    }),
+    defineField({
       name: 'headline',
       title: 'Headline',
       type: 'string',
       group: 'content',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'highlightedText',
+      title: 'Highlighted Text',
+      type: 'string',
+      description: 'Part of the headline rendered in the accent color (teal). Must match text within the headline exactly.',
+      group: 'content',
     }),
     defineField({
       name: 'subheadline',
@@ -38,27 +52,21 @@ export const heroSectionType = defineType({
       group: 'content',
     }),
     defineField({
-      name: 'backgroundImage',
-      title: 'Background Image',
+      name: 'ctaSecondaryText',
+      title: 'CTA Secondary Text',
+      type: 'string',
+      description: 'Small text displayed next to the CTA (e.g. "* No credit card required")',
+      group: 'content',
+    }),
+    defineField({
+      name: 'portraitImage',
+      title: 'Portrait Image',
       type: 'image',
       options: { hotspot: true },
+      description: 'Portrait photo displayed in the right column',
       group: 'content',
     }),
     // Style fields
-    defineField({
-      name: 'variant',
-      title: 'Variant',
-      type: 'string',
-      group: 'style',
-      options: {
-        list: [
-          { title: 'SVG Path Animation', value: 'svgPath' },
-          { title: 'Background Image', value: 'backgroundImage' },
-          { title: 'Text Only', value: 'textOnly' },
-        ],
-      },
-      initialValue: 'svgPath',
-    }),
     defineField({
       name: 'enabled',
       title: 'Enabled',
@@ -77,7 +85,7 @@ export const heroSectionType = defineType({
           { title: 'Dark', value: 'dark' },
         ],
       },
-      initialValue: 'dark',
+      initialValue: 'light',
     }),
     defineField({
       name: 'spacing',
@@ -97,12 +105,13 @@ export const heroSectionType = defineType({
   preview: {
     select: {
       title: 'headline',
-      subtitle: 'variant',
+      media: 'portraitImage',
     },
-    prepare({ title, subtitle }) {
+    prepare({ title, media }) {
       return {
         title: title ?? 'Hero Section',
-        subtitle: subtitle ? `Variant: ${subtitle}` : 'Hero Section',
+        subtitle: 'Hero Section',
+        media,
       }
     },
   },

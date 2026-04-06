@@ -11,14 +11,20 @@ import { problemSolutionBlockType } from './blocks/problemSolutionBlock'
 import { servicesBlockType } from './blocks/servicesBlock'
 import { faqBlockType } from './blocks/faqBlock'
 import { referencesBlockType } from './blocks/referencesBlock'
+import { landingHeroType } from './blocks/landingHero'
+import { landingProblemType } from './blocks/landingProblem'
+import { landingGuideType } from './blocks/landingGuide'
+import { landingPlanType } from './blocks/landingPlan'
+import { landingOfferType } from './blocks/landingOffer'
+import { landingTestimonialsType } from './blocks/landingTestimonials'
+import { landingFaqType } from './blocks/landingFaq'
+import { landingCtaFinalType } from './blocks/landingCtaFinal'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
-  // Documents
   pageType,
   postType,
   authorType,
   siteSettingsType,
-  // Page Builder Blocks
   heroSectionType,
   featureStripType,
   testimonialsBlockType,
@@ -27,4 +33,12 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   servicesBlockType,
   faqBlockType,
   referencesBlockType,
+  landingHeroType,
+  landingProblemType,
+  landingGuideType,
+  landingPlanType,
+  landingOfferType,
+  landingTestimonialsType,
+  landingFaqType,
+  landingCtaFinalType,
 ]

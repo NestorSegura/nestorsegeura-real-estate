@@ -1,9 +1,18 @@
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist_Mono, DM_Sans, Fraunces } from 'next/font/google'
+import 'lenis/dist/lenis.css'
 import './globals.css'
+import { SmoothScroll } from '@/components/SmoothScroll'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+})
+
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
 })
 
 const geistMono = Geist_Mono({
@@ -18,7 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${dmSans.variable} ${fraunces.variable} ${geistMono.variable} antialiased`}>
+        <SmoothScroll />
         {children}
       </body>
     </html>

@@ -74,24 +74,17 @@ export function NavbarClient({ navLinks, ctaHref, siteName }: NavbarClientProps)
 
       <nav
         className="sticky top-0 z-50 transition-all duration-300"
-        style={
-          scrolled
-            ? {
-                backdropFilter: 'blur(12px)',
-                background: 'oklch(0.12 0 0 / 0.85)',
-                boxShadow: '0 1px 0 oklch(1 0 0 / 8%)',
-              }
-            : {
-                background: 'transparent',
-              }
-        }
+        style={{
+          background: '#ffffff',
+          boxShadow: scrolled ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
+        }}
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
           {/* Logo / site name */}
           <Link
             href="/"
             className="font-bold text-lg tracking-tight shrink-0"
-            style={{ color: scrolled ? 'oklch(0.97 0.003 80)' : 'white' }}
+            style={{ color: '#353535' }}
           >
             {siteName}
           </Link>
@@ -102,15 +95,17 @@ export function NavbarClient({ navLinks, ctaHref, siteName }: NavbarClientProps)
               <li key={link._key}>
                 <a
                   href={link.href}
-                  className="text-sm font-medium transition-colors duration-200"
-                  style={{ color: scrolled ? 'oklch(0.80 0.003 80)' : 'oklch(0.90 0.003 80)' }}
+                  className="text-sm font-medium px-3 py-1.5 rounded-md transition-all duration-200"
+                  style={{ color: 'oklch(0.45 0.18 290)' }}
                   onMouseEnter={(e) => {
-                    ;(e.currentTarget as HTMLAnchorElement).style.color = 'oklch(0.72 0.14 290)'
+                    const el = e.currentTarget as HTMLAnchorElement
+                    el.style.background = 'oklch(0.85 0.08 250 / 0.25)'
+                    el.style.color = 'oklch(0.45 0.18 290)'
                   }}
                   onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLAnchorElement).style.color = scrolled
-                      ? 'oklch(0.80 0.003 80)'
-                      : 'oklch(0.90 0.003 80)'
+                    const el = e.currentTarget as HTMLAnchorElement
+                    el.style.background = 'transparent'
+                    el.style.color = 'oklch(0.45 0.18 290)'
                   }}
                 >
                   {link.label}
@@ -129,14 +124,7 @@ export function NavbarClient({ navLinks, ctaHref, siteName }: NavbarClientProps)
             <a
               href={ctaHref}
               {...(isExternalCta ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              className="text-sm font-semibold text-white px-6 py-2.5 rounded-full transition-colors duration-200 shrink-0"
-              style={{ background: 'oklch(0.45 0.18 290)' }}
-              onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLAnchorElement).style.background = 'oklch(0.38 0.18 290)'
-              }}
-              onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLAnchorElement).style.background = 'oklch(0.45 0.18 290)'
-              }}
+              className="nav-cta text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 shrink-0"
             >
               {t('cta')}
             </a>
@@ -148,7 +136,7 @@ export function NavbarClient({ navLinks, ctaHref, siteName }: NavbarClientProps)
               <Drawer.Trigger
                 aria-label={t('menuOpen')}
                 className="p-2 rounded-lg transition-colors duration-200"
-                style={{ color: scrolled ? 'oklch(0.97 0.003 80)' : 'white' }}
+                style={{ color: '#353535' }}
               >
                 <Menu size={22} aria-hidden="true" />
               </Drawer.Trigger>
@@ -213,8 +201,7 @@ export function NavbarClient({ navLinks, ctaHref, siteName }: NavbarClientProps)
                     <a
                       href={ctaHref}
                       {...(isExternalCta ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className="text-center text-sm font-semibold text-white px-6 py-3 rounded-full transition-colors duration-200"
-                      style={{ background: 'oklch(0.45 0.18 290)' }}
+                      className="nav-cta text-center text-sm font-semibold px-6 py-3 rounded-full transition-all duration-200"
                     >
                       {t('cta')}
                     </a>
@@ -250,8 +237,8 @@ function LocaleSwitcher({
             className="transition-colors duration-150"
             style={
               currentLocale === loc.code
-                ? { color: 'oklch(0.72 0.14 290)', fontWeight: 700 }
-                : { color: scrolled ? 'oklch(0.65 0.003 80)' : 'oklch(0.75 0.003 80)' }
+                ? { color: 'oklch(0.45 0.18 290)', fontWeight: 700 }
+                : { color: '#888' }
             }
           >
             {loc.label}
@@ -259,7 +246,7 @@ function LocaleSwitcher({
           {idx < LOCALES.length - 1 && (
             <span
               aria-hidden="true"
-              style={{ color: scrolled ? 'oklch(0.40 0 0)' : 'oklch(0.55 0 0)' }}
+              style={{ color: '#ccc' }}
             >
               |
             </span>

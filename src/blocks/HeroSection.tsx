@@ -1,166 +1,151 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import Image from 'next/image'
+import { SectionWrapper } from '@/components/SectionWrapper'
 import type { HeroSection as HeroSectionType } from '@/types/sanity.types'
+import { urlFor } from '@/sanity/lib/image'
 
 type HeroSectionProps = HeroSectionType & { _key?: string }
 
-/**
- * Hero section — always dark/purple background.
- * Supports three variants:
- * - svgPath: animated SVG path drawing on mount (stroke-dasharray/dashoffset)
- * - backgroundImage: full-bleed cover image with dark overlay
- * - textOnly: centered text, no visual decoration
- *
- * Headline words each get a CSS reveal transition (word-by-word stagger).
- * No framer-motion, GSAP, or @motionone — CSS transitions only.
- */
 export function HeroSection({
+  badge,
   headline,
+  highlightedText,
   subheadline,
   ctaLabel,
   ctaHref,
-  variant = 'svgPath',
+  ctaSecondaryText,
+  portraitImage,
   colorScheme,
   spacing,
 }: HeroSectionProps) {
-  const pathRef = useRef<SVGPathElement | null>(null)
-  const startDotRef = useRef<SVGCircleElement | null>(null)
-  const endDotRef = useRef<SVGCircleElement | null>(null)
+  const renderHeadline = () => {
+    if (!headline) return null
+    if (!highlightedText) return <span>{headline}</span>
 
-  // SVG path draw animation using stroke-dasharray / dashoffset
-  useEffect(() => {
-    if (variant !== 'svgPath') return
-    const path = pathRef.current
-    if (!path) return
+    const idx = headline.toLowerCase().indexOf(highlightedText.toLowerCase())
+    if (idx === -1) return <span>{headline}</span>
 
-    const length = path.getTotalLength()
-    path.style.setProperty('--path-length', String(length))
-    path.style.strokeDasharray = String(length)
-    path.style.strokeDashoffset = String(length)
+    const before = headline.slice(0, idx)
+    const match = headline.slice(idx, idx + highlightedText.length)
+    const after = headline.slice(idx + highlightedText.length)
 
-    // Trigger reflow then start animation
-    void path.getBoundingClientRect()
-    path.style.transition = 'stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s'
-    path.style.strokeDashoffset = '0'
+    return (
+      <>
+        {before && <span>{before}</span>}
+        <span style={{ color: 'var(--section-highlight)' }}>{match}</span>
+        {after && <span>{after}</span>}
+      </>
+    )
+  }
 
-    // Fade in endpoint dots after path draws
-    const timeout = setTimeout(() => {
-      if (startDotRef.current) startDotRef.current.style.opacity = '1'
-      if (endDotRef.current) endDotRef.current.style.opacity = '1'
-    }, 2400)
+  const isExternalCta = ctaHref?.startsWith('http')
 
-    return () => clearTimeout(timeout)
-  }, [variant])
-
-  // Split headline into word spans for word-by-word reveal
-  const words = (headline ?? '').split(' ')
-
-  const spacingClass =
-    spacing === 'compact'
-      ? 'py-16 md:py-24'
-      : spacing === 'spacious'
-        ? 'py-32 md:py-48'
-        : 'py-24 md:py-36'
+  const portraitUrl = portraitImage?.asset
+    ? urlFor(portraitImage).width(896).height(1120).url()
+    : null
 
   return (
-    <section
-      className={`relative min-h-screen flex flex-col items-center justify-center overflow-hidden ${spacingClass}`}
-      style={{ background: 'oklch(0.25 0.08 290)' }}
-      data-color-scheme={colorScheme ?? 'dark'}
-      data-spacing={spacing ?? 'normal'}
-    >
-      {/* SVG path animation variant */}
-      {variant === 'svgPath' && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-30">
-          <svg
-            viewBox="0 0 600 400"
-            className="w-full max-w-2xl"
-            fill="none"
-            aria-hidden="true"
-          >
-            {/* Journey path: bottom-left to top-right */}
-            <path
-              ref={pathRef}
-              d="M 60 340 C 120 300, 180 260, 240 200 C 300 140, 380 100, 540 60"
-              stroke="oklch(0.72 0.14 290)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              fill="none"
-            />
-            {/* Start dot (origin) */}
-            <circle
-              ref={startDotRef}
-              cx="60"
-              cy="340"
-              r="8"
-              fill="oklch(0.72 0.14 290)"
-              style={{ opacity: 0, transition: 'opacity 0.4s ease' }}
-            />
-            {/* End dot (goal) */}
-            <circle
-              ref={endDotRef}
-              cx="540"
-              cy="60"
-              r="8"
-              fill="oklch(0.85 0.10 290)"
-              style={{ opacity: 0, transition: 'opacity 0.4s ease 0.2s' }}
-            />
-            {/* Start label: house icon approximation */}
-            <rect x="42" y="355" width="36" height="2" rx="1" fill="oklch(0.72 0.14 290)" opacity="0.6" />
-            {/* End label: star icon approximation */}
-            <polygon
-              points="540,44 543,52 552,52 545,57 548,65 540,60 532,65 535,57 528,52 537,52"
-              fill="oklch(0.85 0.10 290)"
-              opacity="0.8"
-            />
-          </svg>
-        </div>
-      )}
+    <SectionWrapper scheme={colorScheme ?? 'light'} spacing={spacing} className="relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-12 items-center">
+          {/* Left Column — Text */}
+          <div className="flex flex-col gap-8">
+            {badge && (
+              <div className="reveal">
+                <span
+                  className="inline-block px-4 py-1.5 rounded-md text-[10px] font-black uppercase tracking-[1px]"
+                  style={{
+                    fontFamily: 'var(--font-chivo), sans-serif',
+                    background: 'var(--section-accent)',
+                    color: 'var(--section-accent-fg)',
+                  }}
+                >
+                  {badge}
+                </span>
+              </div>
+            )}
 
-      {/* Background image variant */}
-      {variant === 'backgroundImage' && (
-        <div className="absolute inset-0 bg-[oklch(0.25_0.08_290)]">
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
-        {/* Word-by-word headline reveal */}
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-tight mb-6">
-          {words.map((word, i) => (
-            <span
-              key={i}
-              className="inline-block reveal"
-              style={{ '--reveal-delay': `${i * 80}ms` } as React.CSSProperties}
+            <h1
+              className="reveal text-4xl sm:text-5xl md:text-[60px] font-black uppercase leading-[1] tracking-[-3px]"
+              style={{ fontFamily: 'var(--font-chivo), sans-serif' }}
             >
-              {word}
-              {i < words.length - 1 ? '\u00a0' : ''}
-            </span>
-          ))}
-        </h1>
+              {renderHeadline()}
+            </h1>
 
-        {subheadline && (
-          <p
-            className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-10 reveal"
-            style={{ '--reveal-delay': `${words.length * 80 + 100}ms` } as React.CSSProperties}
-          >
-            {subheadline}
-          </p>
-        )}
+            {subheadline && (
+              <p
+                className="reveal text-lg md:text-xl leading-relaxed max-w-xl"
+                style={{ fontFamily: 'var(--font-chivo), sans-serif', fontWeight: 500, opacity: 0.8 }}
+              >
+                {subheadline}
+              </p>
+            )}
 
-        {ctaHref && ctaLabel && (
-          <a
-            href={ctaHref}
-            {...(ctaHref.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            className="reveal inline-block bg-[oklch(0.72_0.14_290)] hover:bg-[oklch(0.65_0.16_290)] text-white font-semibold text-lg px-10 py-4 rounded-full transition-colors duration-200"
-            style={{ '--reveal-delay': `${words.length * 80 + 300}ms` } as React.CSSProperties}
-          >
-            {ctaLabel}
-          </a>
-        )}
+            {ctaLabel && ctaHref && (
+              <div className="reveal flex flex-wrap items-center gap-6 pt-2">
+                <a
+                  href={ctaHref}
+                  {...(isExternalCta ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="inline-flex items-center gap-2 text-lg font-normal transition-opacity duration-200 hover:opacity-70"
+                  style={{ fontFamily: 'var(--font-chivo), sans-serif' }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="inline-block w-8 h-px"
+                    style={{ background: 'var(--section-highlight)' }}
+                  />
+                  {ctaLabel}
+                </a>
+
+                {ctaSecondaryText && (
+                  <span
+                    className="text-sm font-bold uppercase tracking-[0.7px]"
+                    style={{ fontFamily: 'var(--font-chivo), sans-serif', opacity: 0.4 }}
+                  >
+                    {ctaSecondaryText}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Right Column — Portrait */}
+          <div className="reveal relative flex justify-end">
+            <div className="relative w-full max-w-[448px] aspect-[4/5]">
+              <div
+                className="absolute rounded-md"
+                style={{ background: 'var(--section-icon-bg)', inset: '24px -24px -24px 24px' }}
+              />
+
+              <div
+                className="relative w-full h-full rounded-md overflow-hidden"
+                style={{ background: 'var(--section-card-bg)', border: '1px solid var(--section-border)' }}
+              >
+                {portraitUrl ? (
+                  <Image
+                    src={portraitUrl}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 448px"
+                    priority
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <span
+                      className="text-sm font-black uppercase tracking-[1.4px]"
+                      style={{ fontFamily: 'var(--font-chivo), sans-serif', color: 'var(--section-fg-muted)', opacity: 0.3 }}
+                    >
+                      Portrait Placeholder
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </SectionWrapper>
   )
 }

@@ -1,16 +1,10 @@
 'use client'
 
-import { useRef } from 'react'
-import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
+import { SectionWrapper } from '@/components/SectionWrapper'
 import type { FeatureStrip as FeatureStripType } from '@/types/sanity.types'
 
 type FeatureStripProps = FeatureStripType & { _key?: string; sectionId?: string }
 
-/**
- * Feature strip — grid of icon + title + description cards.
- * Staggered scroll reveal via Intersection Observer + CSS transitions.
- * No motion library.
- */
 export function FeatureStrip({
   title,
   features,
@@ -18,35 +12,11 @@ export function FeatureStrip({
   spacing,
   sectionId,
 }: FeatureStripProps) {
-  const containerRef = useRef<HTMLElement | null>(null)
-  useRevealOnScroll(containerRef)
-
-  const isDark = colorScheme === 'dark'
-  const spacingClass =
-    spacing === 'compact'
-      ? 'py-12 md:py-16'
-      : spacing === 'spacious'
-        ? 'py-24 md:py-32'
-        : 'py-16 md:py-24'
-
   return (
-    <section
-      ref={containerRef}
-      id={sectionId ?? 'features'}
-      className={`${spacingClass} px-6`}
-      style={{
-        background: isDark ? 'oklch(0.25 0.08 290)' : 'oklch(0.97 0.003 80)',
-        color: isDark ? 'oklch(0.97 0.003 80)' : 'oklch(0.12 0 0)',
-      }}
-      data-color-scheme={colorScheme}
-      data-spacing={spacing ?? 'normal'}
-    >
+    <SectionWrapper id={sectionId ?? 'features'} scheme={colorScheme} spacing={spacing}>
       <div className="max-w-6xl mx-auto">
         {title && (
-          <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-12 reveal"
-            style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
-          >
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 reveal">
             {title}
           </h2>
         )}
@@ -55,29 +25,21 @@ export function FeatureStrip({
           {(features ?? []).map((feature, index) => (
             <div
               key={feature._key}
-              className="reveal flex flex-col gap-4 p-6 rounded-2xl"
-              style={{
-                '--reveal-delay': `${index * 100}ms`,
-                background: isDark
-                  ? 'oklch(0.30 0.08 290 / 0.5)'
-                  : 'oklch(0.93 0.005 80)',
-              } as React.CSSProperties}
+              className="reveal flex flex-col gap-4 p-6 rounded-2xl overflow-hidden"
+              style={{ background: 'var(--section-card-bg)' }}
             >
               {feature.icon && (
                 <span
-                  className="text-3xl w-12 h-12 flex items-center justify-center rounded-xl"
-                  style={{ background: isDark ? 'oklch(0.45 0.18 290 / 0.3)' : 'oklch(0.88 0.015 290)' }}
+                  className="text-3xl min-w-12 h-12 px-3 flex items-center justify-center rounded-xl overflow-hidden whitespace-nowrap"
+                  style={{ background: 'var(--section-icon-bg)' }}
                   aria-hidden="true"
                 >
                   {feature.icon}
                 </span>
               )}
-              <h3 className="text-xl font-semibold">{feature.title}</h3>
+              <h3 className="text-xl font-semibold break-words">{feature.title}</h3>
               {feature.description && (
-                <p
-                  className="text-base leading-relaxed"
-                  style={{ color: isDark ? 'oklch(0.80 0.003 80)' : 'oklch(0.45 0.01 80)' }}
-                >
+                <p className="text-base leading-relaxed" style={{ color: 'var(--section-fg-muted)' }}>
                   {feature.description}
                 </p>
               )}
@@ -85,6 +47,6 @@ export function FeatureStrip({
           ))}
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   )
 }

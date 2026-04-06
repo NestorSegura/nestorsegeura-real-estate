@@ -1,4 +1,3 @@
-import { GradientDivider } from './GradientDivider'
 import { HeroSection } from './HeroSection'
 import { FeatureStrip } from './FeatureStrip'
 import { TestimonialsBlock } from './TestimonialsBlock'
@@ -33,22 +32,7 @@ export function PageBuilder({ sections }: PageBuilderProps) {
 
   const elements: React.ReactNode[] = []
 
-  enabled.forEach((block, index) => {
-    const prev = enabled[index - 1]
-    const prevScheme = prev?.colorScheme ?? 'light'
-    const currScheme = block.colorScheme ?? 'light'
-
-    // Insert gradient divider on color scheme transition
-    if (index > 0 && prevScheme !== currScheme) {
-      elements.push(
-        <GradientDivider
-          key={`divider-${block._key}`}
-          from={prevScheme as 'light' | 'dark'}
-          to={currScheme as 'light' | 'dark'}
-        />
-      )
-    }
-
+  enabled.forEach((block) => {
     switch (block._type) {
       case 'heroSection':
         elements.push(<HeroSection key={block._key} {...(block as Parameters<typeof HeroSection>[0])} />)

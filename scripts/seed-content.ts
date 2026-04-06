@@ -84,15 +84,17 @@ const homePageDe = {
     {
       _key: 'de-hero',
       _type: 'heroSection',
-      headline: 'Ihre Website arbeitet nicht für Sie? Das ändern wir.',
+      badge: 'Exklusiv für Immobilienmakler',
+      headline: 'Ihre Immobilien-Website sollte ein Vertriebskanal sein',
+      highlightedText: 'sollte ein Vertriebskanal sein',
       subheadline:
-        'Wir bauen Websites, die Immobilienmakler von der Konkurrenz abheben — mit professionellem Design, klarer Sprache und einem Termin-Button, den Ihre Kunden wirklich klicken.',
-      ctaLabel: 'Erstgespräch vereinbaren',
+        'Ich helfe Maklern in DE und ES, Traffic in abgeschlossene Deals zu verwandeln — durch SEO und leistungsstarke Automatisierung.',
+      ctaLabel: 'Kostenloses Audit erhalten',
       ctaHref: CTA_URL,
-      variant: 'svgPath',
-      colorScheme: 'dark',
+      ctaSecondaryText: '* Keine Kreditkarte erforderlich',
+      colorScheme: 'light',
       enabled: true,
-      spacing: 'spacious',
+      spacing: 'normal',
     },
     // 2. Feature Strip
     {
@@ -354,15 +356,17 @@ const homePageEn = {
     {
       _key: 'en-hero',
       _type: 'heroSection',
-      headline: 'Your website is not working for you? Let\'s change that.',
+      badge: 'Exclusively for Real Estate Agents',
+      headline: 'Your real estate website should be a sales channel',
+      highlightedText: 'should be a sales channel',
       subheadline:
-        'We build websites that help real estate agents stand out from the competition — with professional design, clear messaging, and a booking button your clients actually click.',
-      ctaLabel: 'Book Free Consultation',
+        'I help DE and ES agents convert traffic into closed deals through SEO and high-performance automation.',
+      ctaLabel: 'Get a Free Audit',
       ctaHref: CTA_URL,
-      variant: 'svgPath',
-      colorScheme: 'dark',
+      ctaSecondaryText: '* No credit card required',
+      colorScheme: 'light',
       enabled: true,
-      spacing: 'spacious',
+      spacing: 'normal',
     },
     // 2. Feature Strip
     {
@@ -618,15 +622,17 @@ const homePageEs = {
     {
       _key: 'es-hero',
       _type: 'heroSection',
-      headline: '¿Su web no genera clientes? Lo cambiamos ahora.',
+      badge: 'Exclusivo para agentes inmobiliarios',
+      headline: 'Tu web inmobiliaria debería ser un canal de ventas',
+      highlightedText: 'debería ser un canal de ventas',
       subheadline:
-        'Creamos webs que ayudan a los agentes inmobiliarios a destacar — con diseño profesional, mensajes claros y un botón de cita que sus clientes realmente pulsan.',
-      ctaLabel: 'Agendar consulta gratuita',
+        'Ayudo a agentes en DE y ES a convertir tráfico en cierres reales — con SEO y automatización de alto rendimiento.',
+      ctaLabel: 'Obtener auditoría gratis',
       ctaHref: CTA_URL,
-      variant: 'svgPath',
-      colorScheme: 'dark',
+      ctaSecondaryText: '* Sin tarjeta de crédito',
+      colorScheme: 'light',
       enabled: true,
-      spacing: 'spacious',
+      spacing: 'normal',
     },
     // 2. Feature Strip
     {
@@ -879,7 +885,8 @@ async function seed() {
     { doc: siteSettings, label: 'siteSettings' },
     { doc: homePageDe, label: 'page-home-de (German)' },
     { doc: homePageEn, label: 'page-home-en (English)' },
-    { doc: homePageEs, label: 'page-home-es (Spanish)' },
+    // ES homepage is managed by scripts/seed-landing-es.ts (new landing page)
+    // { doc: homePageEs, label: 'page-home-es (Spanish)' },
   ]
 
   for (const { doc, label } of documents) {
