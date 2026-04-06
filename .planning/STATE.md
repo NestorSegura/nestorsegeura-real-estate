@@ -107,7 +107,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+1. **Switch fonts to Clash Display and Chivo** (ui) — `.planning/todos/pending/2026-04-06-switch-fonts-clash-display-chivo.md`
 
 ### Blockers/Concerns
 
