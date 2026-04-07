@@ -1,7 +1,8 @@
 /**
  * Sanity Content Seed Script
  * ===========================
- * Seeds all homepage content (DE, EN, ES) and siteSettings into Sanity CMS.
+ * Seeds all homepage content (DE, EN) and siteSettings into Sanity CMS.
+ * ES homepage is managed separately by scripts/seed-landing-es.ts.
  *
  * Usage:
  *   npx tsx scripts/seed-content.ts
@@ -46,7 +47,7 @@ const client = createClient({
 
 // ---- Helpers -----------------------------------------------------------
 
-const CTA_URL = 'https://cal.com/nestorsegura/erstgespraech'
+const CTA_HREF = 'https://tidycal.com/1vn62y3/website-als-verkaufskanal-optimieren'
 
 // ---- siteSettings ------------------------------------------------------
 
@@ -55,7 +56,7 @@ const siteSettings = {
   _type: 'siteSettings',
   siteName: 'nestorsegura.com',
   tagline: 'Web Design für Immobilienmakler',
-  defaultCtaHref: CTA_URL,
+  defaultCtaHref: CTA_HREF,
   navigation: [
     { _key: 'nav-1', label: 'Leistungen', href: '#leistungen' },
     { _key: 'nav-2', label: 'Projekte', href: '#projekte' },
@@ -72,809 +73,291 @@ const siteSettings = {
   },
 }
 
-// ---- German homepage (page-home-de) ------------------------------------
+// ---- German homepage (page-home-de-landing) ----------------------------
 
 const homePageDe = {
-  _id: 'page-home-de',
+  _id: 'page-home-de-landing',
   _type: 'page',
-  slug: { current: 'home' },
   language: 'de',
+  title: 'Digitale Strategie für Immobilienmakler',
+  slug: { _type: 'slug', current: 'home' },
+  seo: {
+    title: 'Digitale Strategie für Immobilienmakler | Nestor Segura',
+    description: 'Bist du Immobilienmakler und deine Website generiert keine Leads? Ich entwickle digitale Strategien mit lokalem SEO, klarer Positionierung und Lead-Automatisierung, damit Google dir Kunden bringt — ohne bezahlte Werbung. Buche dein kostenloses Gespräch.',
+  },
   sections: [
-    // 1. Hero
     {
-      _key: 'de-hero',
-      _type: 'heroSection',
-      badge: 'Exklusiv für Immobilienmakler',
-      headline: 'Ihre Immobilien-Website sollte ein Vertriebskanal sein',
-      highlightedText: 'sollte ein Vertriebskanal sein',
-      subheadline:
-        'Ich helfe Maklern in DE und ES, Traffic in abgeschlossene Deals zu verwandeln — durch SEO und leistungsstarke Automatisierung.',
-      ctaLabel: 'Kostenloses Audit erhalten',
-      ctaHref: CTA_URL,
-      ctaSecondaryText: '* Keine Kreditkarte erforderlich',
-      colorScheme: 'light',
+      _key: 'landing-hero',
+      _type: 'landingHero',
       enabled: true,
-      spacing: 'normal',
+      headline: 'Digitale Strategie für Immobilienmakler, die Kunden gewinnen wollen — ohne von Portalen abhängig zu sein',
+      subtitle: 'Ich verwandle deine Online-Präsenz in ein System, das Käufer und Eigentümer direkt über Google anzieht — mit klarer Positionierung, lokalem SEO und Lead-Automatisierung.',
+      ctaLabel: 'Kostenloses Gespräch buchen',
+      ctaHref: CTA_HREF,
+      ctaSecondaryLabel: 'So funktioniert es ↓',
+      ctaSecondaryHref: '#so-funktioniert-es',
     },
-    // 2. Feature Strip
     {
-      _key: 'de-features',
-      _type: 'featureStrip',
-      title: 'Warum Makler uns vertrauen',
-      features: [
-        {
-          _key: 'de-feat-1',
-          icon: 'building',
-          title: 'Branchenkenntnis',
-          description:
-            'Wir kennen die Sprache der Immobilienbranche. Kein allgemeines Web-Design, sondern maßgeschneiderte Lösungen für Makler.',
-        },
-        {
-          _key: 'de-feat-2',
-          icon: 'target',
-          title: 'Conversion-Optimierung',
-          description:
-            'Jedes Element Ihrer Website hat ein Ziel: Besucher in Anfragen verwandeln. Design folgt Funktion, nicht umgekehrt.',
-        },
-        {
-          _key: 'de-feat-3',
-          icon: 'handshake',
-          title: 'Persönliche Betreuung',
-          description:
-            'Kein Ticket-System, kein Call-Center. Sie sprechen direkt mit uns — von der ersten Idee bis zum Launch und darüber hinaus.',
-        },
-      ],
-      colorScheme: 'light',
+      _key: 'landing-problem',
+      _type: 'landingProblem',
       enabled: true,
-      spacing: 'normal',
-    },
-    // 3. Problem / Solution
-    {
-      _key: 'de-problem',
-      _type: 'problemSolutionBlock',
-      title: 'Kennen Sie das?',
+      headline: 'Warum Immobilienmakler bei Google Kunden verlieren, ohne es zu merken',
+      intro: 'Die meisten Makler haben eine Online-Präsenz. Das Problem ist: Sie arbeitet nicht. Sie generiert keine Anrufe, qualifiziert keine Leads und rankt nicht. Und der Grund ist fast immer derselbe.',
       problems: [
-        {
-          _key: 'de-prob-1',
-          number: 1,
-          headline: 'Ihre Website existiert, aber bringt keine Anfragen',
-          description:
-            'Sie haben eine Website, aber das Telefon klingelt deshalb nicht öfter. Besucher kommen, schauen sich um — und verschwinden wieder.',
-        },
-        {
-          _key: 'de-prob-2',
-          number: 2,
-          headline: 'Der Online-Auftritt wirkt nicht so professionell wie Sie selbst',
-          description:
-            'Sie präsentieren Immobilien im Wert von Millionen — aber Ihre Website sieht aus wie ein Hobby-Projekt aus den 2010er Jahren.',
-        },
-        {
-          _key: 'de-prob-3',
-          number: 3,
-          headline: 'Keine Zeit für Marketing, Design und Technik',
-          description:
-            'Ihr Kerngeschäft ist die Immobilie, nicht die Website. Aber ohne digitale Präsenz verlieren Sie potenzielle Kunden täglich.',
-        },
+        { _key: 'p1', number: '01', title: 'Keine klare Positionierung', description: '"Ich bin Immobilienmakler" sagt weder Google noch deinem Wunschkunden etwas. Ohne eine spezifische Botschaft bist du unsichtbar unter Hunderten von Wettbewerbern, die genau dasselbe anbieten.' },
+        { _key: 'p2', number: '02', title: 'Angebot viel zu breit', description: 'Verkauf, Kauf, Miete, Luxus, Erstbezug... für alle. Wenn du versuchst, mit allen zu sprechen, sprichst du mit niemandem — und Google weiß nicht, an wen es dich weiterleiten soll.' },
+        { _key: 'p3', number: '03', title: 'Keine Nische und kein lokaler Fokus', description: 'Eine Website, die keine spezifischen lokalen Keywords nach Stadt, Stadtteil oder Kundentyp angreift, erscheint nicht, wenn dein Wunschkunde genau das sucht, was du anbietest.' },
+        { _key: 'p4', number: '04', title: 'Kein System zur Lead-Gewinnung', description: 'Besucher kommen, aber es gibt nichts, das sie erfasst, qualifiziert oder in ein Gespräch führt. Der Traffic geht verloren — ohne Spur und ohne Leads.' },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'normal',
+      closing: 'All das zeigt sich in einer einzigen Kennzahl: Deine Website existiert, aber sie generiert keine Kunden.',
     },
-    // 4. Services
     {
-      _key: 'de-services',
-      _type: 'servicesBlock',
-      title: 'Unsere Leistungen',
-      services: [
-        {
-          _key: 'de-svc-1',
-          number: 1,
-          name: 'Website-Erstellung',
-          description:
-            'Eine neue Website, die Ihr Büro repräsentiert, Vertrauen schafft und Anfragen generiert. Fertig in 4–6 Wochen.',
-          features: [
-            'Individuelles Design mit Ihrer Markenidentität',
-            'Mobile-first und technisch optimiert',
-            'Integriertes Terminbuchungs-System',
-            'Sanity CMS — einfach selbst bearbeiten',
-          ],
-          ctaLabel: 'Erstgespräch vereinbaren',
-          ctaHref: CTA_URL,
-        },
-        {
-          _key: 'de-svc-2',
-          number: 2,
-          name: 'Website-Analyse',
-          description:
-            'Wir analysieren Ihre bestehende Website und zeigen Ihnen genau, wo Sie Anfragen verlieren — mit konkreten Verbesserungsvorschlägen.',
-          features: [
-            'Technische Performance-Analyse',
-            'Conversion-Rate-Bewertung',
-            'Wettbewerbervergleich',
-            'Priorisierte Handlungsempfehlungen',
-          ],
-          ctaLabel: 'Erstgespräch vereinbaren',
-          ctaHref: CTA_URL,
-        },
-        {
-          _key: 'de-svc-3',
-          number: 3,
-          name: 'Laufende Betreuung',
-          description:
-            'Ihr Website-Partner für den Alltag: Änderungen, Updates, neue Inhalte und technischer Support — flexibel und ohne Vertragsbindung.',
-          features: [
-            'Monatliche Inhaltsänderungen inklusive',
-            'Technische Wartung und Updates',
-            'Neue Seiten und Funktionen bei Bedarf',
-            'Direkter Ansprechpartner per WhatsApp',
-          ],
-          ctaLabel: 'Erstgespräch vereinbaren',
-          ctaHref: CTA_URL,
-        },
+      _key: 'landing-guide',
+      _type: 'landingGuide',
+      enabled: true,
+      headline: 'Digitale Strategie mit Fokus auf Ergebnisse — nicht auf hübsche Websites',
+      paragraphs: [
+        'Ich habe Dutzende von Makler-Websites analysiert. Das Fehlermuster ist fast immer dasselbe — und es gibt eine klare Lösung.',
+        'Ich bin kein Immobilienmakler. Ich bin Digitalstratege, spezialisiert auf Systeme, die Besucher in Kunden verwandeln. Und was ich aus der Arbeit mit lokalen Unternehmen gelernt habe: Das Problem liegt selten am Service — sondern daran, wie er kommuniziert und online positioniert wird.',
       ],
-      colorScheme: 'dark',
-      enabled: true,
-      spacing: 'spacious',
-    },
-    // 5. Testimonials
-    {
-      _key: 'de-testimonials',
-      _type: 'testimonialsBlock',
-      title: 'Das sagen unsere Kunden',
       testimonials: [
+        { _key: 't1', author: 'Andres Ugueto', role: 'Founder & CEO', quote: 'Nestor hat genau verstanden, was wir brauchten. Unsere Website wurde von einer Visitenkarte zu einer Anfragen-Maschine.' },
+        { _key: 't2', author: 'Alvaro Gargano', role: 'Co-Founder', quote: 'Der strategische Ansatz hat den entscheidenden Unterschied gemacht. Es geht nicht um eine hübsche Website, sondern darum, dass sie funktioniert.' },
+        { _key: 't3', author: 'Anna Wolf', role: 'Marketing Director', quote: 'Professionell, methodisch und ergebnisorientiert. Ich empfehle die Zusammenarbeit mit Nestor ohne Zögern.' },
+      ],
+    },
+    {
+      _key: 'landing-plan',
+      _type: 'landingPlan',
+      enabled: true,
+      headline: 'Vom unsichtbaren Makler zum digitalen Referenzpunkt in deiner Region — in 3 Schritten',
+      steps: [
         {
-          _key: 'de-test-1',
-          quote:
-            'Seit dem Relaunch bekomme ich regelmäßig Anfragen über die Website. Vorher war das praktisch null. Nestor hat genau verstanden, was Makler brauchen.',
-          author: 'Klaus-Dieter Hoffmann',
-          role: 'Immobilienmakler, Hamburg',
+          _key: 's1',
+          number: '1',
+          title: 'Diagnose und Strategie',
+          description: 'Wir analysieren deine aktuelle Situation, definieren deinen Wunschkunden und entwickeln die Positionierung, die dich in deinem lokalen Markt differenziert. Du weißt genau, mit wem du sprichst und was du sagen sollst.',
         },
         {
-          _key: 'de-test-2',
-          quote:
-            'Die neue Website sieht nicht nur professionell aus — sie funktioniert auch. Meine Kunden sprechen mich oft auf das Design an. Das ist unbezahlbar.',
-          author: 'Sabine Müller',
-          role: 'Maklerin, München',
+          _key: 's2',
+          number: '2',
+          title: 'Umsetzung und Aufbau',
+          description: 'Wir strukturieren deine Website um, schreiben die Texte neu, erstellen optimierte Seiten nach Stadtteil und Suchintention und integrieren am Markt verfügbare Tools zur Lead-Erfassung.',
         },
         {
-          _key: 'de-test-3',
-          quote:
-            'Endlich jemand, der die Immobilienbranche wirklich kennt. Keine generischen Texte, kein Copy-Paste-Design. Ein echter Partner.',
-          author: 'Thomas Bergmann',
-          role: 'Geschäftsführer, Bergmann Immobilien',
+          _key: 's3',
+          number: '3',
+          title: 'Monatliches organisches Tracking',
+          description: '6 Monate lang messen, justieren und optimieren wir — SEO, Conversion und Metriken — damit die Ergebnisse Monat für Monat wachsen, ohne auf bezahlte Werbung angewiesen zu sein.',
         },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
     },
-    // 6. References
     {
-      _key: 'de-references',
-      _type: 'referencesBlock',
-      title: 'Unsere Projekte',
-      references: [
-        {
-          _key: 'de-ref-1',
-          name: 'Hoffmann Immobilien',
-          description:
-            'Kompletter Website-Neustart für ein etabliertes Maklerbüro in Hamburg. Conversion-Rate um 340 % gesteigert.',
-          url: 'https://example.com',
-        },
-        {
-          _key: 'de-ref-2',
-          name: 'Müller & Partner',
-          description:
-            'Neue Markenidentität und Website für eine Maklergemeinschaft mit 5 Standorten in Bayern.',
-          url: 'https://example.com',
-        },
-        {
-          _key: 'de-ref-3',
-          name: 'Bergmann Immobilien',
-          description:
-            'Website-Analyse und Redesign für einen Berliner Makler. 2× mehr Anfragen im ersten Monat nach Launch.',
-          url: 'https://example.com',
-        },
+      _key: 'landing-offer',
+      _type: 'landingOffer',
+      enabled: true,
+      headline: 'Alles, was du brauchst, damit deine Website für dich arbeitet',
+      comparison: [
+        { _key: 'c1', before: '"Ich bin Immobilienmakler"', after: '"Ich helfe Familien, ihr Zuhause in Hamburg zu finden"' },
+        { _key: 'c2', before: 'Generische Website ohne organischen Traffic', after: 'Optimierte Seiten nach Stadt und Suchintention' },
+        { _key: 'c3', before: 'Leads von ImmoScout24 zu Höchstpreisen', after: 'Direkte Leads über Google, ohne Zwischenhändler' },
+        { _key: 'c4', before: 'Kontaktformular, das niemand ausfüllt', after: 'Automatisiertes System zur Lead-Erfassung und -Qualifizierung' },
+        { _key: 'c5', before: 'Keine Kennzahlen, keine Richtung', after: 'Monatliches Reporting + strategische Anpassungen' },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
+      services: [
+        { _key: 'sv1', title: 'Strategische Positionierung + ICP-Definition' },
+        { _key: 'sv2', title: 'Website-Restrukturierung + Seitenarchitektur' },
+        { _key: 'sv3', title: 'Conversion-orientierte Webtexte' },
+        { _key: 'sv4', title: 'Lokales und intentionsbasiertes SEO nach Stadt/Stadtteil/Zielgruppe' },
+        { _key: 'sv5', title: 'Integration von Lead-Erfassungs-Tools' },
+        { _key: 'sv6', title: 'Monatliches organisches Tracking — mindestens 6 Monate' },
+      ],
+      ctaLabel: 'Kostenloses Gespräch buchen',
+      ctaHref: CTA_HREF,
     },
-    // 7. FAQ
     {
-      _key: 'de-faq',
-      _type: 'faqBlock',
-      title: 'Häufig gestellte Fragen',
+      _key: 'landing-testimonials',
+      _type: 'landingTestimonials',
+      enabled: true,
+      headline: 'Was diejenigen sagen, die bereits mit dieser Methodik gearbeitet haben',
+      subtitle: 'Ich arbeite mit Gründern, lokalen Unternehmen und Maklern, die organisch und systematisch wachsen wollen.',
+      testimonials: [
+        { _key: 'lt1', name: 'Andres Ugueto', role: 'Founder & CEO', quote: 'Nestor hat genau verstanden, was wir brauchten. Unsere Website wurde von einer Visitenkarte zu einer Anfragen-Maschine.' },
+        { _key: 'lt2', name: 'Alvaro Gargano', role: 'Co-Founder', quote: 'Der strategische Ansatz hat den entscheidenden Unterschied gemacht. Es geht nicht um eine hübsche Website, sondern darum, dass sie funktioniert.' },
+        { _key: 'lt3', name: 'Anna Wolf', role: 'Marketing Director', quote: 'Professionell, methodisch und ergebnisorientiert. Ich empfehle die Zusammenarbeit mit Nestor ohne Zögern.' },
+      ],
+    },
+    {
+      _key: 'landing-faq',
+      _type: 'landingFaq',
+      enabled: true,
+      headline: 'Häufige Fragen zur digitalen Strategie für Immobilienmakler',
       faqs: [
-        {
-          _key: 'de-faq-1',
-          question: 'Wie lange dauert die Erstellung einer neuen Website?',
-          answer:
-            'In der Regel 4–6 Wochen vom Erstgespräch bis zum Launch. Das hängt davon ab, wie schnell Inhalte und Feedback von Ihrer Seite kommen. Wir halten Sie während des gesamten Prozesses auf dem Laufenden.',
-        },
-        {
-          _key: 'de-faq-2',
-          question: 'Was kostet eine Website für Immobilienmakler?',
-          answer:
-            'Das hängt vom Umfang ab. Eine professionelle Makler-Website startet bei etwa 2.500 €. Im Erstgespräch besprechen wir Ihre Anforderungen und erstellen ein transparentes Angebot — ohne versteckte Kosten.',
-        },
-        {
-          _key: 'de-faq-3',
-          question: 'Kann ich die Website nach dem Launch selbst bearbeiten?',
-          answer:
-            'Ja, absolut. Wir bauen auf ein benutzerfreundliches CMS (Sanity), das auch ohne Programmierkenntnisse einfach zu bedienen ist. Im Launch-Paket ist eine persönliche Einführung enthalten.',
-        },
-        {
-          _key: 'de-faq-4',
-          question: 'Arbeiten Sie auch mit bestehenden Websites?',
-          answer:
-            'Ja. Wir bieten sowohl komplette Neuentwicklungen als auch Website-Analysen und gezielte Verbesserungen bestehender Seiten an. In unserem Erstgespräch klären wir, was für Sie am sinnvollsten ist.',
-        },
-        {
-          _key: 'de-faq-5',
-          question: 'Was unterscheidet Sie von allgemeinen Web-Agenturen?',
-          answer:
-            'Wir arbeiten ausschließlich mit Immobilienmaklern. Das bedeutet: Wir kennen Ihre Zielgruppe, Ihre Branche und die Texte, die bei Ihren Kunden ankommen. Kein allgemeines Design, kein Rätselraten — nur bewährte Lösungen für Makler.',
-        },
-        {
-          _key: 'de-faq-6',
-          question: 'Gibt es eine Vertragsbindung bei der laufenden Betreuung?',
-          answer:
-            'Nein. Unsere Betreuungspakete sind monatlich kündbar. Wir glauben daran, dass Sie bei uns bleiben, weil Sie zufrieden sind — nicht weil Sie müssen.',
-        },
+        { _key: 'f1', question: 'Wann sehe ich erste Ergebnisse?', answer: 'Veränderungen an Website und Positionierung sind ab dem ersten Monat sichtbar. Lokales SEO konsolidiert Ergebnisse zwischen 3 und 6 Monaten — deshalb beträgt die Mindestlaufzeit 6 Monate.' },
+        { _key: 'f2', question: 'Muss ich meine gesamte Website ändern?', answer: 'Nicht immer. In vielen Fällen reicht eine Restrukturierung und Überarbeitung der bestehenden Texte aus. Das klären wir gemeinsam im Erstgespräch.' },
+        { _key: 'f3', question: 'Funktioniert das, wenn ich schon ein Profil bei ImmoScout24 oder Immowelt habe?', answer: 'Ja, und genau das ist das Ziel. Portale sind teuer und machen abhängig. Dieses System baut einen eigenen Kanal auf, der diese Abhängigkeit Monat für Monat reduziert.' },
+        { _key: 'f4', question: 'Kann ich mehrere Services anbieten und trotzdem eine Nische haben?', answer: 'Absolut. Die Strategie besteht darin, ein Hauptangebot klar zu positionieren und sekundäre Seiten für jeden weiteren Service zu erstellen — jede mit eigenem SEO und Conversion-Ziel.' },
+        { _key: 'f5', question: 'Arbeitest du auch mit Maklern außerhalb Deutschlands?', answer: 'Ja. Ich arbeite remote mit Maklern in Deutschland, Österreich, der Schweiz, Spanien und Lateinamerika. Der Prozess ist 100 % online.' },
+        { _key: 'f6', question: 'Was passiert nach den 6 Monaten?', answer: 'Wir entscheiden gemeinsam, ob das monatliche Tracking weiterläuft oder ob du das System eigenständig verwaltest. Keine Vertragsbindung.' },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
     },
-    // 8. CTA
     {
-      _key: 'de-cta',
-      _type: 'ctaBlock',
-      headline: 'Bereit für mehr Anfragen?',
-      subtext:
-        'Buchen Sie jetzt Ihr kostenloses Erstgespräch. Wir analysieren Ihre aktuelle Situation und zeigen Ihnen, wie eine professionelle Website Ihr Geschäft verändern kann — ohne Verkaufsdruck.',
-      ctaLabel: 'Erstgespräch vereinbaren',
-      ctaHref: CTA_URL,
-      variant: 'primary',
-      colorScheme: 'dark',
+      _key: 'landing-cta-final',
+      _type: 'landingCtaFinal',
       enabled: true,
-      spacing: 'spacious',
+      headline: 'Bereit, dass deine Website anfängt, Kunden zu generieren?',
+      copy: 'In 30 Minuten analysieren wir deine aktuelle digitale Präsenz und ich sage dir genau, wo deine größte Chance für organisches Wachstum liegt — kostenlos und unverbindlich.',
+      ctaLabel: 'KOSTENLOSES GESPRÄCH BUCHEN',
+      ctaHref: CTA_HREF,
+      scarcityText: 'Ich nehme nur eine begrenzte Anzahl an Projekten pro Quartal an.',
     },
   ],
 }
 
-// ---- English homepage (page-home-en) -----------------------------------
+// ---- English homepage (page-home-en-landing) ---------------------------
 
 const homePageEn = {
-  _id: 'page-home-en',
+  _id: 'page-home-en-landing',
   _type: 'page',
-  slug: { current: 'home' },
   language: 'en',
+  title: 'Digital Strategy for Real Estate Agents',
+  slug: { _type: 'slug', current: 'home' },
+  seo: {
+    title: 'Digital Strategy for Real Estate Agents | Nestor Segura',
+    description: 'Are you a real estate agent whose website generates no leads? I build digital strategies with local SEO, clear positioning, and lead automation so Google brings you clients — without paid ads. Book your free call.',
+  },
   sections: [
-    // 1. Hero
     {
-      _key: 'en-hero',
-      _type: 'heroSection',
-      badge: 'Exclusively for Real Estate Agents',
-      headline: 'Your real estate website should be a sales channel',
-      highlightedText: 'should be a sales channel',
-      subheadline:
-        'I help DE and ES agents convert traffic into closed deals through SEO and high-performance automation.',
-      ctaLabel: 'Get a Free Audit',
-      ctaHref: CTA_URL,
-      ctaSecondaryText: '* No credit card required',
-      colorScheme: 'light',
+      _key: 'landing-hero',
+      _type: 'landingHero',
       enabled: true,
-      spacing: 'normal',
+      headline: 'Digital Strategy for Real Estate Agents Who Want Clients Without Depending on Portals',
+      subtitle: 'I transform your online presence into a system that attracts buyers and homeowners directly from Google — with clear positioning, local SEO, and lead automation.',
+      ctaLabel: 'Book your free call',
+      ctaHref: CTA_HREF,
+      ctaSecondaryLabel: 'See how it works ↓',
+      ctaSecondaryHref: '#how-it-works',
     },
-    // 2. Feature Strip
     {
-      _key: 'en-features',
-      _type: 'featureStrip',
-      title: 'Why agents trust us',
-      features: [
-        {
-          _key: 'en-feat-1',
-          icon: 'building',
-          title: 'Industry Expertise',
-          description:
-            'We speak the language of real estate. No generic web design — tailored solutions built specifically for agents.',
-        },
-        {
-          _key: 'en-feat-2',
-          icon: 'target',
-          title: 'Conversion-Focused',
-          description:
-            'Every element of your website has one goal: turning visitors into inquiries. Design follows function, not the other way around.',
-        },
-        {
-          _key: 'en-feat-3',
-          icon: 'handshake',
-          title: 'Personal Support',
-          description:
-            'No ticket system, no call center. You talk directly with us — from the first idea to launch and beyond.',
-        },
-      ],
-      colorScheme: 'light',
+      _key: 'landing-problem',
+      _type: 'landingProblem',
       enabled: true,
-      spacing: 'normal',
-    },
-    // 3. Problem / Solution
-    {
-      _key: 'en-problem',
-      _type: 'problemSolutionBlock',
-      title: 'Does this sound familiar?',
+      headline: 'Why real estate agents lose clients on Google without knowing it',
+      intro: 'Most agents have an online presence. The problem is that it doesn\'t work. It doesn\'t generate calls, doesn\'t qualify leads, doesn\'t rank. And the reason is almost always the same.',
       problems: [
-        {
-          _key: 'en-prob-1',
-          number: 1,
-          headline: 'Your website exists but brings no inquiries',
-          description:
-            'You have a website, but the phone doesn\'t ring more because of it. Visitors come, look around — and leave.',
-        },
-        {
-          _key: 'en-prob-2',
-          number: 2,
-          headline: 'Your online presence doesn\'t match your professionalism',
-          description:
-            'You present properties worth millions — but your website looks like a hobby project from 2012.',
-        },
-        {
-          _key: 'en-prob-3',
-          number: 3,
-          headline: 'No time for marketing, design, and tech',
-          description:
-            'Your core business is real estate, not websites. But without a strong digital presence, you\'re losing potential clients every day.',
-        },
+        { _key: 'p1', number: '01', title: 'No clear positioning', description: '"I\'m a real estate agent" means nothing to Google or your ideal client. Without a specific message, you\'re invisible among hundreds of competitors offering exactly the same thing.' },
+        { _key: 'p2', number: '02', title: 'Offering too broad', description: 'Sales, purchases, rentals, luxury, first homes... for everyone. When you try to speak to everyone, you speak to no one — and Google doesn\'t know who to send your way.' },
+        { _key: 'p3', number: '03', title: 'No niche or defined locality', description: 'A website that doesn\'t target specific local keywords by city, neighbourhood, or client type won\'t appear when your ideal client is searching for exactly what you offer.' },
+        { _key: 'p4', number: '04', title: 'No lead capture system', description: 'Visitors arrive, but there\'s nothing to capture, qualify, or guide them into a conversation. The traffic is lost without a trace — and without leads.' },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'normal',
+      closing: 'All of this shows up in a single metric: your website exists, but it doesn\'t generate clients.',
     },
-    // 4. Services
     {
-      _key: 'en-services',
-      _type: 'servicesBlock',
-      title: 'Our Services',
-      services: [
-        {
-          _key: 'en-svc-1',
-          number: 1,
-          name: 'Website Creation',
-          description:
-            'A new website that represents your agency, builds trust, and generates inquiries. Ready in 4–6 weeks.',
-          features: [
-            'Custom design with your brand identity',
-            'Mobile-first and technically optimized',
-            'Integrated appointment booking system',
-            'Sanity CMS — easy to edit yourself',
-          ],
-          ctaLabel: 'Book Free Consultation',
-          ctaHref: CTA_URL,
-        },
-        {
-          _key: 'en-svc-2',
-          number: 2,
-          name: 'Website Analysis',
-          description:
-            'We analyze your existing website and show you exactly where you\'re losing inquiries — with concrete improvement suggestions.',
-          features: [
-            'Technical performance analysis',
-            'Conversion rate evaluation',
-            'Competitor comparison',
-            'Prioritized action recommendations',
-          ],
-          ctaLabel: 'Book Free Consultation',
-          ctaHref: CTA_URL,
-        },
-        {
-          _key: 'en-svc-3',
-          number: 3,
-          name: 'Ongoing Support',
-          description:
-            'Your website partner for everyday needs: changes, updates, new content, and technical support — flexible and no long-term contract.',
-          features: [
-            'Monthly content changes included',
-            'Technical maintenance and updates',
-            'New pages and features on demand',
-            'Direct contact via WhatsApp',
-          ],
-          ctaLabel: 'Book Free Consultation',
-          ctaHref: CTA_URL,
-        },
+      _key: 'landing-guide',
+      _type: 'landingGuide',
+      enabled: true,
+      headline: 'Digital strategy focused on results, not pretty websites',
+      paragraphs: [
+        'I\'ve analysed dozens of real estate agent websites. The pattern of mistakes is almost always the same — and there\'s a clear solution.',
+        'I\'m not a real estate agent. I\'m a digital strategist specialised in building systems that turn visitors into clients. And what I\'ve learned working with local businesses is that the problem is rarely the service — it\'s how it\'s communicated and positioned online.',
       ],
-      colorScheme: 'dark',
-      enabled: true,
-      spacing: 'spacious',
-    },
-    // 5. Testimonials
-    {
-      _key: 'en-testimonials',
-      _type: 'testimonialsBlock',
-      title: 'What our clients say',
       testimonials: [
+        { _key: 't1', author: 'Andres Ugueto', role: 'Founder & CEO', quote: 'Nestor understood exactly what we needed. Our website went from being a business card to a lead-generating machine.' },
+        { _key: 't2', author: 'Alvaro Gargano', role: 'Co-Founder', quote: 'The strategic approach made all the difference. It\'s not about having a pretty website — it\'s about making it work.' },
+        { _key: 't3', author: 'Anna Wolf', role: 'Marketing Director', quote: 'Professional, methodical, and results-oriented. I recommend working with Nestor without hesitation.' },
+      ],
+    },
+    {
+      _key: 'landing-plan',
+      _type: 'landingPlan',
+      enabled: true,
+      headline: 'From invisible agent to digital reference in your area — in 3 steps',
+      steps: [
         {
-          _key: 'en-test-1',
-          quote:
-            'Since the relaunch I get regular inquiries through the website. Before it was practically zero. Nestor understood exactly what agents need.',
-          author: 'Klaus-Dieter Hoffmann',
-          role: 'Real Estate Agent, Hamburg',
+          _key: 's1',
+          number: '1',
+          title: 'Diagnosis and strategy',
+          description: 'We analyse your current situation, define your ideal client, and design the positioning that sets you apart in your local market. You know exactly who you\'re talking to and what to say.',
         },
         {
-          _key: 'en-test-2',
-          quote:
-            'The new website not only looks professional — it actually works. My clients often mention the design. That\'s priceless.',
-          author: 'Sabine Müller',
-          role: 'Agent, Munich',
+          _key: 's2',
+          number: '2',
+          title: 'Execution and build',
+          description: 'We restructure your website, rewrite the copy, create pages optimised by area and search intent, and integrate lead capture tools available on the market.',
         },
         {
-          _key: 'en-test-3',
-          quote:
-            'Finally someone who truly knows the real estate industry. No generic copy, no cookie-cutter design. A real partner.',
-          author: 'Thomas Bergmann',
-          role: 'CEO, Bergmann Immobilien',
+          _key: 's3',
+          number: '3',
+          title: 'Monthly organic tracking',
+          description: 'For 6 months we measure, adjust, and optimise — SEO, conversion, and metrics — so results grow month after month without relying on paid advertising.',
         },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
     },
-    // 6. References
     {
-      _key: 'en-references',
-      _type: 'referencesBlock',
-      title: 'Our Projects',
-      references: [
-        {
-          _key: 'en-ref-1',
-          name: 'Hoffmann Immobilien',
-          description:
-            'Complete website relaunch for an established agency in Hamburg. Conversion rate increased by 340%.',
-          url: 'https://example.com',
-        },
-        {
-          _key: 'en-ref-2',
-          name: 'Müller & Partner',
-          description:
-            'New brand identity and website for a real estate partnership with 5 locations in Bavaria.',
-          url: 'https://example.com',
-        },
-        {
-          _key: 'en-ref-3',
-          name: 'Bergmann Immobilien',
-          description:
-            'Website analysis and redesign for a Berlin-based agent. 2× more inquiries in the first month after launch.',
-          url: 'https://example.com',
-        },
+      _key: 'landing-offer',
+      _type: 'landingOffer',
+      enabled: true,
+      headline: 'Everything you need to make your website work for you',
+      comparison: [
+        { _key: 'c1', before: '"I\'m a real estate agent"', after: '"I help families find their home in London"' },
+        { _key: 'c2', before: 'Generic website with no organic traffic', after: 'Pages optimised by city and search intent' },
+        { _key: 'c3', before: 'Leads from Rightmove at premium prices', after: 'Direct leads from Google, no middlemen' },
+        { _key: 'c4', before: 'Contact form nobody fills in', after: 'Automated lead capture and qualification system' },
+        { _key: 'c5', before: 'No metrics, no direction', after: 'Monthly reporting + strategic adjustments' },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
+      services: [
+        { _key: 'sv1', title: 'Strategic positioning + ICP definition' },
+        { _key: 'sv2', title: 'Website restructuring + page architecture' },
+        { _key: 'sv3', title: 'Conversion-oriented web copy' },
+        { _key: 'sv4', title: 'Local and intent-based SEO by city/neighbourhood/audience' },
+        { _key: 'sv5', title: 'Lead capture tool integration' },
+        { _key: 'sv6', title: 'Monthly organic tracking — minimum 6 months' },
+      ],
+      ctaLabel: 'Book your free call',
+      ctaHref: CTA_HREF,
     },
-    // 7. FAQ
     {
-      _key: 'en-faq',
-      _type: 'faqBlock',
-      title: 'Frequently Asked Questions',
+      _key: 'landing-testimonials',
+      _type: 'landingTestimonials',
+      enabled: true,
+      headline: 'What those who\'ve worked with this methodology say',
+      subtitle: 'I work with founders, local businesses, and agents who want to grow organically and systematically.',
+      testimonials: [
+        { _key: 'lt1', name: 'Andres Ugueto', role: 'Founder & CEO', quote: 'Nestor understood exactly what we needed. Our website went from being a business card to a lead-generating machine.' },
+        { _key: 'lt2', name: 'Alvaro Gargano', role: 'Co-Founder', quote: 'The strategic approach made all the difference. It\'s not about having a pretty website — it\'s about making it work.' },
+        { _key: 'lt3', name: 'Anna Wolf', role: 'Marketing Director', quote: 'Professional, methodical, and results-oriented. I recommend working with Nestor without hesitation.' },
+      ],
+    },
+    {
+      _key: 'landing-faq',
+      _type: 'landingFaq',
+      enabled: true,
+      headline: 'Frequently asked questions about digital strategy for real estate agents',
       faqs: [
-        {
-          _key: 'en-faq-1',
-          question: 'How long does it take to build a new website?',
-          answer:
-            'Typically 4–6 weeks from the initial consultation to launch. This depends on how quickly content and feedback arrive from your side. We keep you updated throughout the entire process.',
-        },
-        {
-          _key: 'en-faq-2',
-          question: 'How much does a real estate agent website cost?',
-          answer:
-            'It depends on the scope. A professional agent website starts at around €2,500. In the initial consultation we discuss your requirements and provide a transparent quote — no hidden costs.',
-        },
-        {
-          _key: 'en-faq-3',
-          question: 'Can I edit the website myself after launch?',
-          answer:
-            'Yes, absolutely. We build on a user-friendly CMS (Sanity) that\'s easy to use even without coding knowledge. The launch package includes a personal walkthrough.',
-        },
-        {
-          _key: 'en-faq-4',
-          question: 'Do you also work with existing websites?',
-          answer:
-            'Yes. We offer both complete new builds and website analyses with targeted improvements for existing sites. In our initial consultation we\'ll determine what makes the most sense for you.',
-        },
-        {
-          _key: 'en-faq-5',
-          question: 'What sets you apart from general web agencies?',
-          answer:
-            'We work exclusively with real estate agents. That means we know your target audience, your industry, and the messages that resonate with your clients. No generic design, no guesswork — just proven solutions for agents.',
-        },
+        { _key: 'f1', question: 'How soon will I see results?', answer: 'Changes to website and positioning are visible from the first month. Local SEO consolidates results between 3 and 6 months — that\'s why the minimum engagement is 6 months.' },
+        { _key: 'f2', question: 'Do I need to change my entire website?', answer: 'Not always. In many cases, restructuring and rewriting existing copy is enough. We\'ll evaluate it together on the initial call.' },
+        { _key: 'f3', question: 'Does this work if I already have a profile on Zillow or Rightmove?', answer: 'Yes, and that\'s precisely the goal. Portals are expensive and create dependency. This system builds your own channel that reduces that dependency month after month.' },
+        { _key: 'f4', question: 'Can I offer multiple services and still have a niche?', answer: 'Absolutely. The strategy is to position one main offer clearly, then create secondary pages for each additional service — each with its own SEO and conversion goal.' },
+        { _key: 'f5', question: 'Do you work with agents outside of Germany?', answer: 'Yes. I work remotely with agents in Germany, the DACH region, Spain, and Latin America. The process is 100% online.' },
+        { _key: 'f6', question: 'What happens after the 6 months?', answer: 'We decide together whether to continue monthly tracking or whether you manage the system independently. No binding contracts.' },
       ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
     },
-    // 8. CTA
     {
-      _key: 'en-cta',
-      _type: 'ctaBlock',
-      headline: 'Ready for more inquiries?',
-      subtext:
-        'Book your free consultation now. We\'ll analyze your current situation and show you how a professional website can transform your business — no sales pressure.',
-      ctaLabel: 'Book Free Consultation',
-      ctaHref: CTA_URL,
-      variant: 'primary',
-      colorScheme: 'dark',
+      _key: 'landing-cta-final',
+      _type: 'landingCtaFinal',
       enabled: true,
-      spacing: 'spacious',
+      headline: 'Ready for your website to start generating clients?',
+      copy: 'In 30 minutes we\'ll analyse your current digital presence and I\'ll tell you exactly where your biggest opportunity for organic growth lies — free, no strings attached.',
+      ctaLabel: 'BOOK YOUR FREE CALL',
+      ctaHref: CTA_HREF,
+      scarcityText: 'I accept a limited number of projects per quarter.',
     },
   ],
 }
 
-// ---- Spanish homepage (page-home-es) -----------------------------------
-
-const homePageEs = {
-  _id: 'page-home-es',
-  _type: 'page',
-  slug: { current: 'home' },
-  language: 'es',
-  sections: [
-    // 1. Hero
-    {
-      _key: 'es-hero',
-      _type: 'heroSection',
-      badge: 'Exclusivo para agentes inmobiliarios',
-      headline: 'Tu web inmobiliaria debería ser un canal de ventas',
-      highlightedText: 'debería ser un canal de ventas',
-      subheadline:
-        'Ayudo a agentes en DE y ES a convertir tráfico en cierres reales — con SEO y automatización de alto rendimiento.',
-      ctaLabel: 'Obtener auditoría gratis',
-      ctaHref: CTA_URL,
-      ctaSecondaryText: '* Sin tarjeta de crédito',
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'normal',
-    },
-    // 2. Feature Strip
-    {
-      _key: 'es-features',
-      _type: 'featureStrip',
-      title: 'Por qué los agentes confían en nosotros',
-      features: [
-        {
-          _key: 'es-feat-1',
-          icon: 'building',
-          title: 'Expertise del sector',
-          description:
-            'Hablamos el idioma del sector inmobiliario. Nada de diseño genérico — soluciones hechas a medida para agentes.',
-        },
-        {
-          _key: 'es-feat-2',
-          icon: 'target',
-          title: 'Orientado a la conversión',
-          description:
-            'Cada elemento de su web tiene un objetivo: convertir visitas en consultas. El diseño sigue la función, no al revés.',
-        },
-        {
-          _key: 'es-feat-3',
-          icon: 'handshake',
-          title: 'Atención personalizada',
-          description:
-            'Sin sistema de tickets ni call center. Habla directamente con nosotros — desde la primera idea hasta el lanzamiento y más allá.',
-        },
-      ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'normal',
-    },
-    // 3. Problem / Solution
-    {
-      _key: 'es-problem',
-      _type: 'problemSolutionBlock',
-      title: '¿Le suena familiar?',
-      problems: [
-        {
-          _key: 'es-prob-1',
-          number: 1,
-          headline: 'Su web existe pero no genera consultas',
-          description:
-            'Tiene una web, pero el teléfono no suena más por eso. Los visitantes llegan, miran — y se van.',
-        },
-        {
-          _key: 'es-prob-2',
-          number: 2,
-          headline: 'Su presencia online no refleja su profesionalidad',
-          description:
-            'Presenta propiedades que valen millones — pero su web parece un proyecto amateur de hace una década.',
-        },
-        {
-          _key: 'es-prob-3',
-          number: 3,
-          headline: 'Sin tiempo para marketing, diseño y tecnología',
-          description:
-            'Su negocio principal es el inmueble, no la web. Pero sin presencia digital sólida, pierde clientes potenciales cada día.',
-        },
-      ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'normal',
-    },
-    // 4. Services
-    {
-      _key: 'es-services',
-      _type: 'servicesBlock',
-      title: 'Nuestros Servicios',
-      services: [
-        {
-          _key: 'es-svc-1',
-          number: 1,
-          name: 'Creación de web',
-          description:
-            'Una web nueva que represente su agencia, genere confianza y atraiga consultas. Lista en 4–6 semanas.',
-          features: [
-            'Diseño personalizado con su identidad de marca',
-            'Mobile-first y optimizada técnicamente',
-            'Sistema integrado de reserva de citas',
-            'CMS Sanity — fácil de editar usted mismo',
-          ],
-          ctaLabel: 'Agendar consulta gratuita',
-          ctaHref: CTA_URL,
-        },
-        {
-          _key: 'es-svc-2',
-          number: 2,
-          name: 'Análisis web',
-          description:
-            'Analizamos su web actual y le mostramos exactamente dónde está perdiendo consultas — con sugerencias concretas de mejora.',
-          features: [
-            'Análisis de rendimiento técnico',
-            'Evaluación de tasa de conversión',
-            'Comparativa con la competencia',
-            'Recomendaciones priorizadas',
-          ],
-          ctaLabel: 'Agendar consulta gratuita',
-          ctaHref: CTA_URL,
-        },
-        {
-          _key: 'es-svc-3',
-          number: 3,
-          name: 'Soporte continuo',
-          description:
-            'Su socio web para el día a día: cambios, actualizaciones, nuevos contenidos y soporte técnico — flexible y sin permanencia.',
-          features: [
-            'Cambios de contenido mensuales incluidos',
-            'Mantenimiento técnico y actualizaciones',
-            'Nuevas páginas y funciones bajo demanda',
-            'Contacto directo por WhatsApp',
-          ],
-          ctaLabel: 'Agendar consulta gratuita',
-          ctaHref: CTA_URL,
-        },
-      ],
-      colorScheme: 'dark',
-      enabled: true,
-      spacing: 'spacious',
-    },
-    // 5. Testimonials
-    {
-      _key: 'es-testimonials',
-      _type: 'testimonialsBlock',
-      title: 'Lo que dicen nuestros clientes',
-      testimonials: [
-        {
-          _key: 'es-test-1',
-          quote:
-            'Desde el relanzamiento recibo consultas regulares a través de la web. Antes era prácticamente cero. Nestor entendió exactamente lo que necesitan los agentes.',
-          author: 'Klaus-Dieter Hoffmann',
-          role: 'Agente inmobiliario, Hamburgo',
-        },
-        {
-          _key: 'es-test-2',
-          quote:
-            'La nueva web no solo tiene un aspecto profesional — también funciona. Mis clientes suelen comentar el diseño. Eso no tiene precio.',
-          author: 'Sabine Müller',
-          role: 'Agente, Múnich',
-        },
-        {
-          _key: 'es-test-3',
-          quote:
-            'Por fin alguien que conoce de verdad el sector inmobiliario. Nada de textos genéricos ni diseños de plantilla. Un socio de verdad.',
-          author: 'Thomas Bergmann',
-          role: 'CEO, Bergmann Immobilien',
-        },
-      ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
-    },
-    // 6. References
-    {
-      _key: 'es-references',
-      _type: 'referencesBlock',
-      title: 'Nuestros Proyectos',
-      references: [
-        {
-          _key: 'es-ref-1',
-          name: 'Hoffmann Immobilien',
-          description:
-            'Relanzamiento completo del sitio web para una agencia consolidada en Hamburgo. Tasa de conversión aumentada un 340%.',
-          url: 'https://example.com',
-        },
-        {
-          _key: 'es-ref-2',
-          name: 'Müller & Partner',
-          description:
-            'Nueva identidad de marca y web para una asociación inmobiliaria con 5 sedes en Baviera.',
-          url: 'https://example.com',
-        },
-        {
-          _key: 'es-ref-3',
-          name: 'Bergmann Immobilien',
-          description:
-            'Análisis y rediseño web para un agente en Berlín. 2× más consultas en el primer mes tras el lanzamiento.',
-          url: 'https://example.com',
-        },
-      ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
-    },
-    // 7. FAQ
-    {
-      _key: 'es-faq',
-      _type: 'faqBlock',
-      title: 'Preguntas frecuentes',
-      faqs: [
-        {
-          _key: 'es-faq-1',
-          question: '¿Cuánto tarda en crearse una nueva web?',
-          answer:
-            'Normalmente entre 4 y 6 semanas desde la consulta inicial hasta el lanzamiento. Depende de la velocidad con la que lleguen los contenidos y el feedback de su parte. Le mantenemos informado durante todo el proceso.',
-        },
-        {
-          _key: 'es-faq-2',
-          question: '¿Cuánto cuesta una web para agentes inmobiliarios?',
-          answer:
-            'Depende del alcance. Una web profesional para agentes comienza en unos 2.500 €. En la consulta inicial hablamos de sus necesidades y le entregamos un presupuesto transparente — sin costes ocultos.',
-        },
-        {
-          _key: 'es-faq-3',
-          question: '¿Puedo editar la web yo mismo después del lanzamiento?',
-          answer:
-            'Sí, absolutamente. Construimos sobre un CMS fácil de usar (Sanity) que se maneja sin conocimientos de programación. El paquete de lanzamiento incluye una sesión de formación personalizada.',
-        },
-        {
-          _key: 'es-faq-4',
-          question: '¿También trabajan con webs existentes?',
-          answer:
-            'Sí. Ofrecemos tanto desarrollo completamente nuevo como análisis y mejoras dirigidas para sitios existentes. En la consulta inicial determinaremos qué tiene más sentido para usted.',
-        },
-        {
-          _key: 'es-faq-5',
-          question: '¿Qué les diferencia de una agencia web generalista?',
-          answer:
-            'Trabajamos exclusivamente con agentes inmobiliarios. Eso significa que conocemos su público objetivo, su sector y los mensajes que conectan con sus clientes. Sin diseño genérico, sin conjeturas — solo soluciones probadas para agentes.',
-        },
-      ],
-      colorScheme: 'light',
-      enabled: true,
-      spacing: 'spacious',
-    },
-    // 8. CTA
-    {
-      _key: 'es-cta',
-      _type: 'ctaBlock',
-      headline: '¿Listo para recibir más consultas?',
-      subtext:
-        'Reserve ahora su consulta gratuita. Analizaremos su situación actual y le mostraremos cómo una web profesional puede transformar su negocio — sin presión de venta.',
-      ctaLabel: 'Agendar consulta gratuita',
-      ctaHref: CTA_URL,
-      variant: 'primary',
-      colorScheme: 'dark',
-      enabled: true,
-      spacing: 'spacious',
-    },
-  ],
-}
+// ---- Spanish homepage (page-home-es-landing) ---------------------------
+// ES homepage is managed by scripts/seed-landing-es.ts
+// To avoid conflicts, do not uncomment the ES entry below.
 
 // ---- Main execution ----------------------------------------------------
 
@@ -883,10 +366,9 @@ async function seed() {
 
   const documents = [
     { doc: siteSettings, label: 'siteSettings' },
-    { doc: homePageDe, label: 'page-home-de (German)' },
-    { doc: homePageEn, label: 'page-home-en (English)' },
-    // ES homepage is managed by scripts/seed-landing-es.ts (new landing page)
-    // { doc: homePageEs, label: 'page-home-es (Spanish)' },
+    { doc: homePageDe, label: 'page-home-de-landing (German)' },
+    { doc: homePageEn, label: 'page-home-en-landing (English)' },
+    // ES homepage is managed by scripts/seed-landing-es.ts (page-home-es-landing)
   ]
 
   for (const { doc, label } of documents) {

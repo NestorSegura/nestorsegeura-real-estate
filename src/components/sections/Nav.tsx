@@ -4,15 +4,39 @@ import { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { CTAButton } from './CTAButton'
 
-const NAV_LINKS = [
-  { label: 'Cómo funciona', href: '#como-funciona' },
-  { label: 'Resultados', href: '#resultados' },
-  { label: 'FAQ', href: '#faq' },
-]
+const NAV_LINKS: Record<string, { label: string; href: string }[]> = {
+  de: [
+    { label: 'So funktioniert\'s', href: '#como-funciona' },
+    { label: 'Ergebnisse', href: '#resultados' },
+    { label: 'FAQ', href: '#faq' },
+  ],
+  en: [
+    { label: 'How it works', href: '#como-funciona' },
+    { label: 'Results', href: '#resultados' },
+    { label: 'FAQ', href: '#faq' },
+  ],
+  es: [
+    { label: 'Cómo funciona', href: '#como-funciona' },
+    { label: 'Resultados', href: '#resultados' },
+    { label: 'FAQ', href: '#faq' },
+  ],
+}
+
+const CTA_LABELS: Record<string, string> = {
+  de: 'Kostenloses Erstgespräch buchen',
+  en: 'Book your free call',
+  es: 'Reserva tu llamada gratuita',
+}
+
+const ARIA_LABELS: Record<string, { open: string; close: string }> = {
+  de: { open: 'Menü öffnen', close: 'Menü schließen' },
+  en: { open: 'Open menu', close: 'Close menu' },
+  es: { open: 'Abrir menú', close: 'Cerrar menú' },
+}
 
 const CTA_HREF = 'https://tidycal.com/1vn62y3/website-als-verkaufskanal-optimieren'
 
-export function Nav() {
+export function Nav({ locale = 'es' }: { locale?: string }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -54,7 +78,7 @@ export function Nav() {
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-8 list-none m-0 p-0">
-            {NAV_LINKS.map((link) => (
+            {(NAV_LINKS[locale] ?? NAV_LINKS.es).map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
@@ -76,7 +100,7 @@ export function Nav() {
           {/* Desktop CTA */}
           <div className="hidden md:block">
             <CTAButton href={CTA_HREF} className="text-sm px-6 py-2.5">
-              Reserva tu llamada gratuita
+              {CTA_LABELS[locale] ?? CTA_LABELS.es}
             </CTAButton>
           </div>
 
@@ -86,7 +110,7 @@ export function Nav() {
             className="md:hidden p-2 rounded-lg"
             style={{ color: 'var(--brand-fg)' }}
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-label={menuOpen ? (ARIA_LABELS[locale] ?? ARIA_LABELS.es).close : (ARIA_LABELS[locale] ?? ARIA_LABELS.es).open}
           >
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -95,7 +119,7 @@ export function Nav() {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="md:hidden border-t px-6 pb-6 pt-4 flex flex-col gap-4" style={{ borderColor: 'var(--border)' }}>
-            {NAV_LINKS.map((link) => (
+            {(NAV_LINKS[locale] ?? NAV_LINKS.es).map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -107,7 +131,7 @@ export function Nav() {
               </a>
             ))}
             <CTAButton href={CTA_HREF} className="text-sm mt-2">
-              Reserva tu llamada gratuita
+              {CTA_LABELS[locale] ?? CTA_LABELS.es}
             </CTAButton>
           </div>
         )}

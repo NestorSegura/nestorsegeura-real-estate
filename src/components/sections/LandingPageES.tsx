@@ -18,10 +18,10 @@ function find<T>(sections: unknown[], type: string): T | null {
   return (s as T) ?? null
 }
 
-export async function LandingPageES() {
+export async function LandingPage({ locale }: { locale: string }) {
   const { data: page } = await sanityFetch({
     query: PAGE_BY_SLUG_QUERY,
-    params: { slug: 'home', language: 'es' },
+    params: { slug: 'home', language: locale },
   })
 
   const sections = (page?.sections ?? []) as Record<string, unknown>[]
@@ -105,7 +105,7 @@ export async function LandingPageES() {
       <JsonLd data={serviceSchema} />
       {faqSchema && <JsonLd data={faqSchema} />}
 
-      <Nav />
+      <Nav locale={locale} />
 
       <main>
         {hero && (
@@ -119,7 +119,7 @@ export async function LandingPageES() {
           />
         )}
 
-        <WebsiteShowcase locale="es" />
+        <WebsiteShowcase locale={locale as 'de' | 'en' | 'es'} />
 
         {problem && (
           <Problem
@@ -175,7 +175,7 @@ export async function LandingPageES() {
         )}
       </main>
 
-      <FooterES />
+      <FooterES locale={locale} />
     </>
   )
 }

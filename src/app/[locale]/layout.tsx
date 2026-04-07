@@ -3,12 +3,8 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 import { NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
-import { ThemeProvider } from '@/components/theme-provider'
 import { routing } from '@/i18n/routing'
 import { SanityLive, sanityFetch } from '@/sanity/lib/live'
-import { Navbar } from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
-import { ScrollAnimations } from '@/components/ScrollAnimations'
 import { SITE_SETTINGS_SEO_QUERY } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 
@@ -65,31 +61,10 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale)
 
-  // ES uses a self-contained landing page with its own nav/footer
-  if (locale === 'es') {
-    return (
-      <NextIntlClientProvider>
-        {children}
-        <SanityLive />
-      </NextIntlClientProvider>
-    )
-  }
-
   return (
     <NextIntlClientProvider>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <Navbar />
-        <ScrollAnimations>
-          <main>{children}</main>
-        </ScrollAnimations>
-        <Footer />
-        <SanityLive />
-      </ThemeProvider>
+      {children}
+      <SanityLive />
     </NextIntlClientProvider>
   )
 }

@@ -1,15 +1,23 @@
-export default function FooterES() {
+const FOOTER_LINKS: Record<string, { legal: string; privacy: string; imprint: string }> = {
+  de: { legal: 'Rechtliches', privacy: 'Datenschutz', imprint: 'Impressum' },
+  en: { legal: 'Legal notice', privacy: 'Privacy policy', imprint: 'Impressum' },
+  es: { legal: 'Aviso legal', privacy: 'Política de privacidad', imprint: 'Impressum' },
+}
+
+export default function FooterES({ locale = 'es' }: { locale?: string }) {
+  const labels = FOOTER_LINKS[locale] ?? FOOTER_LINKS.es
+
   return (
     <footer className="px-6 py-12" style={{ background: 'var(--brand-fg)', color: 'rgba(255,255,255,0.7)' }}>
       <div className="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-6">
         <p className="text-sm">© 2026 Nestor Segura</p>
 
         <div className="text-sm flex items-center gap-0">
-          <a href="#" className="text-white/50 hover:text-white transition">Aviso legal</a>
+          <a href="#" className="text-white/50 hover:text-white transition">{labels.legal}</a>
           <span className="text-white/20">{' | '}</span>
-          <a href="#" className="text-white/50 hover:text-white transition">Política de privacidad</a>
+          <a href="#" className="text-white/50 hover:text-white transition">{labels.privacy}</a>
           <span className="text-white/20">{' | '}</span>
-          <a href="#" className="text-white/50 hover:text-white transition">Impressum</a>
+          <a href="#" className="text-white/50 hover:text-white transition">{labels.imprint}</a>
         </div>
 
         <a
