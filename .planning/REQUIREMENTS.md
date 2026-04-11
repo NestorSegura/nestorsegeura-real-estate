@@ -166,48 +166,48 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | — | Pending |
-| INFR-02 | — | Pending |
-| INFR-03 | — | Pending |
-| INFR-04 | — | Pending |
-| INFR-05 | — | Pending |
-| INFR-06 | — | Pending |
-| INFR-07 | — | Pending |
-| INFR-08 | — | Pending |
-| I18N-01 | — | Pending |
-| I18N-02 | — | Pending |
-| I18N-03 | — | Pending |
-| I18N-04 | — | Pending |
-| BLCK-11 | — | Pending |
-| BLCK-12 | — | Pending |
-| BLCK-13 | — | Pending |
-| BLCK-14 | — | Pending |
-| BLCK-15 | — | Pending |
-| BLCK-16 | — | Pending |
-| BLCK-17 | — | Pending |
-| BLCK-18 | — | Pending |
-| BLCK-19 | — | Pending |
-| INTR-01 | — | Pending |
-| INTR-02 | — | Pending |
-| INTR-03 | — | Pending |
-| INTR-04 | — | Pending |
-| BLOG-04 | — | Pending |
-| BLOG-05 | — | Pending |
-| BLOG-06 | — | Pending |
-| SEO-06 | — | Pending |
-| SEO-07 | — | Pending |
-| SEO-08 | — | Pending |
-| SEO-09 | — | Pending |
-| SEO-10 | — | Pending |
-| DSGN-01 | — | Pending |
-| DSGN-02 | — | Pending |
-| DSGN-03 | — | Pending |
+| INFR-01 | Phase 6 | Pending |
+| INFR-02 | Phase 6 | Pending |
+| INFR-03 | Phase 6 | Pending |
+| INFR-04 | Phase 6 | Pending |
+| INFR-05 | Phase 10 | Pending |
+| INFR-06 | Phase 10 | Pending |
+| INFR-07 | Phase 10 | Pending |
+| INFR-08 | Phase 10 | Pending |
+| I18N-01 | Phase 7 | Pending |
+| I18N-02 | Phase 7 | Pending |
+| I18N-03 | Phase 7 | Pending |
+| I18N-04 | Phase 7 | Pending |
+| BLCK-11 | Phase 8 | Pending |
+| BLCK-12 | Phase 8 | Pending |
+| BLCK-13 | Phase 8 | Pending |
+| BLCK-14 | Phase 8 | Pending |
+| BLCK-15 | Phase 8 | Pending |
+| BLCK-16 | Phase 8 | Pending |
+| BLCK-17 | Phase 8 | Pending |
+| BLCK-18 | Phase 8 | Pending |
+| BLCK-19 | Phase 8 | Pending |
+| INTR-01 | Phase 9 | Pending |
+| INTR-02 | Phase 9 | Pending |
+| INTR-03 | Phase 9 | Pending |
+| INTR-04 | Phase 9 | Pending |
+| BLOG-04 | Phase 8 | Pending |
+| BLOG-05 | Phase 8 | Pending |
+| BLOG-06 | Phase 8 | Pending |
+| SEO-06 | Phase 8 | Pending |
+| SEO-07 | Phase 8 | Pending |
+| SEO-08 | Phase 8 | Pending |
+| SEO-09 | Phase 8 | Pending |
+| SEO-10 | Phase 8 | Pending |
+| DSGN-01 | Phase 7 | Pending |
+| DSGN-02 | Phase 7 | Pending |
+| DSGN-03 | Phase 7 | Pending |
 
 **Coverage:**
 - v2 requirements: 36 total
-- Mapped to phases: 0
-- Unmapped: 36 (awaiting roadmap)
+- Mapped to phases: 36
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-11*
-*Last updated: 2026-04-11 after milestone v2.0 definition*
+*Last updated: 2026-04-11 — roadmap v2.0 phases 6–10 assigned*
