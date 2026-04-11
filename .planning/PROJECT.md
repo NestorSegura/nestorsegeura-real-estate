@@ -4,6 +4,20 @@
 
 A professional landing page for Nestor Segura, a full-stack developer and digital agency owner based in Hamburg, Germany. The site positions Nestor as a digital strategy partner for real estate agencies (Immobilienmakler), helping them turn their websites into sales channels through SEO, conversion optimization, local SEO, and marketing automation. The primary goal is filling Nestor's appointment calendar with qualified leads from German real estate agencies.
 
+## Current Milestone: v2.0 Astro Migration
+
+**Goal:** Migrate the entire site from Next.js to Astro, deploy on Cloudflare Pages for zero-cost hosting with better performance and less complexity.
+
+**Target features:**
+- Full Astro rewrite with same content/functionality
+- Cloudflare Pages deployment (free tier)
+- All 3 locales preserved (de primary, en, es)
+- Blog infrastructure rebuilt in Astro
+- Website analysis tool (/analyse) as Cloudflare Function
+- Same Sanity content model (schemas unchanged)
+- Sanity Studio hosted externally (studio.nestorsegura.com)
+- Switch fonts to Clash Display + Chivo
+
 ## Core Value
 
 Real estate agents land on the site, immediately feel "this is for me," and book an appointment — the site must convert Immobilienmakler visitors into booked calls.
@@ -69,4 +83,4 @@ Real estate agents land on the site, immediately feel "this is for me," and book
 | Google Labs Stitch for design system | Modern component aesthetics, professional look | — Pending |
 
 ---
-*Last updated: 2026-03-15 after initialization*
+*Last updated: 2026-04-11 after milestone v2.0 started*
