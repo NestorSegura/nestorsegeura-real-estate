@@ -91,7 +91,7 @@ Plans:
   2. `astro build` completes and outputs a Cloudflare Workers-compatible bundle (dist/_worker.js present)
   3. The Sanity client fetches data from the existing project using `@sanity/astro` with `useCdn: false`
   4. `wrangler dev` serves the built output locally without errors
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 06-01: Scaffold Astro 6 with @astrojs/cloudflare adapter, wrangler.jsonc, nodejs_compat flag, and project skeleton
@@ -107,7 +107,7 @@ Plans:
   3. UI strings (nav labels, button text) load from messages/de.json, messages/en.json, messages/es.json via src/i18n/utils.ts
   4. GROQ queries return only the document matching the current locale's language field
   5. Headings render in Clash Display and body text renders in Chivo across all locale pages
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 07-01: Configure Astro i18n routing (de default no-prefix, /en, /es), create src/i18n/utils.ts, migrate messages/*.json
@@ -124,7 +124,7 @@ Plans:
   4. All three locale homepages have correct `<title>`, `<meta description>`, OG tags, and Person JSON-LD pulled from Sanity siteSettings
   5. GET /sitemap.xml returns entries for all three locales with hreflang alternate links
   6. GET /robots.txt allows all paths (no /studio to block)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 08-01: Build all 8 block .astro components and PageBuilder.astro dispatcher
@@ -140,7 +140,7 @@ Plans:
   2. The locale switcher in the navbar navigates to the equivalent page in the target locale
   3. Submitting a URL on the /analyse page returns a JSON response with scores and displays them — the React island receives locale and labels as props, not via hooks
   4. Scrolling down the page causes sections to animate into view using Intersection Observer (no third-party animation library)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 09-01: Build NavbarClient React island (client:load) with mobile drawer and locale switcher
@@ -156,7 +156,7 @@ Plans:
   2. Publishing a document in Sanity Studio triggers a Cloudflare deploy hook that rebuilds and redeploys the site within 3 minutes
   3. All environment variables (Sanity token, project ID, dataset) are set in the Cloudflare Workers dashboard and the build succeeds without a local .env file
   4. Cloudflare Auto Minify for HTML is disabled in the dashboard
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 10-01: Create Cloudflare Pages/Workers project, configure custom domain, set env vars in dashboard
