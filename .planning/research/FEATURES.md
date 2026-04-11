@@ -1,201 +1,425 @@
-# Feature Research
+# Feature Landscape: Next.js → Astro Migration
 
-**Domain:** Professional service landing page / lead generation funnel targeting German real estate agencies (Immobilienmakler)
-**Researched:** 2026-03-15
-**Confidence:** MEDIUM — B2B landing page patterns are well-documented (MEDIUM-HIGH). German real estate digital market specifics are less verified (LOW-MEDIUM). Free tool + paid report funnel structure relies on industry benchmarks cross-referenced from multiple sources (MEDIUM).
-
----
-
-## Feature Landscape
-
-### Table Stakes (Users Expect These)
-
-Features a Immobilienmakler visiting this landing page will expect. Missing any of these and the page reads as unfinished or untrustworthy — they leave without converting.
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Clear hero section with specific value proposition | B2B buyers scan before reading; first 3–5 seconds decide bounce or stay. "Partner, not vendor" must be legible at a glance. | LOW | Headline under 8 words. Sub-headline names the specific problem (agency website not generating leads). |
-| German-language primary conversion page (`/de`) | Target audience is German-speaking real estate agents. A page in another language signals "not for me". | LOW | German is the primary revenue page. EN/ES are secondary. `hreflang` required for correct Google indexing of all three. |
-| Contact / appointment CTA visible above the fold | Decision-makers expect a clear next step without scrolling. No CTA = no conversion path. | LOW | Calendar is already configured. CTA should link directly to booking, not a contact form. |
-| Social proof: client names, logos, or testimonials | B2B buyers require trust validation before engaging any vendor. Without it, credibility is absent. | LOW | Even 2–3 real testimonials with full name + agency name outperform a page with none. Generic quotes ("Great work!") have no effect. |
-| Mobile-responsive layout | Over 80% of B2B research now touches mobile. An unresponsive page signals poor technical quality — damaging for a developer positioning as digital expert. | LOW | Non-negotiable. Especially damaging if the pitch is "let me improve your digital presence." |
-| Page load under 3 seconds | Pages loading in under 3s convert 2x better than those taking 5+. A slow page from a developer is a self-defeating signal. | MEDIUM | Next.js static generation covers most of this; image optimization and font loading need deliberate attention. |
-| Clear explanation of the service / what happens next | Visitors do not read; they scan. If the service model (free tool → paid report → appointment) is not obvious, they exit. | LOW | Three-step funnel must be visualized, not just described in prose. |
-| Privacy-compliant data collection (DSGVO / GDPR) | Germany enforces strict data collection rules. Missing consent mechanisms = legal risk + trust loss. | MEDIUM | Cookie consent banner, privacy policy linked from forms, explicit opt-in for email follow-up. |
-| Working contact form or booking embed | Any friction in reaching the owner breaks the conversion. Broken or confusing forms are common on personal developer sites. | LOW | Appointment calendar already configured — embed it directly, do not add a duplicate form. |
-| Blog / content section (at minimum a nav link) | German B2B buyers research before committing. A blog demonstrates expertise and is the primary organic acquisition channel. | LOW | Even an empty-state blog section is acceptable at launch; content accumulates over time. |
+**Domain:** Multilingual agency/portfolio site with Sanity CMS
+**Researched:** 2026-04-11
+**Migration direction:** Next.js 15 App Router → Astro + Cloudflare Pages
 
 ---
 
-### Differentiators (Competitive Advantage)
+## How to Read This File
 
-Features that give Nestor's page an edge over generic developer portfolios and over competing digital agencies. These are not table stakes — visitors are not expecting them — but they drive the conversion from "interesting" to "I want to talk."
+Each existing feature is mapped to one of three categories:
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Free website analysis tool (interactive) | Interactive assessment tools convert at 6.2% vs 3.8% for static PDFs. The tool demonstrates competence before the first conversation. It is a lead magnet that qualifies intent — only agents bothered about their digital performance will complete it. | HIGH | This is the most important differentiator in the funnel. Must feel instant and professional. Result should be partially revealed on-screen; the full report is the paid product. |
-| Paid automated report (€49) | Creates a micro-commitment step that filters tire-kickers from serious prospects. Product-qualified leads (PQLs) — those who paid €49 — convert to booked appointments at substantially higher rates than cold contacts. The report itself demonstrates analytical depth. | HIGH | Price point must be clearly visible. €49 is low enough to be impulsive but high enough to signal value. Payment must be seamless (Stripe or similar). |
-| Positioning as "partner, not agency" | German agency buyers are often skeptical of large agencies (overhead, account managers, lack of ownership). A solo expert who speaks their industry language is a different offer. The positioning must be explicit and consistent. | LOW | Copy-level decision, not technical. But it requires dedicated messaging that explicitly names Immobilienmakler pain points: website that generates no leads, expensive portals eating margins, no digital strategy. |
-| Industry-specific language and examples | Generic developer sites talk about "digital products" and "user experience." Nestor's site must use real estate language: Exposé, Anfrage, Vermarktung, ImmoScout, Portalprovision. This immediately signals domain knowledge. | LOW | Copy work, not development work. High payoff. |
-| Results-focused case studies (before/after) | "5X increase in qualified Anfragen" converts better than "built a responsive website." B2B buyers look for proof of outcome, not proof of technical skill. | MEDIUM | Even one detailed case study with real numbers beats three vague portfolio items. If no real clients yet, a self-audit of a public agency site can serve as a demonstration piece. |
-| Three-language site with German as canonical conversion | A trilingual site signals international credibility without sacrificing German-market focus. Agencies doing cross-border deals (e.g., Hamburg international buyers) see this as competence. | MEDIUM | Requires correct `hreflang` implementation and genuine localization — not machine translation. ES and EN can be lighter on conversion elements; DE is the full-funnel page. |
-| Transparent pricing signal | Showing €49 for the paid report and implying a ballpark for engagement reduces the "how much does this cost?" friction that kills B2B conversions. Full project pricing does not need to be listed, but a starting signal matters. | LOW | Common anti-pattern is hiding all pricing and forcing a call to find out. This increases drop-off for the audience. |
-| Blog content specifically for Immobilienmakler | Content marketing targeting "Immobilienmakler Website verbessern" or "Leadgenerierung Immobilienmakler" compounds over time into organic search acquisition. A developer blog about generic JavaScript topics provides zero value to this audience. | MEDIUM | Content must be audience-specific. First articles should target bottom-of-funnel searches: "Immobilienmakler Leadgenerierung Website". |
-| Sanity CMS Page Builder for easy updates | Allows the site owner (Nestor) to update case studies, testimonials, blog posts, and landing page copy without code changes. Critical for long-term content marketing execution. | MEDIUM | Already in the stack. Must be configured cleanly so content updates are fast — otherwise it won't be used. |
+- **Table Stakes** — direct equivalent exists in Astro, minimal friction
+- **Improvements** — Astro handles this natively better than Next.js does
+- **Complexity Spots** — requires special handling, a decision point, or a non-obvious workaround
 
 ---
 
-### Anti-Features (Commonly Requested, Often Problematic)
+## Table Stakes — Direct Equivalents
 
-Features that seem like good ideas for this type of site but either hurt conversion, add scope without return, or misalign with the positioning.
+### 1. Static Page Rendering (Home, Blog listing, Blog post, Analyse)
 
-| Feature | Why Requested | Why Problematic | Alternative |
-|---------|---------------|-----------------|-------------|
-| Portfolio / project gallery | "Show your work" is standard developer site advice. | For B2B service landing pages targeting a specific vertical, a project gallery scatters attention. Visitors browse it like a museum and leave without converting. It also risks showing work that is irrelevant to real estate agencies. | Replace with 1–2 focused case studies that show before/after for an Immobilienmakler specifically. Outcome-focused, not output-focused. |
-| Live chat widget | "Engage visitors in real-time." Popular in real estate landing page guides. | Adds significant operational burden for a solo practitioner. If not actively monitored, a chat widget with no response reads as abandoned and damages trust. | Use the appointment calendar as the primary engagement mechanism. Optionally add a WhatsApp link for async contact — much lower burden to maintain. |
-| Newsletter subscription form | "Build an email list." Standard marketing advice. | A newsletter implies ongoing content production on a regular schedule. For a solo developer running client projects, this commitment typically goes unfulfilled. Subscribers get nothing → trust erodes. | Use the free tool as the email collection mechanism. Leads who complete the tool are already qualified. Follow-up sequence is automated (3–5 emails about the report and the appointment), not a newsletter. |
-| Full pricing page | "B2B buyers want transparency." | Project-based web strategy engagements vary too much to list fixed prices. A pricing page without context creates false anchors and invites comparison shopping with agencies offering different scopes. | Show only the €49 report price explicitly. Everything else: "Let's talk about what your agency needs." Keeps the appointment as the conversion goal. |
-| Generic "services" section listing technologies | "Show expertise with React, Next.js, TypeScript, etc." | Immobilienmakler do not evaluate vendors on technology stack. Listing technologies reads as irrelevant and shifts the positioning from business outcomes to technical CV. | Replace with "what I help you achieve" framing: more Anfragen, less dependence on portals, measurable lead flow. Technology is mentioned only in the context of how it serves the outcome. |
-| Social media feed embeds | "Show you're active online." | Feed embeds slow page load, pull attention away from the conversion goal, and often show content irrelevant to the visitor. | Link to LinkedIn in the footer if presence is credible. Do not embed. |
-| Multiple competing CTAs on the same screen | "Give visitors options." | Every additional CTA reduces conversion on the primary CTA. B2B landing page research is unambiguous: one clear path per page converts better than multiple options. | One CTA per section. Hero: "Get free analysis." Mid-page: "See the €49 report." Bottom: "Book a call." Each section has exactly one next step, and they are sequential, not competing. |
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| App Router `page.tsx` files, `generateStaticParams` | `.astro` page files in `src/pages/`, `getStaticPaths()` |
+| `export async function generateMetadata()` | Frontmatter `<head>` block in layout, or per-page `<title>/<meta>` |
+| `setRequestLocale(locale)` | `Astro.currentLocale` from `astro:i18n` module |
+
+**Verdict:** Straightforward rewrite. The page-file-to-URL mapping is the same concept. All pages that are currently static in Next.js (`/`, `/blog`, `/blog/[slug]`, `/analyse`) stay prerendered in Astro with `export const prerender = true` (or as the default in `output: 'static'` mode).
+
+**Source:** [Astro On-Demand Rendering](https://docs.astro.build/en/guides/on-demand-rendering/) — HIGH confidence.
 
 ---
 
-## Feature Dependencies
+### 2. Blog: Listing + Post Detail
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `ALL_POSTS_QUERY` → `BlogListing` component | Sanity fetch in `.astro` page frontmatter, data passed as props |
+| `@portabletext/react` `PortableText` component | `astro-portabletext` — native Astro component with same customization API |
+| `generateStaticParams` for `/blog/[slug]` | `getStaticPaths()` returning `{ params: { slug } }` array |
+| Author card, Table of Contents sidebar | Static `.astro` components (no React needed) |
+
+`astro-portabletext` is the officially recommended package by Sanity for Astro. It provides sensible defaults and accepts a `components` prop for custom marks/block types, matching the API of `@portabletext/react`. The npm package was updated as of late 2025.
+
+The `TableOfContents` component currently uses `useState` and `IntersectionObserver` to highlight the active heading. In Astro this becomes a `client:idle` React island or a vanilla JS `<script>` block inside a `.astro` component. See Complexity Spots section.
+
+**Verdict:** The blog is one of the cleanest wins of this migration. No React required for the content rendering layer itself. Interactive sidebar pieces are small, isolated islands.
+
+**Sources:** [astro-portabletext npm](https://www.npmjs.com/package/astro-portabletext), [Netlify guide: Sanity Portable Text + Astro](https://developers.netlify.com/guides/how-to-use-sanity-portable-text-with-astro/) — MEDIUM confidence (community package, actively maintained).
+
+---
+
+### 3. Page Builder (Section Dispatch Pattern)
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `PageBuilder.tsx` switch statement dispatching to block components | `PageBuilder.astro` switch statement dispatching to `.astro` block components |
+| 8 block components as React files | Same 8 blocks rewritten as `.astro` files |
+| Sections filtered by `enabled === false` | Identical logic in `.astro` frontmatter |
+
+The switch-dispatch pattern translates verbatim. The only structural difference is that `.astro` templates use `{section._type === 'heroSection' && <HeroSection {...section} />}` style conditionals or a map with dynamic imports, rather than a JSX switch.
+
+**Exception:** `FaqBlock` currently uses `useState` for accordion open/close — this becomes a complexity spot (see below). All other blocks (`HeroSection`, `FeatureStrip`, `TestimonialsBlock`, `CtaBlock`, `ProblemSolutionBlock`, `ServicesBlock`, `ReferencesBlock`) are fully static and migrate cleanly.
+
+**Verdict:** 7 of 8 blocks are copy-paste rewrites. `FaqBlock` requires an island or a CSS-only accordion.
+
+---
+
+### 4. Robots.txt
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `src/app/robots.ts` using Next.js `MetadataRoute` convention | Static `public/robots.txt` file, or `src/pages/robots.txt.ts` endpoint |
+
+The simplest approach: place a static `public/robots.txt`. For dynamic content (e.g., including the sitemap URL), use `src/pages/robots.txt.ts` exporting a `GET` handler that returns a `new Response(content, { headers: { 'Content-Type': 'text/plain' } })`.
+
+**Verdict:** Trivial.
+
+---
+
+### 5. JSON-LD Structured Data
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `<JsonLd data={...} />` component using `dangerouslySetInnerHTML` | Inline `<script type="application/ld+json" set:html={JSON.stringify(data)} />` in `.astro` |
+
+Astro's `set:html` directive is the direct equivalent of `dangerouslySetInnerHTML`. JSON-LD needs no client JS — this becomes purely static HTML output. No additional package required.
+
+**Verdict:** Trivial. The `JsonLd` component dissolves into two lines of Astro template syntax.
+
+---
+
+### 6. OG Meta / `<head>` SEO Tags
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `generateMetadata()` returning `Metadata` object | Explicit `<meta>` tags written directly in layout/page `.astro` `<head>` block |
+
+Next.js abstracts `<head>` management through its `Metadata` API. Astro does not — `<head>` is written directly in the layout template. This is more verbose but equally capable and has no hidden behavior.
+
+**Verdict:** More explicit in Astro (you write the tags yourself), but no capability gap. The layout `.astro` file accepts props like `title`, `description`, and `ogImage` and renders them.
+
+---
+
+### 7. API Endpoint: `POST /api/analyze`
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `src/app/api/analyze/route.ts` exporting `POST` and `OPTIONS` | `src/pages/api/analyze.ts` exporting `POST` and `OPTIONS` |
+| `NextRequest`, `NextResponse` | Standard `Request` / `Response` Web API objects |
+| `export async function POST(request: NextRequest)` | `export const POST: APIRoute = async ({ request }) => { ... }` |
+
+Astro API endpoints use the standard Web API `Request`/`Response` directly (no Next.js wrappers). Body access is identical: `await request.json()`. The Cloudflare adapter runs these in a Worker at request time.
+
+**Critical note on rendering mode:** In Astro's default `output: 'static'` mode, this POST endpoint requires `export const prerender = false` to run at request time. The cleanest approach for this project is `output: 'server'` globally, then mark all static content pages with `export const prerender = true`. This avoids annotating every dynamic endpoint and is more explicit about the project's hybrid nature.
+
+The Zod validation, mock scores, and response shape are unchanged. `NextRequest`/`NextResponse` references become `Request`/`Response`.
+
+**Verdict:** Near-identical rewrite with two import changes.
+
+**Source:** [Astro Endpoints docs](https://docs.astro.build/en/guides/endpoints/) — HIGH confidence.
+
+---
+
+### 8. Sanity Webhook Revalidation (`POST /api/revalidate`)
+
+| Current (Next.js) | Astro Equivalent |
+|---|---|
+| `revalidateTag(body._type)` from `next/cache` | No direct equivalent — Astro has no built-in tag-based ISR cache |
+| `parseBody` from `next-sanity/webhook` | Manual HMAC verification or `@sanity/webhook` package |
+
+This is the most significant functional gap at the infrastructure level. Next.js `revalidateTag` triggers on-demand page revalidation. Astro with Cloudflare Workers has no equivalent built-in mechanism.
+
+**Replacement strategies (choose one):**
+
+Option A — Cloudflare deploy hook (recommended for this project's scale): Configure Sanity to POST to a Cloudflare Pages/Workers deploy hook URL on content publish. The site rebuilds in ~30-60 seconds. For a content marketing site that publishes once or twice per week, this is entirely acceptable. No webhook endpoint needed.
+
+Option B — Full SSR with on-demand fetch: Use `output: 'server'` and fetch Sanity data on every request for pages that change frequently (blog listing, home page). The Sanity CDN returns cached published content in under 100ms. Content is always fresh without any invalidation logic.
+
+Option C — Cloudflare KV manual cache: Write a custom cache layer using Cloudflare KV. High complexity, low payoff for this site's traffic level.
+
+**Verdict:** The webhook endpoint itself rewrites easily as an Astro API endpoint. The `revalidateTag` call cannot be ported — the invalidation strategy must change. Option A (deploy hook) is the pragmatic choice.
+
+---
+
+## Improvements — Astro Does This Better
+
+### 9. i18n Routing (`de` default, `/en` and `/es` prefixed)
+
+**Current approach (Next.js + next-intl):**
+
+- `next-intl` middleware intercepts every request and handles locale detection/redirect
+- `localePrefix: 'as-needed'` in `routing.ts` hides `/de`, prefixes `/en` and `/es`
+- Every page component calls `setRequestLocale(locale)` (opt-in static rendering requirement)
+- Client components need `NextIntlClientProvider` to access `useTranslations` at runtime
+- `useRouter` from `@/i18n/navigation` used in `NavbarClient` for locale switching
+
+**Astro approach:**
+
+Astro 5 has first-class i18n routing built into the framework config with no additional package:
+
+```typescript
+// astro.config.mjs
+export default defineConfig({
+  i18n: {
+    locales: ['de', 'en', 'es'],
+    defaultLocale: 'de',
+    routing: {
+      prefixDefaultLocale: false, // de has no prefix; en/es are prefixed
+    },
+  },
+})
+```
+
+`prefixDefaultLocale: false` is the exact functional equivalent of `localePrefix: 'as-needed'`. Astro's built-in i18n middleware handles redirect logic. In `.astro` files, `Astro.currentLocale` gives the active locale — no `setRequestLocale()` call needed.
+
+For UI translation strings (nav labels, form copy, button text): the recommended pattern is a `src/i18n/ui.ts` file with `getLangFromUrl` and `useTranslations` helper functions — no third-party library required. This replaces `next-intl`'s `useTranslations` hook for static string lookups.
+
+**The key paradigm shift for client components:** `next-intl`'s `useTranslations` runs inside React client components at runtime. In Astro, the `.astro` parent (which knows the locale at build/request time via `Astro.currentLocale`) looks up translated strings and passes them as props into the island. Islands receive strings as data, not via hooks.
+
+**Verdict:** Astro's built-in i18n is simpler than the `next-intl` middleware approach for this site's needs. The `next-intl` package is eliminated entirely. The key architectural shift — locale detection belongs to the `.astro` server layer, not inside islands — is idiomatic Astro and correct.
+
+**Source:** [Astro i18n Routing docs](https://docs.astro.build/en/guides/internationalization/), [Astro i18n Recipes](https://docs.astro.build/en/recipes/i18n/) — HIGH confidence.
+
+---
+
+### 10. Sitemap with hreflang
+
+**Current approach:** Custom `src/app/sitemap.ts` (~70 lines) using `getPathname` from `next-intl/navigation` to compute locale-prefixed URLs for each static page and dynamic blog post, then manually building the `alternates.languages` object for each entry.
+
+**Astro approach:** `@astrojs/sitemap` integration with the `i18n` config key:
+
+```typescript
+sitemap({
+  i18n: {
+    defaultLocale: 'de',
+    locales: {
+      de: 'de-DE',
+      en: 'en-US',
+      es: 'es-ES',
+    },
+  },
+})
+```
+
+The integration reads all routes from the Astro build output and automatically emits `xhtml:link` alternate entries (hreflang) for each language variant. Dynamic blog post routes are included because `getStaticPaths()` generates them and the sitemap integration crawls the build output.
+
+**Verdict:** A genuine improvement. The custom ~70-line sitemap.ts is replaced with ~10 lines of integration config. For any routes the integration cannot auto-discover, a `customPages` array can be added.
+
+**Source:** [astrojs/sitemap docs](https://docs.astro.build/en/guides/integrations-guide/sitemap/) — HIGH confidence.
+
+---
+
+### 11. Zero-JS Static Blocks
+
+**Current situation:** Every block component (`HeroSection`, `ServicesBlock`, `TestimonialsBlock`, etc.) is a React component. Even ones with zero interactivity — no state, no effects, no event handlers — ship as React components because the whole rendering tree is React.
+
+**Astro situation:** These blocks become `.astro` components. They render to pure HTML at build time with zero JavaScript shipped to the browser. No React runtime. No hydration cost.
+
+This directly benefits page performance metrics (LCP, TBT, FID) and aligns with the positioning of the site (a web developer's marketing site should score well on its own performance metrics).
+
+**Verdict:** Direct, measurable performance improvement for 7 of the 8 blocks. No behavioral change visible to users.
+
+---
+
+## Complexity Spots — Requires Special Handling
+
+### 12. Interactive Components: Island Strategy
+
+The following components currently use React state/effects and must become Astro islands or be rewritten:
+
+| Component | Current | Interactivity | Recommended Strategy |
+|---|---|---|---|
+| `NavbarClient.tsx` | `'use client'` React | Scroll detection (IntersectionObserver), mobile drawer (base-ui), locale switcher | `client:load` React island — visible immediately above fold |
+| `FaqBlock.tsx` | `'use client'` React | `useState` open/close accordion | Option A: CSS-only `<details>/<summary>` (no JS, no island). Option B: `client:visible` React island |
+| `TableOfContents.tsx` | `'use client'` React | IntersectionObserver active heading highlight, smooth scroll | `client:idle` React island — sidebar, not critical render path |
+| `AnalysePageClient.tsx` | `'use client'` React | Form state, fetch to `/api/analyze`, animated SVG gauges | `client:load` React island — this page is entirely this interaction |
+| `ScrollAnimations.tsx` | `'use client'` GSAP | GSAP ScrollTrigger for body background morphing + section reveals | Rewrite as vanilla JS `<script>` in `.astro` — no island needed |
+
+**Framework choice for islands:**
+
+React is the current framework. Keeping React for islands is the lowest-friction migration path. Install `@astrojs/react`; existing island components migrate with minimal changes.
+
+Preact is a viable alternative: ~3KB gzipped vs React's ~40KB. Given the low island count (5 components), the bundle saving is approximately 185KB uncompressed — meaningful for performance but not project-critical. Preact shares the React hooks API; migration is primarily changing import paths. This is an optional optimization, not a migration requirement.
+
+**Recommendation:** Use React for islands during the initial migration (lower risk, faster iteration). Evaluate Preact on a per-island basis post-launch if Lighthouse JS payload scores are a concern.
+
+**FaqBlock recommendation:** The `<details>/<summary>` HTML element provides open/close accordion behavior natively with zero JavaScript and correct keyboard/screen reader support. The current `FaqBlock` renders a `<dl>` with a `max-height` CSS transition — this maps directly to a CSS-animated `<details>` pattern. This is the preferred approach: eliminate the island entirely.
+
+**Sources:** [Astro Islands docs](https://docs.astro.build/en/concepts/islands/), [Astro Framework Components](https://docs.astro.build/en/guides/framework-components/) — HIGH confidence.
+
+---
+
+### 13. ScrollAnimations: Island Boundary Problem
+
+`ScrollAnimations.tsx` is a React component that wraps `children` and queries `section[data-scheme]` elements via `useRef` and GSAP's `ScrollTrigger`. The fundamental problem for Astro: **React islands cannot contain static `.astro` children as slots**. The island mounting boundary would wrap the PageBuilder output, but PageBuilder is static Astro HTML — it cannot be children of a React component in the islands model.
+
+The cleanest migration: **rewrite as a vanilla JS `<script>` block** inside the main layout `.astro` file. The script runs after DOM parse and queries `section[data-scheme]` the same way the GSAP component does, using `document.querySelectorAll`. GSAP itself is a plain JS library with no React dependency — it can be imported and initialized in a `<script>` tag with `import gsap from 'gsap'` using Astro's module script handling.
+
+The cleanup concern (killing tweens and triggers on navigation) is relevant only with Astro's View Transitions API enabled. If View Transitions is not used (full page navigations), cleanup is handled automatically when the page unloads.
+
+**Verdict:** This is the most structurally different rewrite of the migration. The GSAP logic is identical; only the mounting mechanism changes from a React wrapper to a `<script>` tag.
+
+---
+
+### 14. Locale Switcher Inside a React Island
+
+**Current:** `NavbarClient` uses `useRouter` from `@/i18n/navigation` (next-intl) calling `router.replace({ pathname, params }, { locale: targetLocale })` — SPA navigation to the equivalent page in the new locale.
+
+**Astro equivalent problem:** `getRelativeLocaleUrl(locale, path)` from `astro:i18n` is only available server-side in `.astro` files, not inside React islands at browser runtime.
+
+**Solution pattern:** Compute all locale URLs in the `.astro` parent and pass them as props into the island:
+
+```astro
+---
+import { getRelativeLocaleUrl } from 'astro:i18n'
+const pathname = Astro.url.pathname
+const localeUrls = {
+  de: getRelativeLocaleUrl('de', pathname),
+  en: getRelativeLocaleUrl('en', pathname),
+  es: getRelativeLocaleUrl('es', pathname),
+}
+---
+<NavbarClient client:load localeUrls={localeUrls} {...navData} />
+```
+
+The island renders `<a href={localeUrls.de}>DE</a>` anchor links rather than calling `router.replace()`. This is a full page navigation, not a SPA transition. For a content site with no client-side state to preserve, this is correct behavior and simpler.
+
+**Verdict:** The pattern changes from programmatic SPA navigation to plain anchor links. No functional regression for this site type.
+
+---
+
+### 15. AnalysePageClient: Translation String Access
+
+**Current:** `AnalysePageClient` uses `useTranslations('analysis')` from `next-intl` and `useLocale()` to read the current locale inside the client component.
+
+**Astro equivalent:** `next-intl` hooks are unavailable. The `.astro` page computes the locale, looks up all required translation strings using the `src/i18n/ui.ts` helper, and passes them as props to the `AnalysePageClient` island.
+
+The `CATEGORY_LABELS` object inside the component (score label translations) can either be inlined in the island as a static object (it has no external dependencies) or passed as a prop from the parent. The inline approach is cleaner since it avoids a large props surface.
+
+**Verdict:** The translation lookup moves from a runtime hook to a compile-time/request-time prop. The island receives `t('analysis.title')` as a resolved string prop, not a function. Minor refactor.
+
+---
+
+### 16. `output: 'server'` vs `output: 'static'` Decision
+
+This is the most consequential architectural decision for the migration.
+
+**`output: 'static'` (full prerender):**
+- Fastest edge delivery — pure static assets from Cloudflare CDN
+- Zero Worker cold start cost
+- Cache invalidation requires a new deploy (Sanity webhook → Cloudflare deploy hook)
+- `/api/analyze` POST endpoint requires `export const prerender = false`
+- Draft mode / live preview not possible
+
+**`output: 'server'` (Cloudflare Workers SSR with selective prerendering):**
+- All pages render on Worker request by default; mark static pages with `export const prerender = true`
+- `/api/analyze` POST endpoint works natively without annotation
+- Revalidation webhook possible (though with a different invalidation strategy)
+- Draft mode / live preview possible in future
+- Cloudflare Workers cold start is negligible for this workload
+- As of the Cloudflare adapter docs (late 2025): Cloudflare Pages deployment mode has been removed; the target is Cloudflare Workers (which still deploys through the same Cloudflare dashboard/CI)
+
+**Recommendation:** `output: 'server'` with `export const prerender = true` on all content pages. Rationale: the site has one dynamic endpoint, all content pages are Sanity-backed and can be prerendered, and this model is cleaner to extend (adding future dynamic features does not require restructuring). The prerendered pages are served from Worker cache at CDN edge — no meaningful performance difference from pure static.
+
+**Source:** [astrojs/cloudflare docs](https://docs.astro.build/en/guides/integrations-guide/cloudflare/), [Astro On-Demand Rendering](https://docs.astro.build/en/guides/on-demand-rendering/) — HIGH confidence for the model; MEDIUM confidence on the Pages vs Workers deployment distinction (verify current adapter README at implementation time).
+
+---
+
+### 17. Sanity `sanityFetch` / Live Mode
+
+**Current:** `next-sanity`'s `sanityFetch` + `<SanityLive />` provide live content updates in the Sanity Studio Presentation tool. Editors see changes in real time without a page reload.
+
+**Astro equivalent:** The `@sanity/astro` integration provides the Sanity client for data fetching. For standard published content queries, it works cleanly — call `createClient().fetch(query, params)` in `.astro` frontmatter.
+
+For live preview / draft mode, SSR is required and the setup is more manual: gate a `perspective: 'previewDrafts'` Sanity client behind a draft mode cookie, and serve the preview path from a server endpoint. There is no `<SanityLive />` equivalent for Astro today.
+
+**Verdict:** Standard data fetching migrates cleanly. Defer live preview / Presentation tool integration to a follow-up phase — it works but requires additional SSR wiring and does not affect the production visitor experience.
+
+**Source:** [Sanity Astro plugin](https://www.sanity.io/plugins/sanity-astro) — MEDIUM confidence (community documentation).
+
+---
+
+## Anti-Features — Do Not Port These
+
+| What | Why |
+|---|---|
+| `next-intl` package | Astro has built-in i18n routing; `next-intl` is Next.js-specific |
+| `NextIntlClientProvider` wrapper | Not needed; translated strings passed as props to islands |
+| `@portabletext/react` | Replace with `astro-portabletext` |
+| `next-sanity` package | Replace with `@sanity/astro` |
+| `framer-motion` | Present in `package.json` but not wired into any visible component; omit |
+| `next-themes` | No dark mode in current UI; omit |
+| `<SanityLive />` | Defer to follow-up phase |
+| `shadcn` + `class-variance-authority` | No shadcn components in block code; only used in blog sidebar; evaluate at implementation |
+| `lenis` | Not visible in current block code; omit unless explicitly needed |
+
+---
+
+## Feature Dependency Map
 
 ```
-[Free Website Analysis Tool]
-    └──requires──> [Email capture form] (tool output triggers lead entry)
-    └──requires──> [Backend analysis logic OR API] (must return real data, not fake scores)
-    └──enhances──> [Paid Report (€49)] (tool result creates curiosity gap the report fills)
+Astro i18n config
+  └── All pages (locale-aware URLs)
+  └── @astrojs/sitemap (hreflang auto-generation)
+  └── Navbar island (locale URLs computed as props at .astro level)
+  └── AnalysePageClient island (translation strings as props)
 
-[Paid Report (€49)]
-    └──requires──> [Payment integration] (Stripe or equivalent)
-    └──requires──> [Report generation / delivery] (PDF or web-based; automated)
-    └──enhances──> [Appointment booking] (PQL who paid €49 is primed for a call)
+@sanity/astro (data layer)
+  └── PageBuilder page (Sanity sections array → block dispatch)
+  └── Blog listing (posts query by language)
+  └── Blog post (post-by-slug query + astro-portabletext)
+  └── Navbar data (navLinks, ctaHref, siteName from siteSettings)
 
-[Appointment Booking]
-    └──requires──> [Calendar embed] (already configured — must be embedded correctly)
-    └──enhances──> [Lead qualification] (only serious prospects book after paying €49)
+output: 'server' + Cloudflare Workers adapter
+  └── /api/analyze POST endpoint (runtime execution)
+  └── Optional: /api/revalidate webhook endpoint
+  └── All content pages get export const prerender = true
 
-[German-primary multilingual site]
-    └──requires──> [hreflang tags] (correct indexing; without it, Google may serve wrong language)
-    └──requires──> [Genuine DE localization] (not translation; real estate industry vocabulary)
-    └──enhances──> [Blog] (DE blog posts rank for German-language searches)
+@astrojs/react (island runtime)
+  └── NavbarClient (client:load)
+  └── TableOfContents (client:idle)
+  └── AnalysePageClient (client:load)
+  └── FaqBlock — ONLY if CSS-only <details> is rejected
 
-[Blog]
-    └──requires──> [Sanity CMS] (already in stack; must be configured for blog schema)
-    └──enhances──> [Free tool] (blog readers can enter the funnel via the tool CTA)
-
-[Case Studies]
-    └──requires──> [At least one real or demonstration engagement] (a case study with no data is marketing fiction)
-    └──enhances──> [Appointment booking] (specific results reduce skepticism before the call)
-
-[DSGVO compliance]
-    └──required by──> [Email capture form] (legal requirement in Germany)
-    └──required by──> [Free tool] (collects personal data)
-    └──required by──> [Payment flow] (collects billing data)
+Vanilla JS <script> in layout
+  └── ScrollAnimations (GSAP + ScrollTrigger, no React)
 ```
 
-### Dependency Notes
-
-- **Free tool requires real analysis output:** The tool must return data that feels credible — even a simple SEO/performance audit via a public API (e.g., Google PageSpeed, Lighthouse CI) is sufficient. A fake "score" generator will be noticed and destroys trust.
-- **Paid report requires automated delivery:** Manually emailing PDFs at €49 does not scale and creates an SLA problem. Automation (Stripe webhook → PDF generation → email delivery) must be built before the paid report goes live.
-- **Appointment calendar must be embedded, not linked:** Sending visitors off-site to book (Calendly in a new tab) introduces drop-off. The calendar should be an iframe embed on the `/de` conversion page.
-- **hreflang without correct self-referencing breaks indexing:** Each language version must include a self-referencing hreflang tag plus references to all other language versions. Missing the self-reference causes Google to ignore the tags entirely (MEDIUM confidence — Google documentation confirmed).
-
 ---
 
-## MVP Definition
+## MVP Build Order
 
-### Launch With (v1)
+Build in this order to validate the migration incrementally before tackling complexity:
 
-Minimum needed to open the funnel and start collecting leads and validating the €49 offer.
+1. Astro project scaffold: Cloudflare adapter + i18n config + `@sanity/astro`
+2. Static home page with all 8 blocks as `.astro` components (no interactivity)
+3. Blog listing + blog post with `astro-portabletext`
+4. `@astrojs/sitemap` integration + `robots.txt`
+5. `NavbarClient` as React island with locale URLs as props pattern
+6. `FaqBlock` as CSS-only `<details>` accordion (validate before choosing island path)
+7. `ScrollAnimations` rewritten as vanilla JS `<script>`
+8. `/api/analyze` POST endpoint
+9. `AnalysePageClient` as React island on the `/analyse` page
+10. `TableOfContents` as React island
+11. Sanity deploy hook for cache invalidation (replaces `revalidateTag`)
 
-- [ ] German-language hero section with specific value proposition for Immobilienmakler — establishes who this is for in the first 5 seconds
-- [ ] Three-step funnel visualization (free tool → paid report → appointment) — makes the conversion path legible without explanation
-- [ ] Free website analysis tool with email capture — primary lead magnet; drives email list and paid report upsell
-- [ ] DSGVO-compliant email capture (consent checkbox, privacy policy) — legal requirement; blocks launch without it
-- [ ] Appointment calendar embed (already configured) — enables the bottom-of-funnel conversion
-- [ ] 2–3 testimonials with full name and agency name — minimum credibility threshold for B2B; more is better but 2 is enough to launch
-- [ ] Mobile-responsive layout with sub-3s load time — table stake; especially critical given the positioning
-- [ ] hreflang tags for DE/EN/ES — required for correct multilingual indexing from day one
-
-### Add After Validation (v1.x)
-
-Add once the free tool is generating leads and at least one €49 report has been purchased.
-
-- [ ] Paid report (€49) with Stripe integration and automated PDF delivery — trigger: free tool is live and collecting leads; do not build payment before the tool proves demand
-- [ ] First case study with quantified results — trigger: first client engagement where results can be documented; even a demo engagement works
-- [ ] Blog with first 3 DE-language articles targeting Immobilienmakler search intent — trigger: after conversion funnel is working; content compounds but does not drive immediate revenue
-
-### Future Consideration (v2+)
-
-Defer until product-market fit is established (paying clients, repeat bookings).
-
-- [ ] EN and ES full-funnel pages — currently secondary; build DE funnel first, then replicate once messaging is validated
-- [ ] Automated email nurture sequence (free tool → report → call) — valuable but requires validated email volume to justify automation build time
-- [ ] Interactive ROI calculator (beyond the website analysis tool) — high conversion potential (8.3% benchmark) but higher complexity; defer until the simpler tool's ROI is proven
-- [ ] Page Builder full implementation in Sanity — useful for iterating copy and adding content without code deploys; defer until core funnel is stable
-
----
-
-## Feature Prioritization Matrix
-
-| Feature | User Value | Implementation Cost | Priority |
-|---------|------------|---------------------|----------|
-| Clear DE hero with Immobilienmakler value prop | HIGH | LOW | P1 |
-| Free website analysis tool | HIGH | HIGH | P1 |
-| DSGVO-compliant email capture | HIGH | LOW | P1 |
-| Appointment calendar embed | HIGH | LOW | P1 |
-| Social proof (2–3 testimonials) | HIGH | LOW | P1 |
-| Mobile-responsive / fast load | HIGH | MEDIUM | P1 |
-| hreflang tags (DE/EN/ES) | MEDIUM | LOW | P1 |
-| Funnel visualization (3-step graphic) | HIGH | LOW | P1 |
-| Paid report €49 + Stripe + delivery | HIGH | HIGH | P2 |
-| Case study (1 with real numbers) | HIGH | MEDIUM | P2 |
-| Blog with DE content | MEDIUM | MEDIUM | P2 |
-| EN/ES full-funnel pages | LOW | MEDIUM | P3 |
-| Automated email nurture sequence | MEDIUM | HIGH | P3 |
-| Sanity Page Builder full setup | LOW | MEDIUM | P3 |
-| Interactive ROI calculator | MEDIUM | HIGH | P3 |
-
-**Priority key:**
-- P1: Must have for launch — funnel does not work without it
-- P2: Should have — adds significant conversion lift once core is working
-- P3: Nice to have — future iteration after product-market fit
-
----
-
-## Competitor Feature Analysis
-
-Direct competitors for this audience are: German digital marketing agencies targeting Immobilienmakler (e.g., immo-marketer.de), general freelance developer portfolio sites, and specialized real estate tech providers (e.g., LeadValue, PropTech tools).
-
-| Feature | German Immo-Marketing Agencies | Generic Developer Portfolio | Our Approach |
-|---------|-------------------------------|----------------------------|--------------|
-| Industry-specific positioning | Yes — explicit Immobilienmakler focus | No — generic "web development" | Match agencies: explicit vertical focus, not generic |
-| Free tool / lead magnet | Rarely — most lead with "contact us" | Almost never | Strong differentiator: free tool creates qualified leads before any human interaction |
-| Paid micro-product (€49 report) | Not standard | Not standard | Unique positioning: creates PQLs, filters serious prospects, demonstrates analytical depth |
-| Appointment-first CTA | Sometimes | Yes (contact form) | Calendar embed as primary CTA; no contact form competing for attention |
-| Multilingual | Rare | Common for devs | Differentiator vs agencies; table stake for positioning as internationally-capable |
-| Blog for organic acquisition | Some agencies have it | Rare | Required for long-term SEO in German market; must be Immobilienmakler-specific |
-| Pricing transparency | Varies; most hide pricing | N/A | Show €49 report price; hint at engagement range without locking into fixed packages |
+Defer post-MVP: Sanity draft mode / live preview, Preact optimization pass.
 
 ---
 
 ## Sources
 
-- [9 B2B Landing Page Lessons From 2025 to Drive More Conversions in 2026 — Instapage](https://instapage.com/blog/b2b-landing-page-best-practices) (MEDIUM — could not fetch full article body)
-- [How To Create High Converting B2B Landing Pages in 2025 — Exposure Ninja](https://exposureninja.com/blog/b2b-landing-pages/) (MEDIUM — fetched and verified)
-- [B2B Lead Magnets Compared: Gated PDF vs. Interactive Tool — Brixon Group](https://brixongroup.com/en/b2b-lead-magnets-compared-gated-pdf-vs-interactive-tool-which-strategy-will-deliver-better-results-in/) (MEDIUM — fetched and verified; conversion benchmarks cross-referenced)
-- [Best Practices for Designing B2B SaaS Landing Pages 2026 — Genesys Growth](https://genesysgrowth.com/blog/designing-b2b-saas-landing-pages) (LOW — WebSearch summary only)
-- [Social Proof on Landing Page: Boost Conversions by 340% — LanderLab](https://landerlab.io/blog/social-proof-examples) (LOW — WebSearch summary only)
-- [Leadgenerierung Immobilienmakler: 7 moderne Wege 2025 — Seukos](https://seukos.de/leadgenerierung-immobilienmakler/) (LOW — German market context, WebSearch summary only)
-- [Für Immobilienmakler — LeadValue](https://www.leadvalue.de/immobilienmakler/) (LOW — competitor reference, not fetched)
-- [Managing Multi-Regional and Multilingual Sites — Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) (HIGH — official Google documentation on hreflang)
-- [B2B SaaS Funnel Conversion Benchmarks — UXCam](https://uxcam.com/blog/b2b-saas-funnel-conversion-benchmarks/) (LOW — WebSearch summary only)
-- [Lead Magnet Statistics 2025 — MyCodelessWebsite](https://mycodelesswebsite.com/lead-magnet-statistics/) (LOW — aggregate statistics, single source)
-
----
-*Feature research for: Nestor Segura real estate professional landing page*
-*Researched: 2026-03-15*
+- [Astro i18n Routing](https://docs.astro.build/en/guides/internationalization/) — HIGH confidence
+- [Astro i18n Recipes](https://docs.astro.build/en/recipes/i18n/) — HIGH confidence
+- [Astro Islands](https://docs.astro.build/en/concepts/islands/) — HIGH confidence
+- [Astro Endpoints](https://docs.astro.build/en/guides/endpoints/) — HIGH confidence
+- [Astro On-Demand Rendering](https://docs.astro.build/en/guides/on-demand-rendering/) — HIGH confidence
+- [astrojs/cloudflare Adapter](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) — HIGH confidence
+- [astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/) — HIGH confidence
+- [astro-portabletext npm](https://www.npmjs.com/package/astro-portabletext) — MEDIUM confidence (community package, maintained)
+- [Sanity Astro plugin](https://www.sanity.io/plugins/sanity-astro) — MEDIUM confidence
+- [Netlify: Sanity Portable Text + Astro](https://developers.netlify.com/guides/how-to-use-sanity-portable-text-with-astro/) — MEDIUM confidence
+- [Astro Framework Components (React/Preact)](https://docs.astro.build/en/guides/framework-components/) — HIGH confidence

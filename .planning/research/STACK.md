@@ -1,244 +1,251 @@
-# Stack Research
+# Technology Stack — v2.0 Astro Migration
 
-**Domain:** Professional multilingual landing page / lead generation site (real estate agency market, Hamburg DE)
-**Researched:** 2026-03-15
-**Confidence:** HIGH (core stack verified via npm registry and official docs; Stitch is LOW — see note)
-
----
-
-## Decided Stack (User-Confirmed)
-
-These are non-negotiable — already chosen by the project owner. Research validates versions and identifies exact package names.
-
-| Technology | Confirmed Version | Purpose | Source |
-|------------|-------------------|---------|--------|
-| Next.js | 15.x (latest: 16.1.6) | React framework, App Router | npm registry |
-| TypeScript | 5.x | Type safety | bundled with Next.js |
-| Tailwind CSS | 4.x (latest: 4.2.1) | Utility-first styling | npm registry |
-| Sanity.io | v3 (sanity pkg: 5.16.0) | Headless CMS | npm registry |
-| next-intl | v4 (latest: 4.8.3) | i18n for en/es/de | npm registry |
-| Hostinger VPS + PM2 | PM2 latest | Self-hosted deployment | deployment guides |
-| Sanity CDN | — | Image delivery | Sanity platform |
-
-**IMPORTANT — Next.js version note:** npm `next` latest is **16.1.6** as of research date. The project context says "Next.js 15" — start with `next@15` explicitly pinned unless the team has validated Next.js 16 breaking changes. The App Router patterns are stable across both.
+**Project:** nestorsegura.com (Astro + Cloudflare Pages migration)
+**Researched:** 2026-04-11
+**Milestone scope:** Replace Next.js 15 + Hostinger VPS with Astro + Cloudflare Pages
+**Out of scope for this research:** Sanity v3 schemas, Tailwind v4 config, Sanity TypeGen — these are validated and carry over unchanged.
 
 ---
 
-## Recommended Stack
+## Core Stack (New Additions)
 
-### Core Technologies
+### Framework
 
-| Technology | Version | Purpose | Why Recommended |
-|------------|---------|---------|-----------------|
-| next | ^15.2.x | React framework + SSR | Stable LTS-equivalent; v16 just shipped so v15 is safer for greenfield without known migration cost |
-| react | ^19.x | UI runtime | Required by Next.js 15+; concurrent rendering improves streaming SSR |
-| react-dom | ^19.x | DOM rendering | Paired with React 19 |
-| typescript | ^5.4.x | Type safety | Required by next-intl v4 (TypeScript 5 minimum) |
-| tailwindcss | ^4.2.x | Styling | v4 is CSS-native, zero-config, works with shadcn/ui |
-| @tailwindcss/postcss | ^4.2.x | PostCSS integration | Required for Tailwind v4 in Next.js; replaces tailwindcss-postcss |
-| sanity | ^5.16.0 | CMS + Studio | v3 = current generation; embedded at /studio |
-| next-sanity | ^12.1.1 | Next.js + Sanity bridge | Official toolkit; provides VisualEditing, SanityLive, GROQ client |
-| @sanity/client | ^7.17.0 | Sanity API client | Peer dep of next-sanity; standalone client for GROQ queries |
-| next-intl | ^4.8.3 | i18n routing + translations | v4 released March 2025; ESM-only, stricter types, 7% smaller bundle |
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| astro | ^6.1.5 | Site framework | Current stable release (April 8, 2026). Cloudflare acquired Astro Technology Company in Jan 2026 — Astro 6 is backed by Cloudflare and ships with workerd runtime in dev mode for exact prod parity. No compelling reason to pin to v5 for a greenfield rewrite. |
+| @astrojs/cloudflare | ^13.1.8 | Cloudflare Workers/Pages adapter | Required pair with Astro 6. v13 introduced the unified workerd dev environment; v12 is Astro-5-only. |
+| wrangler | ^latest (dev dep) | Local dev + deploy CLI | Required to run `wrangler types` for env binding types and to deploy via CI. Install as dev dependency only. |
 
-### Supporting Libraries
+### Sanity Integration (replaces next-sanity)
 
-| Library | Version | Purpose | When to Use |
-|---------|---------|---------|-------------|
-| @sanity/image-url | ^2.0.3 | Build Sanity CDN image URLs | Every Sanity image render; generates cropped/sized URLs |
-| @portabletext/react | ^6.0.3 | Render Sanity Portable Text | Blog posts, rich text blocks in Page Builder |
-| motion (formerly framer-motion) | ^12.x | UI animations | Scroll-triggered reveals, hero transitions, staggered lists |
-| shadcn/ui | CLI-based (no version pin) | Accessible UI components | Forms, dialogs, buttons, navigation — copy-paste components, not a package |
-| lucide-react | ^0.577.0 | Icon set | Used by shadcn/ui; 1000+ icons, tree-shakeable |
-| zod | ^4.3.x | Schema validation | Form validation, GROQ response typing |
-| react-hook-form | ^7.71.x | Form management | Contact form, lead magnet form; minimal re-renders |
-| clsx | ^2.1.x | Conditional class names | Utility for combining Tailwind classes |
-| tailwind-merge | ^3.5.x | Merge Tailwind classes safely | Prevent conflicting Tailwind utility classes |
-| tw-animate-css | ^1.4.x | CSS animations for Tailwind v4 | Replaces `tailwindcss-animate` in v4 projects; used by shadcn/ui |
-| next-sitemap | ^4.2.x | Sitemap + robots.txt generation | Required for multilingual SEO; generates /sitemap.xml per locale |
-| @tailwindcss/typography | ^0.5.x | Prose styles for rich text | Blog post rendering via Portable Text |
-| sharp | ^0.34.x | Server-side image processing | Required by Next.js Image Optimization in standalone mode |
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| @sanity/astro | ^3.3.1 | Official Sanity integration for Astro | Published by Sanity-io. Provides the Sanity client via `useSanityClient()` across all Astro components. Optionally embeds Sanity Studio on a route — but we're hosting Studio externally so this feature is unused. |
+| @sanity/client | ^7.x | GROQ query client | Already in the project; carries over unchanged. @sanity/astro peer-depends on it. |
+| @sanity/image-url | ^2.x | Sanity CDN image URL builder | Already in the project; carries over unchanged. No next/image dependency. |
+| astro-portabletext | ^0.13.0 | Render Sanity Portable Text in Astro components | Official recommendation from Sanity docs for Astro projects. Replaces `@portabletext/react` (which requires React). Zero JS shipped to browser by default. |
 
-### Development Tools
+**Note on @sanity/astro and React:** The `npx astro add @sanity/astro` command will prompt to also install `@astrojs/react` — this is only needed if you embed Sanity Studio in the Astro site. Since Studio is external (studio.nestorsegura.com), skip the React integration. Install `@sanity/astro` manually and omit React entirely.
 
-| Tool | Purpose | Notes |
-|------|---------|-------|
-| eslint + eslint-config-next | Linting | Included in create-next-app; App Router rules built-in |
-| prettier | Code formatting | Add prettier-plugin-tailwindcss for class sorting |
-| prettier-plugin-tailwindcss | Tailwind class sorting | Integrates with both v3 and v4 automatically |
-| @sanity/vision | GROQ query explorer in Studio | Dev-only; invaluable for schema debugging |
-| @next/bundle-analyzer | Bundle size analysis | Run before launch to identify bloat |
-| typescript-eslint | TypeScript linting | Included via eslint-config-next |
+### i18n (replaces next-intl)
 
----
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| Astro built-in i18n | built into astro@6 | Locale routing with prefixDefaultLocale | No external package needed. Astro 4+ has native i18n routing. For de as default locale without prefix, and /en/ + /es/ prefixed: `prefixDefaultLocale: false`. Full parity with the previous next-intl `localePrefix: 'as-needed'` behavior. |
 
-## Installation
-
-```bash
-# Bootstrap
-npx create-next-app@15 nestorsegura-real-estate \
-  --typescript --tailwind --eslint --app --src-dir
-
-# Core CMS + i18n
-npm install next-sanity@^12 @sanity/client@^7 @sanity/image-url@^2 \
-  @portabletext/react@^6 next-intl@^4
-
-# Init Sanity Studio (run in project root)
-npm create sanity@latest -- --project <YOUR_PROJECT_ID> --dataset production \
-  --template clean --output-path studio
-
-# Sanity Dev tooling
-npm install -D @sanity/vision
-
-# UI & animation
-npm install motion@^12 lucide-react clsx tailwind-merge tw-animate-css
-
-# Forms & validation
-npm install react-hook-form zod
-
-# SEO
-npm install next-sitemap
-
-# Typography (for blog)
-npm install @tailwindcss/typography
-
-# Image processing (required for standalone mode)
-npm install sharp
-
-# Dev tools
-npm install -D prettier prettier-plugin-tailwindcss @next/bundle-analyzer
-```
-
-**shadcn/ui setup (after Tailwind v4 is configured):**
-```bash
-npx shadcn@latest init
-# Select: TypeScript, App Router, Tailwind v4, src/ directory
-# Then add components individually:
-npx shadcn@latest add button card dialog form input label navigation-menu sheet
-```
-
----
-
-## Alternatives Considered
-
-| Recommended | Alternative | Why Not |
-|-------------|-------------|---------|
-| shadcn/ui + Tailwind | Radix UI directly | shadcn gives pre-styled accessible components without a runtime package dependency |
-| shadcn/ui + Tailwind | Mantine / Chakra UI | These import full CSS bundles; Tailwind v4 gives better control and smaller output |
-| motion (v12) | framer-motion | `motion` IS framer-motion rebranded; same package, same API; install `motion` not `framer-motion` |
-| next-intl v4 | next-i18next | next-i18next is Pages Router only; next-intl has full App Router + Server Components support |
-| next-intl v4 | Paraglide / Lingui | next-intl is the de facto standard for Next.js App Router i18n; best DX and docs |
-| react-hook-form + zod | Formik | RHF is lighter, faster, and the current industry standard; Formik is in maintenance mode |
-| next-sitemap | next.js built-in sitemap | next-sitemap provides better multilingual hreflang support required for en/es/de |
-| @sanity/image-url | next-sanity-image | next-sanity-image v6 has reported peer dep conflicts with @sanity/client v7+; @sanity/image-url is the official approach |
-
----
-
-## What NOT to Use
-
-| Avoid | Why | Use Instead |
-|-------|-----|-------------|
-| framer-motion (package name) | Rebranded; the `motion` package is the correct current name | `motion@^12` |
-| tailwindcss-animate | Deprecated in Tailwind v4 ecosystem; shadcn/ui v4 docs explicitly replace it | `tw-animate-css` |
-| tailwind.config.js | Tailwind v4 removes the JS config file; all config lives in CSS via `@theme` | `@theme` directives in globals.css |
-| next-i18next | Pages Router only; no App Router support | `next-intl` |
-| next-sanity-image | Peer dep conflicts with @sanity/client v7+; community maintained not Sanity-official | `@sanity/image-url` + custom `useNextSanityImage` hook pattern |
-| Vercel AI SDK (for lead tools) | Overkill for landing page; adds unnecessary complexity | Server Actions + Resend/Nodemailer for contact forms |
-| react-query / SWR | Unnecessary for mostly-static CMS content; adds client bundle weight | Server Components + ISR/revalidate for Sanity data |
-| CMS alternatives (Contentful, Strapi) | User already decided Sanity; Sanity is correct choice for this use case | Sanity v3 |
-
----
-
-## Google Labs Stitch — Clarification
-
-**The milestone context references `https://github.com/nicholasgriffintn/stitch` — this URL returned 404 as of 2026-03-15.**
-
-Research identified that "Google Labs Stitch" is:
-- An **AI-powered UI design tool** at [stitch.withgoogle.com](https://stitch.withgoogle.com)
-- Launched at Google I/O May 2025
-- **NOT an npm-installable design system or component library**
-- Exports HTML/CSS, Tailwind, and React/JSX code for use in projects
-- The related [stitch-skills](https://github.com/google-labs-code/stitch-skills) repo provides AI agent skill plugins (v0.1, March 2026), not a production component library
-- Explicitly labeled "not an officially supported Google product"
-
-**Verdict: Do not use Google Stitch as a component library.** It is an AI design ideation tool. Use **shadcn/ui + Tailwind v4** as the component foundation.
-
-**Confidence: LOW on the original Stitch reference** (URL is dead; the product is AI tooling, not an npm package). If the project owner has a specific private or renamed repo in mind, they need to clarify.
-
----
-
-## Stack Patterns by Variant
-
-**For Page Builder blocks (Sanity):**
-- Define each page section as a Sanity `defineType({ type: 'object' })`
-- Use an `array` field with named object types: HeroSection, FeatureGrid, TestimonialBlock, CTABanner
-- Render in Next.js via a `switch` or component map: `const blockComponents = { heroSection: HeroSection, ... }`
-- Do NOT use Portable Text as the page builder root — use it only inside block types for rich text fields
-
-**For multilingual content (next-intl + Sanity):**
-- Use next-intl for UI strings (navigation labels, button text, form labels)
-- Use Sanity's localized string fields for CMS content (blog posts, page copy)
-- Combine: Sanity handles content localization; next-intl handles interface localization
-- Route structure: `/[locale]/...` via `src/app/[locale]/layout.tsx`
-
-**For lead magnet tools (website analysis):**
-- Use Next.js Server Actions for form submission
-- Validate with Zod on server
-- Email via Resend (simpler API than SendGrid for solo dev)
-- Store leads in Sanity as a document type (no separate DB needed at this scale)
-
-**For standalone deployment (PM2 on Hostinger):**
+**Configuration (astro.config.mjs):**
 ```js
-// next.config.ts
-export default {
-  output: 'standalone',
-  images: {
-    remotePatterns: [{ hostname: 'cdn.sanity.io' }]
+i18n: {
+  locales: ["de", "en", "es"],
+  defaultLocale: "de",
+  routing: {
+    prefixDefaultLocale: false
   }
 }
 ```
-```js
-// ecosystem.config.js (PM2)
-module.exports = {
-  apps: [{
-    name: 'nestorsegura-real-estate',
-    script: '.next/standalone/server.js',
-    env: { PORT: 3000, NODE_ENV: 'production' }
-  }]
-}
-```
-After build: `cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/`
+
+**Translation strings:** Astro's built-in i18n handles routing only — not translation strings. You need a lightweight solution for UI strings (button labels, nav text, form labels). Options:
+
+- **Recommended:** Write a small `src/i18n/ui.ts` translation dictionary (a plain object keyed by locale + string key) and a `useTranslations(locale)` helper function. This is the pattern in the official Astro i18n docs and is appropriate at this site's scale (one landing page, <50 UI strings).
+- **Alternative:** `astro-i18next` — heavier, unnecessary overhead for this scale.
+- Do NOT install next-intl — it is a Next.js-specific library.
 
 ---
 
-## Version Compatibility
+## Supporting Libraries
 
-| Package | Compatible With | Notes |
-|---------|-----------------|-------|
-| next@15 | react@19, react-dom@19 | React 19 is required; not optional |
-| next-intl@4 | TypeScript@5+, Next.js@14+ | ESM-only; TypeScript 5 minimum |
-| sanity@5 | next-sanity@12, @sanity/client@7 | Do not mix sanity@3 references; current major is v5 of the `sanity` package (this IS Sanity Studio v3 gen) |
-| tailwindcss@4 | @tailwindcss/postcss@4 | Requires postcss; NOT the standalone CLI for Next.js |
-| shadcn/ui (latest) | tailwindcss@4, react@19 | Fully compatible; replaces tailwindcss-animate with tw-animate-css |
-| motion@12 | react@19, Next.js@15 | Full React 19 + Server Component compatibility |
-| tw-animate-css@1 | tailwindcss@4 | CSS-only; drop-in replacement for tailwindcss-animate |
+| Library | Version | Purpose | Notes |
+|---------|---------|---------|-------|
+| @astrojs/sitemap | included with astro | Generates sitemap.xml with multilingual hreflang | Run `npx astro add sitemap`. Configure `i18n` locales to get proper hreflang tags automatically. Replaces next-sitemap. |
+| motion | ^12.x | Animations for interactive islands | Carry over from current stack. Used only inside `.astro` components that opt into client-side JS via `<script>` or inside framework islands. Keep usage minimal — Astro is MPA-first. |
+| clsx | ^2.x | Conditional class composition | Carry over. Pure utility, no framework dependency. |
+| tailwind-merge | ^3.x | Safe Tailwind class merging | Carry over. No framework dependency. |
+| zod | ^4.x | Schema validation for /api/analyse POST body | Carry over. Server-side only in Astro endpoints. |
 
-**CRITICAL NOTE on Sanity package naming:** The npm package is `sanity` at version `5.x`. The product is called "Sanity Studio v3." When docs say "Sanity v3," they mean the third generation product — the npm package is v5. Do not install `sanity@3`.
+---
+
+## Removed Libraries (Next.js-Specific, Do Not Migrate)
+
+| Library | Why Removed |
+|---------|-------------|
+| next | Replaced by astro |
+| next-intl | Next.js-specific. Astro has built-in i18n routing. UI strings handled by a custom dictionary helper. |
+| next-sanity | Next.js-specific bridge. Replaced by @sanity/astro. |
+| @portabletext/react | React-specific renderer. Replaced by astro-portabletext. |
+| next-sitemap | Next.js-specific. Replaced by @astrojs/sitemap integration. |
+| react, react-dom | Not needed unless using React islands. No React islands planned for this site. Only add back if a specific interactive component genuinely requires React. |
+| sharp | Required by Next.js image optimization. Astro uses the Cloudflare Images binding or passthrough for images — no server-side sharp processing on Workers. |
+| PM2, ecosystem.config.js | VPS process manager. Irrelevant on Cloudflare Pages. |
+
+---
+
+## Cloudflare Configuration
+
+### Adapter Config (astro.config.mjs)
+
+```js
+import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
+
+export default defineConfig({
+  output: 'server',          // All pages server-rendered by default
+  adapter: cloudflare(),
+  i18n: {
+    locales: ["de", "en", "es"],
+    defaultLocale: "de",
+    routing: { prefixDefaultLocale: false }
+  }
+});
+```
+
+**On `output: 'server'` vs `'hybrid'`:** Use `'server'` for the initial migration — it is the well-tested mode with the Cloudflare adapter. Hybrid (mixing static + SSR pages) had a known open issue with Cloudflare Workers in early 2026 (#15237 on withastro/astro). You can add `export const prerender = true` to individual pages (like static blog list pages) once the base build is confirmed stable.
+
+### wrangler.jsonc
+
+```jsonc
+{
+  "name": "nestorsegura-real-estate",
+  "compatibility_date": "2025-05-21",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
+```
+
+Run `npx wrangler types` after any change to this file to regenerate `worker-configuration.d.ts` for typed env bindings.
+
+### API Routes (replaces Next.js route handlers)
+
+Astro endpoints replace Next.js `route.ts` files. The `/api/analyse` POST endpoint:
+
+```
+src/pages/api/analyse.ts   →   /api/analyse
+```
+
+```ts
+// src/pages/api/analyse.ts
+import type { APIRoute } from 'astro';
+import { z } from 'zod';
+
+const bodySchema = z.object({ url: z.string().url() });
+
+export const POST: APIRoute = async ({ request }) => {
+  const body = await request.json();
+  const parsed = bodySchema.safeParse(body);
+  if (!parsed.success) {
+    return new Response(JSON.stringify({ error: 'Invalid input' }), { status: 400 });
+  }
+  // ... analysis logic
+  return new Response(JSON.stringify({ result: '...' }), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+};
+```
+
+Cloudflare environment variables and bindings are accessible via `Astro.locals.runtime.env` in endpoints and pages. There is no separate `functions/` directory — Astro compiles everything into the Worker entrypoint.
+
+### Environment Variables
+
+Astro distinguishes public vs secret env vars:
+- `PUBLIC_SANITY_PROJECT_ID` — accessible in client-side code
+- `SANITY_API_TOKEN` — server-only, never exposed to client
+- Secrets set in Cloudflare Pages dashboard under "Settings > Environment variables"
+- Local dev: `.dev.vars` file (wrangler convention, gitignored)
+
+---
+
+## Cloudflare Pages Free Tier Limits
+
+| Resource | Free Limit | Impact on This Project |
+|----------|------------|----------------------|
+| Bandwidth | Unlimited | No concern |
+| Requests (static assets) | Unlimited | No concern |
+| Function invocations | 100,000/day (shared with Workers) | Low concern — this site is not high traffic. The /api/analyse endpoint is the only function. |
+| CPU time per invocation | 10ms | The /api/analyse endpoint must complete within 10ms CPU time. If calling external APIs (PageSpeed Insights), use `waitUntil()` for async work outside request path. Stub implementation has no risk. Real implementation may need a paid tier upgrade ($5/month). |
+| Builds per month | 500 | No concern for solo dev |
+| Files per deployment | 20,000 | No concern — Astro builds are small |
+| Max file size | 25 MiB | No concern |
+| Redirects (_redirects file) | 2,100 combined | Adequate |
+| Preview deployments | Unlimited | Useful for PR previews |
+
+**Critical constraint:** The 10ms CPU time limit applies to Pages Functions on the free tier. This is real CPU time, not wall-clock time — waiting on external I/O (fetching from Sanity, calling an external API) does not count against this limit. A simple Zod validation + JSON response is well within 10ms. A complex PageSpeed Insights integration that does CPU-heavy parsing may hit this limit.
+
+---
+
+## Build & Deploy
+
+```bash
+# Install
+npm create astro@latest  # or manually init
+
+# Add integrations
+npx astro add cloudflare
+npx astro add sitemap
+npm install @sanity/astro @sanity/client @sanity/image-url astro-portabletext
+
+# Local dev (uses workerd runtime via Cloudflare Vite plugin)
+npm run dev
+
+# Build
+npm run build   # outputs to ./dist
+
+# Deploy
+npx wrangler deploy
+# or connect GitHub repo to Cloudflare Pages dashboard for CI/CD
+```
+
+**Cloudflare Pages CI/CD settings:**
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy` (or use Pages Git integration which auto-deploys on push)
+- Output directory: `dist` (but with Workers deployment mode, wrangler.jsonc controls this)
+
+---
+
+## Version Compatibility Matrix
+
+| Package | Version | Compatible With |
+|---------|---------|-----------------|
+| astro | ^6.1.5 | @astrojs/cloudflare@^13, TypeScript@5+, Tailwind@4 |
+| @astrojs/cloudflare | ^13.1.8 | astro@6 only (v12 = astro@5) |
+| @sanity/astro | ^3.3.1 | sanity@5.x, @sanity/client@7 |
+| astro-portabletext | ^0.13.0 | Astro 4+, Sanity Portable Text |
+| Tailwind v4 | (carry over) | Works in Astro via Vite plugin — no PostCSS changes needed compared to Next.js setup |
+| sanity (package v5.x) | carry over | Unchanged — frontend framework is irrelevant to Sanity Studio |
+
+---
+
+## What NOT to Add
+
+| Do Not Add | Why |
+|------------|-----|
+| @astrojs/react | Only needed for embedding Sanity Studio in the Astro site. Studio is at studio.nestorsegura.com. Adding React just for Studio would ship ~130kb React runtime unnecessarily. |
+| next-intl | Next.js-only. Astro built-in i18n handles routing. A small translation dictionary handles UI strings. |
+| astro-i18next | Overkill for <50 UI strings. Adds i18next's full dependency tree. The custom dictionary pattern from Astro docs is 20 lines of code. |
+| react-hook-form | React-only. For any forms in Astro, use native HTML form with an Astro API endpoint or Cloudflare Function. |
+| @portabletext/react | React renderer. Use astro-portabletext instead. |
+| Vercel-specific packages | Any `@vercel/*` package is irrelevant on Cloudflare. |
+| @astrojs/node | Node.js adapter. This project deploys to Cloudflare Workers, not Node.js. |
 
 ---
 
 ## Sources
 
-- npm registry (direct `npm info` queries, 2026-03-15) — package versions: next@16.1.6, next-sanity@12.1.1, next-intl@4.8.3, sanity@5.16.0, tailwindcss@4.2.1, motion@12.36.0 — **HIGH confidence**
-- [next-sanity GitHub releases](https://github.com/sanity-io/next-sanity/releases) — v12.1.1 confirmed; v13 pre-release available — **HIGH confidence**
-- [next-intl v4.0 release blog](https://next-intl.dev/blog/next-intl-4-0) — breaking changes, ESM-only, TypeScript 5 req — **HIGH confidence**
-- [shadcn/ui Tailwind v4 docs](https://ui.shadcn.com/docs/tailwind-v4) — full Tailwind v4 + React 19 support confirmed — **HIGH confidence**
-- [Sanity Visual Editing with Next.js App Router](https://www.sanity.io/docs/visual-editing/visual-editing-with-next-js-app-router) — next-sanity v11+ required; current is v12 — **HIGH confidence**
-- [Google Labs Stitch blog](https://developers.googleblog.com/stitch-a-new-way-to-design-uis/) — confirmed: AI design tool, not npm library — **HIGH confidence**
-- [stitch-skills GitHub](https://github.com/google-labs-code/stitch-skills) — v0.1 agent skills, not a React component library — **HIGH confidence**
-- WebSearch: Tailwind v4 + Next.js 15 setup, PM2 + Hostinger deployment patterns — **MEDIUM confidence** (multiple concordant sources)
+- [GitHub withastro/astro releases](https://github.com/withastro/astro/releases) — astro@6.1.5, @astrojs/cloudflare@13.1.8 confirmed April 8, 2026 — **HIGH confidence**
+- [Astro Cloudflare adapter docs](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) — adapter config, wrangler.jsonc structure, API route patterns — **HIGH confidence**
+- [Astro i18n routing docs](https://docs.astro.build/en/guides/internationalization/) — prefixDefaultLocale behavior confirmed — **HIGH confidence**
+- [Astro deploy to Cloudflare docs](https://docs.astro.build/en/guides/deploy/cloudflare/) — build/deploy commands, output directory — **HIGH confidence**
+- [@sanity/astro on npm](https://www.npmjs.com/package/@sanity/astro) — v3.3.1, last published ~25 days ago — **HIGH confidence**
+- [Sanity official Astro integration page](https://www.sanity.io/plugins/sanity-astro) — docs updated March 23, 2026; confirmed @astrojs/react only needed for embedded Studio — **HIGH confidence**
+- [astro-portabletext on npm](https://www.npmjs.com/package/astro-portabletext) — v0.13.0, Sanity's recommended Astro renderer — **HIGH confidence**
+- [Cloudflare Pages limits docs](https://developers.cloudflare.com/pages/platform/limits/) — 500 builds/month, 20k files, 25MiB max file size — **HIGH confidence**
+- [Cloudflare Workers pricing docs](https://developers.cloudflare.com/workers/platform/pricing/) — 100k requests/day free, 10ms CPU time per invocation — **HIGH confidence**
+- [Cloudflare acquires Astro blog post](https://blog.cloudflare.com/astro-joins-cloudflare/) — acquisition context, Astro 6 workerd-backed dev server — **HIGH confidence**
+- [withastro/astro issue #15237](https://github.com/withastro/astro/issues/15237) — hybrid mode issues with Cloudflare Workers in early Astro 6 — **MEDIUM confidence** (issue may be resolved; recommend starting with `output: 'server'` to avoid)
 
 ---
 
-*Stack research for: nestorsegura-real-estate (professional landing page, Hamburg real estate market)*
-*Researched: 2026-03-15*
+*Stack research for: nestorsegura.com v2.0 Astro Migration*
+*Researched: 2026-04-11*

@@ -1,324 +1,418 @@
-# Pitfalls Research
+# Migration Pitfalls: Next.js 15 → Astro + Cloudflare
 
-**Domain:** Multilingual professional landing page / lead-gen site (Next.js 15 + Sanity.io v3 + next-intl + VPS/PM2)
-**Researched:** 2026-03-15
-**Confidence:** HIGH — majority of findings verified through official documentation, official GitHub issues, and Vercel's own engineering blog
+**Migration:** Next.js 15 (App Router + next-intl + Sanity) → Astro 5 + Cloudflare Workers
+**Researched:** 2026-04-11
+**Confidence:** HIGH for Cloudflare/Astro adapter topics (verified via official docs); MEDIUM for Sanity portable text rendering edge cases (GitHub issues, community)
 
 ---
 
 ## Critical Pitfalls
 
-### Pitfall 1: Middleware Catches /studio and /api Routes
+### 1. Cloudflare Pages Is Being Sunset — Target Workers, Not Pages
 
-**What goes wrong:**
-next-intl middleware intercepts every request that matches its matcher. If `/studio` and `/api` are not explicitly excluded, the middleware tries to locale-detect and redirect/rewrite those routes. Sanity Studio breaks silently (assets load from the wrong path, or Studio never initializes), and API route handlers return locale-prefixed JSON or get redirected before the handler runs.
+**Description:**
+As of 2025, Cloudflare officially recommends Workers over Pages for new projects. The Astro Cloudflare adapter has dropped first-class Pages support in recent versions. In Astro v6, the `@astrojs/cloudflare` adapter no longer deploys to Cloudflare Pages at all — it targets Cloudflare Workers exclusively. Planning to use Cloudflare Pages and later discovering this forces a redeploy or architecture change mid-migration.
 
-**Why it happens:**
-The default next-intl matcher pattern excludes `_next`, `_vercel`, and paths with a dot (for static files), but does NOT automatically exclude `/studio` or `/api`. Developers copy a starter template and forget to audit the matcher.
+**Warning Signs:**
+- Docs examples reference `wrangler pages deploy` rather than `wrangler deploy`
+- Cloudflare dashboard shows a "Workers & Pages" section where Pages and Workers appear merged
+- Adapter docs reference `_worker.js` (Workers pattern) not a `_routes.json` (Pages pattern)
 
-**How to avoid:**
-Explicitly exclude both in the middleware `matcher` config:
+**Prevention Strategy:**
+Target Cloudflare Workers from day one. Configure `wrangler.toml` with `main = "./dist/_worker.js/index.js"`, `assets.binding = "ASSETS"`, and `compatibility_flags = ["nodejs_compat"]`. Use `wrangler deploy` not `wrangler pages deploy`. Treat Cloudflare Pages as a legacy target.
 
-```ts
-// middleware.ts
-export const config = {
-  matcher: '/((?!api|studio|_next|_vercel|.*\\..*).*)'
+**Affected Phase:** Phase 1 (Infrastructure Setup). Wrong target here cascades into every subsequent deployment step.
+
+**Source:** Astro Cloudflare adapter docs (official), Cloudflare Workers Astro guide (official)
+
+---
+
+### 2. `nodejs_compat` Flag Is Required But Easy to Forget
+
+**Description:**
+The Astro Cloudflare adapter runs in Cloudflare's `workerd` runtime, which does not support CommonJS (`require`, `module.exports`) or many Node.js built-ins by default. The `nodejs_compat` compatibility flag must be declared in `wrangler.toml`. Without it, any dependency that uses Node.js APIs (including Sanity's SDK, Zod, or similar) will throw runtime errors that only appear in production — not during `astro dev`, which defaults to Node.js.
+
+**Warning Signs:**
+- `astro dev` works correctly but `wrangler dev` throws module resolution errors
+- Errors reference `require is not defined` or `node:fs is not a known module`
+- Sanity client calls succeed locally but crash on the deployed Worker
+
+**Prevention Strategy:**
+Add to `wrangler.toml` immediately during project setup:
+```toml
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+```
+Test with `wrangler dev` (not `astro dev`) before any milestone is considered complete.
+
+**Affected Phase:** Phase 1 (Infrastructure Setup).
+
+**Source:** Astro Cloudflare adapter docs (official); community issue reports on GitHub
+
+---
+
+### 3. `astro dev` Uses Node.js but Production Uses `workerd` — Runtime Mismatch
+
+**Description:**
+Prior to recent adapter versions, `astro dev` used Node.js as its dev server even when targeting Cloudflare. Code that works in dev can silently break in production if it relies on Node.js-specific behavior. This is now partially fixed: the adapter can run `astro dev` against the actual `workerd` runtime, but this must be explicitly configured. If it is not, the development environment gives false confidence.
+
+**Warning Signs:**
+- A feature works in `astro dev` but returns 500 in production
+- Date/time formatting or crypto APIs behave differently between environments
+- Sanity webhook signature validation fails in production only
+
+**Prevention Strategy:**
+Verify that the development server is using the `workerd` runtime. In current versions of the Cloudflare adapter, `astro dev` uses `workerd` by default when the adapter is installed. Confirm by checking that `wrangler dev` and `astro dev` produce identical behavior. Run `wrangler dev` for all API route testing.
+
+**Affected Phase:** Phase 1 (Infrastructure Setup). Establish the correct dev workflow before building anything else.
+
+**Source:** Astro Cloudflare adapter docs (official, "Runtime" section)
+
+---
+
+### 4. Cloudflare Free Plan: 20,000 File Limit Will Be Hit
+
+**Description:**
+Cloudflare Pages (and Workers static assets) has a hard limit of 20,000 files on the free plan and 100,000 files on paid plans. A Next.js `standalone` build already carries hundreds of chunked JS files. An Astro static build with many pages, images, and fonts can exceed this limit, especially if images are not optimized or if Sanity content generates many individual pages (blog posts per locale × 3 locales).
+
+**Warning Signs:**
+- Build succeeds locally but deployment fails with an asset count error
+- Blog post count × 3 locales approaches 1,000+ generated HTML files
+- `dist/` contains uncompressed images or redundant font variants
+
+**Prevention Strategy:**
+Audit the `dist/` output before first deployment. Count files with `find dist -type f | wc -l`. Use Astro's built-in image optimization and serve fonts from CDN (Fontsource or Google Fonts) rather than self-hosting all variants. Consider partial prerendering (static most pages, SSR for blog index) to reduce file count if needed. If free plan is exhausted, upgrade to Workers Paid ($5/mo) which raises the limit to 100,000.
+
+**Affected Phase:** Phase 3 (Static Build + Deployment). Check file counts before and after each batch of pages is added.
+
+**Source:** Cloudflare Pages limits documentation (official)
+
+---
+
+### 5. Astro's i18n Routing Cannot Replicate next-intl's `localePrefix: 'as-needed'` Exactly
+
+**Description:**
+next-intl's `localePrefix: 'as-needed'` means: default locale (`de`) gets no prefix (`/`), non-default locales get prefixes (`/en/`, `/es/`). Astro's built-in i18n uses `prefixDefaultLocale: false` to achieve the same pattern, but the behavior is not identical. Key difference: Astro does **not** perform automatic cookie-based locale detection and redirection. There is no equivalent to next-intl's middleware that reads a `NEXT_LOCALE` cookie and redirects accordingly. Returning visitors who previously selected a locale in Next.js will not have that preference respected in Astro unless custom middleware is written.
+
+**Warning Signs:**
+- Locale switcher sets a cookie but navigation does not respect it on next visit
+- `/` always serves German content regardless of previously selected locale
+- Tests with `Astro.currentLocale` return unexpected values on index pages
+
+**Prevention Strategy:**
+Accept that Astro's i18n is routing-only, not middleware-driven. Configure `prefixDefaultLocale: false` (de has no prefix, en and es get prefixes). Write a simple Astro middleware that reads a locale cookie and redirects `/` to `/en/` or `/es/` if needed. Use `getRelativeLocaleUrl()` for all internal links — never string-concatenate locale prefixes. Document the behavior difference explicitly.
+
+**Affected Phase:** Phase 2 (i18n Routing Setup). This is the single most complex architectural difference from the Next.js setup.
+
+**Source:** Astro i18n docs (official); Astro GitHub issue #12897 (MEDIUM confidence)
+
+---
+
+### 6. Double-Prefix Bug in Dynamic Routes with Sanity Slugs
+
+**Description:**
+When generating blog post URLs from Sanity slugs, the slug value itself can already contain the locale prefix if Sanity's `document-internationalization` plugin is involved. For example, a Sanity document for the English version might have `slug.current = "how-to-sell"` but the generating code incorrectly prepends `/en/` twice, yielding `/en/en/how-to-sell`. This is especially likely when Sanity slugs are copied from a previous locale document.
+
+**Warning Signs:**
+- Blog post links return 404 in the browser
+- `getStaticPaths` output contains paths with repeated locale segments
+- Sanity's translation metadata shows `slug.current` already including a locale prefix
+
+**Prevention Strategy:**
+Audit all Sanity blog post slug values in the dataset. Ensure slugs in Sanity are locale-agnostic (just the path segment, no locale prefix). In `getStaticPaths`, derive the URL as `getRelativeLocaleUrl(locale, post.slug.current)` — never concatenate manually. Add a test that generates 2–3 known slugs across all locales and verifies the output URLs.
+
+**Affected Phase:** Phase 4 (Blog + Portable Text). Address before implementing `getStaticPaths` for blog posts.
+
+**Source:** Astro i18n docs (official); community discussions on double-prefix patterns
+
+---
+
+### 7. `getRelativeLocaleUrl` with `manual` Routing Returns Wrong URLs
+
+**Description:**
+Astro's i18n helper `getRelativeLocaleUrl()` has a documented bug when used alongside `routing: "manual"` — it returns incorrect paths (e.g., returns `/` when it should return `/en`). If any custom middleware is used that requires `routing: "manual"`, this helper becomes unreliable and the locale switcher will break silently by pointing to wrong URLs.
+
+**Warning Signs:**
+- Locale switcher navigates to `"/"` regardless of target locale
+- `getRelativeLocaleUrl("en", "/about")` returns `/about` instead of `/en/about`
+- Only happens after switching to `routing: "manual"` in `astro.config.ts`
+
+**Prevention Strategy:**
+Do not use `routing: "manual"` unless there is a compelling reason that cannot be solved with Astro's built-in routing strategies. If custom middleware is needed for cookie-based redirects, keep `routing: "pathname-prefix-always"` or `"pathname-prefix-except-default"` and implement the cookie logic as an Astro middleware that calls `next()` after inspection. Reserve `routing: "manual"` only as a last resort.
+
+**Affected Phase:** Phase 2 (i18n Routing Setup).
+
+**Source:** Astro GitHub issue #11355 (MEDIUM confidence, community-reported, confirmed in multiple threads)
+
+---
+
+### 8. React Components Need `client:*` Directive — Forgetting It Produces Silent Static Output
+
+**Description:**
+Every interactive React component from the current Next.js site (FaqBlock accordion, mobile nav drawer, locale switcher, AnalysePageClient gauge form) must receive a `client:load` or `client:visible` directive when used in `.astro` files. Without the directive, Astro renders the component to static HTML but **does not ship any JavaScript**. The component appears visually correct but is completely non-interactive. There is no error or warning — it silently fails.
+
+**Warning Signs:**
+- FAQ accordion renders with correct HTML structure but clicking items has no effect
+- Mobile nav button is visible but does not open the drawer
+- Gauge form renders the input fields but submitting does nothing
+
+**Prevention Strategy:**
+Document a rule before migration begins: every component that uses `useState`, `useEffect`, event handlers, or `useTranslations` from a client context must have an explicit client directive. Assign directives intentionally: use `client:load` for above-the-fold interactive components (nav drawer, locale switcher), `client:visible` for below-the-fold components (FAQ accordion, gauges). Never assume a component will be interactive without the directive.
+
+**Affected Phase:** Phase 5 (Interactive Component Migration). Create a migration checklist mapping each current component to its required directive.
+
+**Source:** Astro Islands architecture docs (official); Astro framework components docs (official)
+
+---
+
+### 9. Functions Cannot Be Passed as Props to Hydrated Islands
+
+**Description:**
+In Next.js, Server Components pass callback functions to Client Components via props routinely. In Astro, props passed to a hydrated island (`client:load`) must be serializable — functions cannot be serialized and will be silently dropped or throw a runtime error. This affects any pattern where a parent `.astro` file tries to pass an `onClick` or callback to a React component.
+
+**Warning Signs:**
+- A React component renders but an event callback never fires
+- TypeScript errors about prop types when passing functions from `.astro` to React components
+- Console errors about non-serializable props
+
+**Prevention Strategy:**
+Refactor components to be self-contained: each interactive island should manage its own event handlers and state internally. If cross-island communication is needed (e.g., locale switcher updating a nav state), use a lightweight client-side store (nanostores, which is Astro's recommended approach) rather than props.
+
+**Affected Phase:** Phase 5 (Interactive Component Migration).
+
+**Source:** Astro framework components docs (official, "Passing Props" section); Astro Islands architecture docs
+
+---
+
+### 10. Sanity Portable Text Requires a Separate Package and Has Astro-Specific Constraints
+
+**Description:**
+The Sanity `PortableText` React component does not work directly in `.astro` files without wrapping it in a React island. The package `astro-portabletext` provides a native Astro implementation that renders Portable Text to HTML without requiring React hydration. However, it has limitations: **rendering an Astro component inside a Portable Text custom block is not natively supported**. Attempts to pass Astro components as custom block renderers will fail. Only React components (in an island) or raw HTML string outputs work as custom block types.
+
+**Warning Signs:**
+- Portable Text renders body text correctly but custom block types (e.g., an image with caption, a CTA card) show nothing
+- TypeScript errors when trying to pass `.astro` component as a Portable Text `components` prop
+- GitHub issue threads from 2022–2024 documenting this limitation with no official resolution
+
+**Prevention Strategy:**
+Use `astro-portabletext` for the blog body. Map custom block types to React components (not Astro components) if interactivity is needed, or render them as plain HTML strings for static display. Audit the current blog's Portable Text schemas and categorize each custom block type: static-renderable (can be HTML string) vs. interactive (needs React island). For the blog, which likely has limited custom blocks (images, maybe a callout), this is manageable without React.
+
+**Affected Phase:** Phase 4 (Blog + Portable Text). Audit custom block types before implementing the blog renderer.
+
+**Source:** Netlify Portable Text + Astro guide (MEDIUM confidence); Astro GitHub issue #5494 (MEDIUM confidence); `astro-portabletext` npm package
+
+---
+
+### 11. Sanity `useCdn: false` Is Still Required for Webhook-Triggered Rebuilds
+
+**Description:**
+The current codebase already has this pattern (confirmed by inspecting the existing `revalidate` route). In Astro's static build model, the equivalent issue manifests differently: Cloudflare Pages/Workers build is triggered by a Sanity webhook. If the Astro build fetches from Sanity using `useCdn: true`, the build may receive stale cached data from Sanity's CDN. The built HTML is then stale from the moment it is deployed.
+
+**Warning Signs:**
+- Content published in Sanity Studio appears on the site 60+ seconds after the webhook-triggered build completes
+- Webhook-triggered builds succeed but published content is not visible for another CDN cycle
+
+**Prevention Strategy:**
+Set `useCdn: false` in the Sanity client used during the Astro build. This is safe because the Astro build is a one-time process (not serving many concurrent requests like a live server), so CDN performance is not needed. Only enable `useCdn: true` if implementing SSR for live data routes (e.g., a preview endpoint).
+
+**Affected Phase:** Phase 3 (Sanity + Astro Integration).
+
+**Source:** Existing project pattern (confirmed in `/src/app/api/revalidate/route.ts`); Sanity documentation on CDN
+
+---
+
+### 12. `useTranslations` and `useLocale` (next-intl) Do Not Exist in Astro — `AnalysePageClient` Needs Full Rewrite
+
+**Description:**
+The `AnalysePageClient` component (the gauge form) uses `useTranslations('analysis')` and `useLocale()` from next-intl. These hooks do not exist in Astro. The entire translation mechanism must change. In Astro, locale is available from `Astro.currentLocale` in `.astro` files, but not inside a React island via hooks. The locale must be passed as a prop from the parent `.astro` file.
+
+**Warning Signs:**
+- TypeScript errors: `useTranslations` is not found after removing next-intl
+- `useLocale()` returns undefined in the React component
+- The translation strings for "Performance", "Conversión", etc. are not loaded
+
+**Prevention Strategy:**
+Refactor `AnalysePageClient` to accept `locale` and `labels` as props passed from the parent `.astro` file. The parent resolves `Astro.currentLocale`, looks up the label map, and passes it as serializable data. Remove all next-intl hook calls from the component. The `t()` function pattern must be replaced with a plain object lookup (which the existing `CATEGORY_LABELS` map already does for labels — reuse that pattern for all translated strings).
+
+**Affected Phase:** Phase 5 (Interactive Component Migration). Plan this rewrite explicitly — it is not a drop-in migration.
+
+**Source:** Code inspection of `AnalysePageClient.tsx`; Astro i18n docs (official); Astro Islands props serialization docs
+
+---
+
+### 13. Webhook-Based Rebuild on Cloudflare Workers (Not ISR) — No `revalidateTag`
+
+**Description:**
+The current Next.js site uses `revalidateTag(body._type)` in the `/api/revalidate` route for on-demand ISR. Astro on Cloudflare Workers does not have ISR. The equivalent is triggering a full rebuild via a Cloudflare Pages/Workers build webhook. There is no in-process cache invalidation. This means: (1) the revalidation route logic must be replaced with a Cloudflare Deploy Hook call, and (2) content latency after publish is now the full build time (typically 1–3 minutes) rather than seconds.
+
+**Warning Signs:**
+- The existing `/api/revalidate` route with `revalidateTag` has no equivalent in Astro
+- Editors expect near-instant content updates but builds take 90–120 seconds
+- Sanity webhook needs a different URL and payload format for Cloudflare Deploy Hooks
+
+**Prevention Strategy:**
+Replace the revalidation route with a Cloudflare Workers function that, upon receiving a valid Sanity webhook, calls the Cloudflare Deploy Hook URL. Set expectations with the client: content changes take 1–3 minutes to appear, not 5 seconds. If sub-minute freshness is required for specific content, implement those pages as SSR (on-demand) routes with direct Sanity queries rather than static pages.
+
+**Affected Phase:** Phase 3 (Sanity + Astro Integration) and Phase 6 (Deployment Pipeline).
+
+**Source:** Cloudflare Deploy Hooks docs; Astro on Cloudflare architecture (no ISR concept)
+
+---
+
+### 14. Sanity `document-internationalization` GROQ Queries Differ From Single-Document Pattern
+
+**Description:**
+The current site uses Sanity's `document-internationalization` plugin, which creates separate documents per locale linked via a `translation.metadata` document. Fetching content for a given locale requires a `references()` GROQ query, not a simple `_type == "page" && slug.current == $slug` query. If this query structure is not reproduced correctly in Astro's data-fetching layer, pages will either show no content or show all-locale content merged together.
+
+**Warning Signs:**
+- GROQ queries return empty arrays for non-default locales
+- The same document appears in all locales (language filter missing)
+- Build-time `getStaticPaths` generates paths for all locales but fetches only the German document
+
+**Prevention Strategy:**
+Audit all GROQ queries before migration. The correct pattern for this plugin is:
+```groq
+*[_type == "page" && language == $language && slug.current == $slug][0]{
+  title, body, slug, language
 }
 ```
+The `language` field must be added as a filter on every query. Verify field naming: the plugin uses `language` (not `__i18n_lang` which was an older pattern). Test queries directly in Sanity Vision or the API explorer before using them in code.
 
-Verify by hitting `/studio` before adding any other functionality — it must load cleanly with no locale prefix or redirect.
+**Affected Phase:** Phase 3 (Sanity + Astro Integration). Validate all queries against the live dataset before writing page components.
 
-**Warning signs:**
-- Sanity Studio shows a blank screen or partial load after embedding at `/studio`
-- API routes return HTML instead of JSON
-- `next dev` logs show middleware running on `/studio/*` paths
-
-**Phase to address:** Foundation / project setup phase — configure the matcher before writing a single page.
+**Source:** Sanity `document-internationalization` plugin README (moved to sanity-io/plugins monorepo, official); code inspection of existing Sanity schema
 
 ---
 
-### Pitfall 2: standalone Output Silently Omits public/ and .next/static/
+## Moderate Pitfalls
 
-**What goes wrong:**
-After `next build` with `output: 'standalone'`, the generated `.next/standalone/` directory intentionally does NOT include the `public/` folder or `.next/static/`. Starting `server.js` directly works in development because those folders exist in the project root, but on the VPS after deploying only the standalone output, images, fonts, and JS chunks return 404.
+### 15. Astro 404 Page Requires i18n-Aware Handling
 
-**Why it happens:**
-Next.js standalone mode is designed for CDN-backed deployments where static assets are served separately. For VPS deployments without a CDN, developers forget the manual copy step that Next.js documentation calls out but does not automate.
+**Description:**
+Astro's `src/pages/404.astro` is a single file. With `prefixDefaultLocale: false`, the 404 page does not automatically know which locale the visitor was using. A visitor hitting a broken German URL will see the 404 page in whatever the default output language is. Crafting a locale-aware 404 requires reading the URL prefix in the 404 page logic.
 
-**How to avoid:**
-Add this to your deploy script (runs after `next build`):
+**Prevention Strategy:**
+In `404.astro`, parse `Astro.url.pathname` to detect the locale prefix (`/en/...` or `/es/...`), default to German if no prefix. This is a one-time implementation but must be done explicitly.
 
-```bash
-cp -r public .next/standalone/
-cp -r .next/static .next/standalone/.next/static
-```
-
-Or encode it in `package.json`:
-```json
-"build:deploy": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/static"
-```
-
-Nginx should proxy to `server.js` at port 3000; static files are then served by Node.js from the copied folders.
-
-**Warning signs:**
-- All page HTML loads but images and fonts are broken (404 in browser devtools)
-- `/favicon.ico` returns 404
-- `.next/standalone/` exists but is missing `public/` subdirectory after build
-
-**Phase to address:** Deployment / CI-CD setup phase — encode in build script before first VPS deploy.
+**Affected Phase:** Phase 2 (i18n Routing Setup).
 
 ---
 
-### Pitfall 3: Sanity CDN + ISR = Stale Content That Never Refreshes
+### 16. Astro `<Image />` Component Attributes Differ From `next/image`
 
-**What goes wrong:**
-`useCdn: true` is the Sanity client default. The Sanity CDN caches responses for ~60 seconds. When Next.js ISR triggers a revalidation, it fetches from the Sanity CDN and receives stale data, then re-caches that stale version. Content editors update a document in Studio, the webhook fires, Next.js revalidates — but the page still shows old content for up to another CDN TTL cycle.
+**Description:**
+The current codebase uses `next/image`. Astro has its own `<Image />` from `astro:assets`. The required props differ: Astro requires explicit `width` and `height` (or `inferSize` for remote images), does not support `fill` prop, and handles `priority` differently. Direct copy-paste of image components will cause build errors.
 
-**Why it happens:**
-Teams copy a basic `sanityClient` config from tutorials that set `useCdn: true` (reasonable for public reads), then enable on-demand revalidation without switching `useCdn` off for the fetch that happens during revalidation.
+**Prevention Strategy:**
+When migrating image components, rewrite each one using Astro's `<Image />` API. For remote Sanity images, use `@sanity/image-url` to build URLs and pass to `<img>` or Astro's `<Image />` with explicit dimensions. Add Sanity's CDN domain to `image.domains` in `astro.config.ts`.
 
-**How to avoid:**
-Use two Sanity clients: one with `useCdn: true` for non-revalidating reads (fast, cached), and one with `useCdn: false` for the `sanityFetch` function used by ISR/tag-based revalidation:
-
-```ts
-// lib/sanity.ts
-export const sanityClient = createClient({ useCdn: true, ... })      // general reads
-export const sanityFetch = createClient({ useCdn: false, ... })       // revalidation path
-```
-
-**Warning signs:**
-- Webhook fires (confirmed in Sanity logs), but the deployed page still shows old content for minutes
-- Manually hitting `/api/revalidate` triggers Next.js revalidation but content stays stale
-
-**Phase to address:** CMS integration phase — set up clients correctly before wiring any revalidation.
+**Affected Phase:** Phase 4 (Blog + Portable Text) and Phase 5 (Component Migration).
 
 ---
 
-### Pitfall 4: Mixing Time-Based and Tag-Based Revalidation
+### 17. CSS `className` Must Become `class` in Astro Files
 
-**What goes wrong:**
-Sanity's official `sanityFetch` helper ignores the `revalidate` parameter when `tags` are provided. If a developer sets both `{ revalidate: 3600, tags: ['post'] }`, the time-based revalidation is silently discarded. The page never refreshes on a schedule, only on webhook trigger — or vice versa if configured backwards.
+**Description:**
+JSX attribute `className` is React-specific. Astro's template syntax uses standard HTML `class`. Copied React component markup will silently not apply class names if `className` is left unchanged in `.astro` files. TypeScript will not always catch this because `.astro` files have a different type surface.
 
-**Why it happens:**
-Developers expect both strategies to compose. The mutual exclusivity is documented but easy to miss when copying examples.
+**Prevention Strategy:**
+Use search-and-replace (`className=` → `class=`) as a migration step for any JSX converted to Astro template syntax. Keep React components as `.tsx` files (they retain `className`). The rule: if the file ends in `.astro`, use `class`; if it ends in `.tsx`, use `className`.
 
-**How to avoid:**
-Pick one strategy project-wide. For a CMS-driven site where editors publish content, **tag-based + webhook** is strongly preferred: editors see changes reflected immediately, and you avoid unnecessary rebuilds on a timer.
-
-```ts
-// Always use tags, never combine with revalidate number
-const data = await sanityFetch({ query: QUERY, tags: ['page', 'hero'] })
-```
-
-**Warning signs:**
-- Pages update instantly sometimes, but other times lag by exactly N seconds (revalidate period)
-- Changing a document triggers the webhook but some pages still rotate on the old timer
-
-**Phase to address:** CMS integration phase — establish the strategy before writing any fetch calls.
+**Affected Phase:** Phase 5 (Component Migration). Build a checklist item into the migration process.
 
 ---
 
-### Pitfall 5: Webhook Revalidation Secret Mismatch
+### 18. Cloudflare Auto Minify Setting Breaks React Hydration
 
-**What goes wrong:**
-The revalidation API route (`/api/revalidate`) validates an incoming secret against `SANITY_REVALIDATE_SECRET`. If this env var is missing on the VPS, not set in Sanity's webhook configuration, or the values don't match exactly (trailing newline, copy-paste error), every webhook call returns 401 and no revalidation ever runs. Content editors see their changes stuck.
+**Description:**
+Cloudflare's "Auto Minify" setting (available in Speed settings) strips HTML comments and whitespace. Astro hydration uses HTML comment markers to identify island boundaries. With Auto Minify enabled, hydration fails with console errors like "Hydration completed but contains mismatches." Interactive components appear to load but may behave incorrectly.
 
-**Why it happens:**
-The secret is configured in two places (`.env.local` and Sanity's webhook settings UI), and they diverge during deployment or when rotating secrets.
+**Warning Signs:**
+- Console errors: "Hydration completed but contains mismatches" only in production
+- Interactive components work on `wrangler dev` but not on the deployed URL
+- Cloudflare "Speed" settings show HTML Auto Minify enabled
 
-**How to avoid:**
-- Generate secret once: `openssl rand -hex 32`
-- Store it in `.env.production` on the VPS
-- Set the identical value in Sanity → API → Webhooks as the HTTP Header value `Authorization: Bearer <secret>`
-- Test the webhook immediately after first deploy with Sanity's "Send test notification" button and check PM2 logs
+**Prevention Strategy:**
+Disable Cloudflare Auto Minify for HTML (but not CSS/JS). This is a Cloudflare dashboard setting, not a code change. Check this before debugging any mysterious hydration mismatch that only appears in production.
 
-**Warning signs:**
-- Sanity webhook delivery logs show 401 responses
-- `pm2 logs` show "Invalid signature" or "Unauthorized" when content is published
+**Affected Phase:** Phase 6 (Production Deployment Verification). Add to the deployment checklist.
 
-**Phase to address:** Deployment / CMS wiring phase — verify immediately after first VPS deploy.
+**Source:** Cloudflare community reports (MEDIUM confidence); Astro GitHub issues on hydration mismatches
 
 ---
 
-### Pitfall 6: next-intl localePrefix 'as-needed' Causes Redirect Loops for Default Locale
+## Minor Pitfalls
 
-**What goes wrong:**
-With `localePrefix: 'as-needed'`, the default locale (e.g., `en`) has no URL prefix (`/about` not `/en/about`). But next-intl uses a `NEXT_LOCALE` cookie to remember a user's locale. If a user previously visited `/de/about`, their cookie is set to `de`. When they later visit `/about` (no prefix), the middleware reads the cookie and redirects them to `/de/about` — even though they typed an unprefixed URL expecting English.
+### 19. Astro Build Format and `prefixDefaultLocale: false` — Index Files for Non-Default Locales May Have Wrong `Astro.currentLocale`
 
-**Why it happens:**
-The cookie persistence is intentional (remembers language preference), but it surprises developers when testing in a browser where a previous session left a stale cookie.
+**Description:**
+A documented Astro bug (issue #9847): when using build format `"file"` (which generates `en.html` rather than `en/index.html`) with `prefixDefaultLocale: false`, the `Astro.currentLocale` for non-default locale index pages returns the wrong value. This only affects index pages, not content pages.
 
-**How to avoid:**
-- In development: clear `NEXT_LOCALE` cookie between language tests
-- In production: this is expected behavior for returning users; document it as intended
-- If you want prefix-less URLs to always serve the default locale regardless of cookie, use `localePrefix: 'always'` and accept `/en/` in default-locale URLs
-- Ensure middleware matcher handles unprefixed paths: the matcher must not exclude `/` or short paths
+**Prevention Strategy:**
+Use the default build format `"directory"` (generates `en/index.html`). Do not use `format: "file"` in `astro.config.ts`. This avoids the bug entirely.
 
-**Warning signs:**
-- `/about` in incognito works, but in regular browser shows German content
-- Tests pass in fresh environment but fail for QA tester who previously used the German locale
-
-**Phase to address:** i18n setup phase — document the behavior in a project ADR so it doesn't get treated as a bug.
+**Affected Phase:** Phase 1 (Astro Config). Set config defaults correctly upfront.
 
 ---
 
-### Pitfall 7: async params Not Awaited in Dynamic Route Components
+### 20. `hreflang` for Default Locale Must Use Unprefixed URL
 
-**What goes wrong:**
-Next.js 15 made `params` and `searchParams` asynchronous Promises. Every dynamic route component (`app/[locale]/blog/[slug]/page.tsx`) must `await params` before accessing its properties. Accessing `params.slug` directly (the Next.js 14 pattern) still works in Next.js 15 with a deprecation warning, but will break in a future release and currently causes TypeScript type errors at build time.
+**Description:**
+With `prefixDefaultLocale: false`, the German (default) locale lives at `/` not `/de/`. The `hreflang` annotation for German must point to `https://domain.com/` (no `/de/` prefix). Using `/de/` in hreflang for the default locale signals a non-existent URL to search engines, causing indexing issues.
 
-**Why it happens:**
-Most tutorials and blog posts were written for Next.js 13/14. Copying route handlers from those sources produces code that type-checks at `strict: false` but fails in strict mode and will break in Next.js 16.
+**Prevention Strategy:**
+Generate hreflang tags programmatically using `getAbsoluteLocaleUrl()` from `astro:i18n`, which respects the `prefixDefaultLocale` setting. Do not hardcode locale prefixes in SEO components.
 
-**How to avoid:**
-Always destructure params asynchronously in page components:
-
-```tsx
-// app/[locale]/blog/[slug]/page.tsx
-export default async function BlogPost({ params }: { params: Promise<{ locale: string; slug: string }> }) {
-  const { locale, slug } = await params
-  // ...
-}
-```
-
-Run `npx @next/codemod@latest next-async-request-api .` during setup to catch all instances automatically.
-
-**Warning signs:**
-- TypeScript errors about `params` type being `Promise<...>` vs plain object
-- Build warnings: "Route `/[locale]/...` used `params.slug` without awaiting"
-
-**Phase to address:** Foundation phase — run the codemod before writing route-specific logic.
-
----
-
-## Technical Debt Patterns
-
-| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
-|----------|-------------------|----------------|-----------------|
-| `"use client"` on layout or large component trees | Stops RSC errors quickly | Entire subtree ships to browser; no RSC rendering benefits; bundle grows | Never — isolate only the interactive leaf component |
-| Calling Route Handlers from Server Components via `fetch('http://localhost:3000/api/...')` | Feels familiar (REST pattern) | Unnecessary network round-trip; hardcoded `localhost` breaks in production | Never — call the logic directly in the Server Component |
-| `useCdn: true` on all Sanity fetches | Faster reads, lower Sanity API load | Tag-based revalidation serves stale data indefinitely | Only acceptable for content that never needs on-demand revalidation |
-| Skipping Suspense boundaries on async data fetches | Less boilerplate | Entire page blocks on the slowest fetch; streaming disabled | Only in MVP prototypes, never in production pages |
-| Storing all Page Builder blocks as Sanity references | Feels normalized and "correct" | Queries become deeply nested; performance degrades; Studio UX degrades | Only when content genuinely needs to be reused across many pages |
-| Hardcoding `revalidate: 60` on all fetches | Simple, no webhook setup needed | Content editors see 60-second lag; unreliable freshness perception | Acceptable only for pages with no editor-controlled content |
-
----
-
-## Integration Gotchas
-
-| Integration | Common Mistake | Correct Approach |
-|-------------|----------------|------------------|
-| next-intl + Sanity Studio `/studio` | Middleware rewrites Studio routes to `/en/studio` or similar, breaking Studio entirely | Exclude `/studio` from middleware matcher regex before any other work |
-| next-intl + Next.js API routes `/api/*` | Middleware intercepts API calls, adding locale redirects that corrupt JSON responses | Exclude `/api` from middleware matcher regex |
-| Sanity webhook + PM2 | PM2 restarts the process during a webhook-triggered revalidation, dropping the in-flight response | Use `pm2 gracefulReload` not `pm2 restart`; configure `wait_ready: true` in ecosystem file |
-| Sanity GROQ + next-intl locale | Querying Sanity without filtering by locale field, then relying on next-intl to display translated text that doesn't exist | Either store all locales in one Sanity document (with locale fields) or use separate documents per locale and filter by `locale == $locale` in every GROQ query |
-| `next/image` + VPS (no Vercel) | Image optimization works, but `sharp` may not be installed or may fail on glibc-based Linux with memory errors | Run `npm install sharp` explicitly; on Linux consider adding `MALLOC_ARENA_MAX=2` env var |
-| Tailwind CSS v4 + PostCSS | Missing `@tailwindcss/postcss` in `postcss.config.mjs` causes all Tailwind classes to silently output nothing | Tailwind v4 requires `@tailwindcss/postcss` plugin; `tailwind.config.js` is no longer generated by default |
-| Tailwind CSS v4 + `tailwindcss-animate` (shadcn) | `@plugin 'tailwindcss-animate'` syntax causes build errors | Remove the `@plugin` line or upgrade to the v4-compatible version |
-
----
-
-## Performance Traps
-
-| Trap | Symptoms | Prevention | When It Breaks |
-|------|----------|------------|----------------|
-| `"use client"` on parent layout wraps entire page tree | Page JS bundle is large; First Contentful Paint slow; Lighthouse JS size warning | Push `"use client"` down to the smallest interactive leaf (button, form); pass Server Component children as props | Day 1 if layout.tsx is marked client |
-| No Suspense wrapping around async data components | Page white-screens until all data fetches resolve; no streaming | Wrap each independently-fetched section in `<Suspense fallback={...}>` | At any data fetch latency > 200ms |
-| GROQ queries without field projection | Sanity returns entire document including unreferenced fields; bandwidth wasted; slow response | Always project only needed fields: `{ title, slug, body }` | Scales poorly; worst at 50+ documents |
-| Uncached Sanity fetches in hot paths | API rate limits hit; Sanity CDN budget exhausted; pages slow on every request | Use `next-sanity`'s `sanityFetch` with tags to leverage Next.js Data Cache | At any meaningful traffic |
-| `redirect()` inside `try/catch` in Server Actions | Redirect silently swallowed; user stays on same page with no feedback | Place `redirect()` outside try/catch; only catch actual errors | Every time — fails at 1 user |
-| PM2 cluster mode with standalone `server.js` without verifying `.next` path | PM2 workers error "cannot find .next" on startup; only one instance actually serves | Point `cwd` to `.next/standalone/` in PM2 ecosystem config; test with `pm2 start` before going live | At first deploy |
-
----
-
-## Security Mistakes
-
-| Mistake | Risk | Prevention |
-|---------|------|------------|
-| Exposing `SANITY_API_TOKEN` (write token) in `NEXT_PUBLIC_*` env var | Token ships in browser bundle; attacker can write/delete all Sanity content | Never prefix write tokens with `NEXT_PUBLIC_`; only read tokens can be considered, and even then prefer server-only access |
-| No secret on the `/api/revalidate` webhook endpoint | Anyone can trigger cache invalidation; potential DoS via constant revalidation | Always validate `Authorization: Bearer <secret>` header; return 401 on mismatch |
-| Sanity Studio at `/studio` with no authentication | Studio is publicly accessible; anyone can edit content | Configure Sanity user management (Google/GitHub SSO) in Sanity project settings; Studio auth is handled by Sanity, not Next.js |
-| Environment variables not set on VPS (only in `.env.local`) | App starts with `undefined` for critical vars; crashes at runtime or exposes default fallbacks | Use `.env.production` on VPS or set vars in PM2 ecosystem file via `env_production` block; verify with `pm2 env <id>` |
-| Webhook endpoint accepts any origin without CORS restriction | Not a direct risk for webhook (server-to-server) but API routes may be unintentionally open | For API routes handling mutations, verify `Origin` or require auth headers |
-
----
-
-## UX Pitfalls
-
-| Pitfall | User Impact | Better Approach |
-|---------|-------------|-----------------|
-| No loading state on form submissions (lead capture) | User clicks submit, nothing happens visually, clicks again — duplicate submissions | Use `useFormStatus` or manage `isPending` state; disable button on submit |
-| Language switcher changes locale but loses the current page path | User reads `/de/blog/my-post`, switches to English, lands on `/` not `/blog/my-post` | Use next-intl's `Link` with `locale` prop to generate locale-switched href for the current path |
-| Default locale (`en`) has no `/en/` prefix but hreflang points to `/en/` | Google sees duplicate content or misses the default locale page | Configure `hreflang` annotations explicitly in metadata: `x-default` for the unprefixed URL, `en` for the same unprefixed URL |
-| Page Builder blocks render synchronously without skeleton states | CMS-heavy pages flash unstyled or show blank sections during hydration | Add `loading.tsx` segments and Suspense skeletons around Page Builder block renders |
-| Contact form sends to generic `info@` with no CRM routing | Leads lost in email inbox; no way to track conversion | Even in MVP, forward to a tracked inbox or use a service like Resend with tagging |
-
----
-
-## "Looks Done But Isn't" Checklist
-
-- [ ] **Middleware exclusions:** Verify `/studio` and `/api` return correct responses without locale redirect — hit them directly in browser after setup
-- [ ] **Static assets on VPS:** After deploy, check that `/favicon.ico`, an image from `public/`, and a `/_next/static/` chunk all return 200
-- [ ] **Revalidation pipeline:** Publish a Sanity document change, watch Sanity webhook delivery logs, confirm the deployed page updates within ~5 seconds
-- [ ] **All three locales:** Navigate to `/`, `/es/`, and `/de/` — all must render with correct translations, not fall back to English silently
-- [ ] **i18n cookie behavior:** In a non-incognito browser tab, switch to German, then navigate to `/` (unprefixed) — confirm behavior is intentional (redirect to `/de/`) and documented
-- [ ] **PM2 restart after deploy:** Confirm `pm2 logs` show no `.next folder not found` errors; all requests return 200 after restart
-- [ ] **`sharp` installed on VPS:** Hit a page with `next/image`; confirm images load without `500` errors in PM2 logs
-- [ ] **Sanity Studio auth:** Open `/studio` in an incognito window — confirm it prompts for Sanity login, not just opens freely
-- [ ] **TypeScript strict build:** Run `next build` with `strict: true` in `tsconfig.json`; no `params` async warnings
-
----
-
-## Recovery Strategies
-
-| Pitfall | Recovery Cost | Recovery Steps |
-|---------|---------------|----------------|
-| Middleware caught `/studio` | LOW | Fix matcher regex, redeploy, clear browser cache |
-| Public folder missing from VPS deploy | LOW | Add copy step to deploy script, redeploy |
-| CDN-stale Sanity content | LOW | Switch `useCdn: false` in fetch client, redeploy |
-| Mixed revalidation strategy | MEDIUM | Audit all `sanityFetch` calls, standardize to tags-only, redeploy and test each page |
-| Webhook secret mismatch | LOW | Regenerate secret, update both VPS env and Sanity webhook, redeploy |
-| `"use client"` on entire layout | MEDIUM | Identify what actually needs client state, extract to leaf component, test hydration |
-| Broken i18n paths after adding new locale | MEDIUM | Audit all hard-coded href strings, replace with next-intl `Link`; audit GROQ queries for locale filter |
-| PM2 cluster misconfig (wrong cwd) | LOW | Fix ecosystem config, `pm2 delete all && pm2 start ecosystem.config.js --env production` |
+**Affected Phase:** Phase 2 (i18n Routing) and Phase 7 (SEO Verification).
 
 ---
 
 ## Pitfall-to-Phase Mapping
 
-| Pitfall | Prevention Phase | Verification |
-|---------|------------------|--------------|
-| Middleware catches /studio and /api | Phase 1: Foundation & project setup | Hit `/studio` and `/api/health` before writing any pages; confirm correct response |
-| standalone output missing public/ | Phase 4: Deployment & CI | Build locally, inspect `.next/standalone/`, run deploy script, verify static assets |
-| Sanity CDN interferes with revalidation | Phase 2: CMS integration | Publish a test document in Studio; confirm page updates on deployed preview |
-| Mixed time + tag revalidation | Phase 2: CMS integration | Code review all `sanityFetch` calls; no `revalidate` number alongside `tags` |
-| Webhook secret mismatch | Phase 4: Deployment & CI | Test webhook immediately after first VPS deploy via Sanity's "Send test" button |
-| localePrefix as-needed redirect loop | Phase 3: i18n setup | Test with stale `NEXT_LOCALE` cookie in browser; document behavior in ADR |
-| async params not awaited | Phase 1: Foundation & project setup | Run `next-async-request-api` codemod; enforce in CI with `tsc --noEmit` |
-| "use client" over-application | Phase 1 onwards (ongoing) | Bundle analyzer check before each phase completion (`@next/bundle-analyzer`) |
-| Sanity Page Builder references overuse | Phase 2: CMS integration | Schema design review: use objects unless cross-page reuse is confirmed requirement |
-| redirect() inside try/catch | Any phase with Server Actions | ESLint rule or code review checklist item |
-| PM2 cluster wrong cwd | Phase 4: Deployment & CI | `pm2 start ecosystem.config.js` on staging VPS before production |
-| hreflang missing for default locale | Phase 3: i18n setup | Validate with Google Search Console rich results test after launch |
+| # | Pitfall | Phase | Severity |
+|---|---------|-------|----------|
+| 1 | Targeting Pages instead of Workers | Phase 1: Infrastructure | Critical |
+| 2 | Missing `nodejs_compat` flag | Phase 1: Infrastructure | Critical |
+| 3 | `astro dev` / `wrangler dev` runtime mismatch | Phase 1: Infrastructure | Critical |
+| 4 | 20,000 file limit on free plan | Phase 3: Build + Deploy | High |
+| 5 | Astro i18n cannot replicate next-intl `as-needed` cookie behavior | Phase 2: i18n Routing | High |
+| 6 | Double-prefix in Sanity slug URLs | Phase 4: Blog | High |
+| 7 | `getRelativeLocaleUrl` broken with `routing: "manual"` | Phase 2: i18n Routing | High |
+| 8 | Missing `client:*` directive — silent non-interactive components | Phase 5: Components | High |
+| 9 | Functions cannot be props on hydrated islands | Phase 5: Components | High |
+| 10 | Portable Text / Astro component rendering limitation | Phase 4: Blog | High |
+| 11 | `useCdn: false` for build-time Sanity fetches | Phase 3: Sanity Integration | High |
+| 12 | `useTranslations` / `useLocale` hooks removed — AnalysePageClient full rewrite | Phase 5: Components | High |
+| 13 | No `revalidateTag` ISR — full rebuild on webhook | Phase 3 + Phase 6 | High |
+| 14 | GROQ queries need `language` field filter for document-i18n plugin | Phase 3: Sanity Integration | High |
+| 15 | 404 page not locale-aware | Phase 2: i18n Routing | Medium |
+| 16 | `next/image` → `astro:assets` API differences | Phase 4 + Phase 5 | Medium |
+| 17 | `className` → `class` in `.astro` files | Phase 5: Components | Medium |
+| 18 | Cloudflare Auto Minify breaks React hydration | Phase 6: Production | Medium |
+| 19 | Build format `"file"` + `prefixDefaultLocale: false` index locale bug | Phase 1: Config | Low |
+| 20 | hreflang must use unprefixed URL for default locale | Phase 2 + Phase 7 | Low |
 
 ---
 
 ## Sources
 
-- [next-intl Middleware Docs — official, pitfall on matcher](https://next-intl.dev/docs/routing/middleware) — HIGH confidence
-- [next-intl Routing Configuration — localePrefix as-needed behavior](https://next-intl.dev/docs/routing/configuration) — HIGH confidence
-- [Next.js Self-Hosting Guide — standalone output, static asset copy requirement](https://nextjs.org/docs/app/guides/self-hosting) — HIGH confidence (fetched 2026-02-27)
-- [Next.js Deploying Docs — Node.js server, streaming + nginx buffering](https://nextjs.org/docs/app/getting-started/deploying) — HIGH confidence
-- [Vercel Engineering Blog — Common App Router mistakes](https://vercel.com/blog/common-mistakes-with-the-next-js-app-router-and-how-to-fix-them) — HIGH confidence
-- [Sanity Learn — Tag-based revalidation course](https://www.sanity.io/learn/course/controlling-cached-content-in-next-js/tag-based-revalidation) — HIGH confidence
-- [Sanity Learn — Scaling page builders and pitfalls](https://www.sanity.io/learn/course/page-building/scaling-page-builders-and-pitfalls) — HIGH confidence
-- [Next.js Dynamic APIs Async — official docs](https://nextjs.org/docs/messages/sync-dynamic-apis) — HIGH confidence
-- [next-intl GitHub Issue #933 — useTranslations context not found](https://github.com/amannn/next-intl/issues/933) — MEDIUM confidence
-- [next-sanity GitHub Issue #639 — revalidateTag issues](https://github.com/sanity-io/next-sanity/issues/639) — MEDIUM confidence
-- [Next.js Discussion #10675 — PM2 cluster mode support](https://github.com/vercel/next.js/discussions/10675) — MEDIUM confidence
-- [Tailwind CSS v4 Next.js build issues](https://medium.com/@hardikkumarpro0005/fixing-next-js-15-and-tailwind-css-v4-build-issues-complete-solutions-guide-438b0665eabe) — MEDIUM confidence (verified against Tailwind official docs)
-- [App Router pitfalls article — Feb 2026](https://imidef.com/en/2026-02-11-app-router-pitfalls) — MEDIUM confidence
+- [Astro Cloudflare adapter docs (official)](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) — HIGH confidence
+- [Cloudflare Workers Astro guide (official)](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/) — HIGH confidence
+- [Cloudflare Pages limits (official)](https://developers.cloudflare.com/pages/platform/limits/) — HIGH confidence
+- [Astro i18n routing docs (official)](https://docs.astro.build/en/guides/internationalization/) — HIGH confidence
+- [Astro framework components docs (official)](https://docs.astro.build/en/guides/framework-components/) — HIGH confidence
+- [Astro migrate from Next.js guide (official)](https://docs.astro.build/en/guides/migrate-to-astro/from-nextjs/) — HIGH confidence
+- [Sanity document-internationalization plugin README (official)](https://github.com/sanity-io/plugins/blob/main/plugins/@sanity/document-internationalization/README.md) — HIGH confidence
+- [Astro GitHub issue #12897 — i18n unexpected paths](https://github.com/withastro/astro/issues/12897) — MEDIUM confidence
+- [Astro GitHub issue #11355 — getRelativeLocaleUrl with manual routing returns wrong URL](https://github.com/withastro/astro/issues/11355) — MEDIUM confidence
+- [Astro GitHub issue #9847 — prefixDefaultLocale: false + build format "file" currentLocale bug](https://github.com/withastro/astro/issues/9847) — MEDIUM confidence
+- [Astro GitHub issue #5494 — Portable Text Astro component rendering limitation](https://github.com/withastro/astro/issues/5494) — MEDIUM confidence
+- [Cloudflare community — Astro CPU time limit reports](https://community.cloudflare.com/t/astro-build-deployment-script-startup-exceeded-cpu-time-limit/490531) — MEDIUM confidence
+- [Netlify guide: Sanity Portable Text with Astro](https://developers.netlify.com/guides/how-to-use-sanity-portable-text-with-astro/) — MEDIUM confidence
+- Existing project code inspection: `src/app/api/analyze/route.ts`, `AnalysePageClient.tsx`, `FaqBlock.tsx`, `src/i18n/routing.ts`, `src/middleware.ts`
 
 ---
-*Pitfalls research for: Next.js 15 App Router + Sanity.io v3 + next-intl multilingual landing page on VPS/PM2*
-*Researched: 2026-03-15*
+
+*Pitfalls research for: Next.js 15 + next-intl + Sanity → Astro 5 + Cloudflare Workers migration*
+*Project: nestorsegura-real-estate (Hamburg real estate agent landing page, de/en/es)*
+*Researched: 2026-04-11*

@@ -1,518 +1,528 @@
-# Architecture Research
+# Architecture: Astro + Cloudflare Pages Migration
 
-**Domain:** Multilingual landing page / lead generation site (Next.js 15 + Sanity v3 + next-intl)
-**Researched:** 2026-03-15
-**Confidence:** HIGH — all major claims verified against official Next.js, Sanity, and next-intl documentation
-
----
-
-## Standard Architecture
-
-### System Overview
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        CONTENT LAYER                                 │
-│  ┌──────────────────────────┐  ┌────────────────────────────────┐   │
-│  │   Sanity Studio           │  │   Sanity Content Lake (API)    │   │
-│  │   /studio/[[...tool]]     │  │   GROQ queries via sanityFetch │   │
-│  └──────────────────────────┘  └───────────────┬────────────────┘   │
-└─────────────────────────────────────────────────┼───────────────────┘
-                                                  │ HTTP (GROQ / CDN API)
-┌─────────────────────────────────────────────────▼───────────────────┐
-│                        NEXT.JS APP LAYER                             │
-│                                                                       │
-│  middleware.ts ──────────────────────────────────────────────────┐   │
-│  (next-intl: locale detection, prefix rewrite, cookie set)       │   │
-│                                                                   │   │
-│  app/[locale]/layout.tsx                                         │   │
-│  (setRequestLocale, NextIntlClientProvider, shared UI shell)     │   │
-│                                                                   │   │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────┐  │   │
-│  │ app/[locale]/    │  │ app/[locale]/    │  │ app/studio/    │  │   │
-│  │ page.tsx         │  │ blog/[slug]/     │  │ [[...tool]]/   │  │   │
-│  │ (home/landing)   │  │ page.tsx (blog)  │  │ page.tsx       │  │   │
-│  └────────┬─────────┘  └────────┬─────────┘  └────────────────┘  │   │
-│           │                     │                                   │   │
-│  ┌────────▼─────────────────────▼──────────────────────────────┐  │   │
-│  │                    COMPONENT LAYER                           │  │   │
-│  │  PageBuilder.tsx ──→ blocks/HeroBlock.tsx                   │  │   │
-│  │                  ──→ blocks/FeaturesBlock.tsx                │  │   │
-│  │                  ──→ blocks/TestimonialsBlock.tsx            │  │   │
-│  │                  ──→ blocks/CtaBlock.tsx                     │  │   │
-│  └─────────────────────────────────────────────────────────────┘  │   │
-│                                                                   │   │
-│  ┌──────────────────────────────────────────────────────────────┐  │   │
-│  │                    API ROUTES                                 │  │   │
-│  │  app/api/revalidate/route.ts  (Sanity webhook handler)       │  │   │
-│  │  app/api/analyze/route.ts     (website analysis stub)        │  │   │
-│  └──────────────────────────────────────────────────────────────┘  │   │
-└─────────────────────────────────────────────────────────────────────┘
-                │                              │
-         PM2 + Nginx                   Sanity webhook
-         (Hostinger VPS)               POST /api/revalidate
-```
-
-### Component Responsibilities
-
-| Component | Responsibility | Communicates With |
-|-----------|----------------|-------------------|
-| `middleware.ts` | Detect locale from URL / cookie / accept-language header, rewrite `[locale]` param into request, redirect superfluous prefixes | next-intl routing engine |
-| `i18n/routing.ts` | Single source of truth for locales, defaultLocale, localePrefix config | middleware, request.ts, navigation helpers |
-| `i18n/request.ts` | Map `requestLocale` → validated locale, load message JSON from `i18n/messages/[locale].json` | next-intl server internals |
-| `app/[locale]/layout.tsx` | Call `setRequestLocale(locale)`, wrap tree in `NextIntlClientProvider`, define `<html lang>` | next-intl, all child pages |
-| `app/[locale]/page.tsx` | Run GROQ query scoped to locale, pass `content[]` array to `PageBuilder` | Sanity via `sanityFetch`, PageBuilder |
-| `components/blocks/PageBuilder.tsx` | Iterate `content[]`, switch on `_type`, render matching block component | All block components |
-| `components/blocks/*.tsx` | Render a single Sanity block type; use `useTranslations` for UI strings | next-intl (UI strings), Sanity data via props |
-| `sanity/lib/client.ts` | Configured Sanity client (projectId, dataset, token) | All GROQ fetch functions |
-| `sanity/lib/fetch.ts` | Wrapper around client with caching tags for revalidation | Next.js cache layer |
-| `sanity/schemaTypes/` | Sanity document + block schemas; source of truth for content shape | Sanity Studio, GROQ types |
-| `app/api/revalidate/route.ts` | Verify Sanity webhook signature, call `revalidateTag` or `revalidatePath` | Sanity webhook, Next.js cache |
-| `app/api/analyze/route.ts` | Website analysis feature stub (lead gen tool) | External services TBD |
-| `app/studio/[[...tool]]/page.tsx` | Embed Sanity Studio as a Next.js route | Sanity Studio SDK |
+**Domain:** Multilingual marketing / lead-gen site  
+**Migration:** Next.js 15 App Router → Astro 5 + Cloudflare Pages  
+**Researched:** 2026-04-11  
+**Confidence:** HIGH — all major claims verified against official Astro docs, Cloudflare docs, and Sanity docs
 
 ---
 
-## Recommended Project Structure
+## Context: What Changes, What Stays
 
-The user has specified this structure. Notes explain the architectural reasoning behind each placement.
+| Aspect | Before (Next.js) | After (Astro) |
+|--------|-----------------|---------------|
+| Runtime | VPS + PM2/Nginx | Cloudflare Pages (edge CDN + Workers) |
+| Rendering | Static + ISR via revalidateTag | Static SSG + one server endpoint (Worker) |
+| i18n routing | next-intl middleware, `[locale]` dynamic segment | Astro built-in i18n, `prefixDefaultLocale: false` |
+| UI strings | next-intl `messages/*.json` | Manual JSON files loaded in Astro frontmatter |
+| Content fetch | `sanityFetch` with cache tags | `sanityClient` from `sanity:client`, build-time GROQ |
+| Cache busting | `revalidateTag` via webhook | Cloudflare Pages deploy hook (full rebuild) |
+| Studio | Embedded at `/studio` | Sanity-hosted (sanity.io/manage) — no route needed |
+| Analyse API | `app/api/analyze/route.ts` | `src/pages/api/analyze.ts` (Cloudflare Worker) |
+
+---
+
+## Recommended Directory Structure
 
 ```
 src/
-├── app/
-│   ├── [locale]/               # All user-facing routes. Dynamic segment receives
-│   │   │                       # validated locale from middleware (e.g. "en", "de")
-│   │   ├── layout.tsx          # Sets locale for tree, wraps NextIntlClientProvider
-│   │   ├── page.tsx            # Home/landing page — fetches page builder data
+├── pages/                        # File-based routing (Astro's only required dir)
+│   │
+│   ├── index.astro               # Home page → / (de, default, no prefix)
+│   ├── blog/
+│   │   ├── index.astro           # Blog list → /blog/
+│   │   └── [slug].astro          # Blog post → /blog/[slug] (de)
+│   │
+│   ├── en/                       # English routes → /en/…
+│   │   ├── index.astro           # Home → /en/
 │   │   └── blog/
-│   │       └── [slug]/
-│   │           └── page.tsx    # Blog post page
-│   ├── studio/
-│   │   └── [[...tool]]/
-│   │       └── page.tsx        # Sanity Studio (not under [locale] — no i18n needed)
+│   │       ├── index.astro       # Blog list → /en/blog/
+│   │       └── [slug].astro      # Blog post → /en/blog/[slug]
+│   │
+│   ├── es/                       # Spanish routes → /es/…
+│   │   ├── index.astro           # Home → /es/
+│   │   └── blog/
+│   │       ├── index.astro
+│   │       └── [slug].astro
+│   │
 │   └── api/
-│       ├── revalidate/
-│       │   └── route.ts        # Webhook endpoint for Sanity → Next.js cache busting
-│       └── analyze/
-│           └── route.ts        # Lead gen analysis tool stub
+│       └── analyze.ts            # Server endpoint → /api/analyze (POST)
+│                                 # export const prerender = false required
 │
-├── components/
-│   ├── blocks/
-│   │   ├── PageBuilder.tsx     # Dispatcher: content[] → block component map
-│   │   ├── HeroBlock.tsx
-│   │   ├── FeaturesBlock.tsx
-│   │   ├── TestimonialsBlock.tsx
-│   │   └── CtaBlock.tsx
-│   └── ui/                     # Shared primitive components (buttons, cards, etc.)
+├── components/                   # Reusable Astro + React components
+│   ├── blocks/                   # Block components (one per Sanity _type)
+│   │   ├── PageBuilder.astro     # Dispatcher: sections[] → block components
+│   │   ├── HeroSection.astro
+│   │   ├── FeatureStrip.astro
+│   │   ├── TestimonialsBlock.astro
+│   │   ├── CtaBlock.astro
+│   │   ├── ProblemSolutionBlock.astro
+│   │   ├── ServicesBlock.astro
+│   │   ├── FaqBlock.astro
+│   │   └── ReferencesBlock.astro
+│   ├── blog/                     # Blog-specific components
+│   │   ├── PostCard.astro
+│   │   └── PortableText.astro    # Wraps @portabletext/svelte or custom renderer
+│   └── ui/                       # Shared primitives (buttons, cards, nav, footer)
 │
-├── sanity/
-│   ├── config.ts               # defineConfig with projectId, dataset, plugins
-│   ├── schemaTypes/
-│   │   ├── index.ts            # Aggregates all schema types
-│   │   ├── pageType.ts         # Page document: title, slug, content (page builder array)
-│   │   ├── postType.ts         # Blog post document
-│   │   └── blocks/
-│   │       ├── heroBlock.ts
-│   │       ├── featuresBlock.ts
-│   │       ├── testimonialsBlock.ts
-│   │       └── ctaBlock.ts
-│   └── lib/
-│       ├── client.ts           # createClient configuration
-│       ├── fetch.ts            # sanityFetch with cache tags
-│       └── queries.ts          # Typed GROQ queries (PAGE_QUERY, POST_QUERY, etc.)
+├── layouts/
+│   ├── BaseLayout.astro          # <html>, <head> with meta/OG tags, shared CSS
+│   └── BlogLayout.astro          # Extends BaseLayout, adds blog-specific structure
 │
 ├── i18n/
-│   ├── routing.ts              # defineRouting — locales, defaultLocale, localePrefix
-│   ├── request.ts              # getRequestConfig — locale resolution + message loading
-│   ├── navigation.ts           # createNavigation helpers (Link, useRouter, redirect)
-│   └── messages/
-│       ├── en.json
-│       ├── es.json
-│       └── de.json
+│   ├── locales.ts                # Single source of truth: LOCALES, DEFAULT_LOCALE
+│   ├── messages/
+│   │   ├── de.json               # UI strings for German (default)
+│   │   ├── en.json               # UI strings for English
+│   │   └── es.json               # UI strings for Spanish
+│   └── utils.ts                  # t() helper: load messages, resolve key
 │
-└── middleware.ts               # createMiddleware(routing) export
+├── sanity/
+│   ├── client.ts                 # Thin re-export of sanity:client; sets useCdn: false
+│   ├── queries.ts                # All GROQ queries (typed, named constants)
+│   └── image.ts                  # imageUrlFor() helper using @sanity/image-url
+│
+├── styles/
+│   └── global.css                # Tailwind base + custom properties
+│
+└── env.d.ts                      # /// <reference types="@sanity/astro/env" />
+                                  # Cloudflare runtime types (Runtime)
+
+astro.config.mjs                  # defineConfig: adapter, integrations, i18n
+wrangler.jsonc                    # Cloudflare Pages build + compatibility config
+tsconfig.json
 ```
 
 ### Structure Rationale
 
-- **`app/studio/` outside `[locale]/`:** Studio is an admin tool, not a user-facing page. It must be excluded from the i18n middleware matcher to avoid locale rewrites. Place it at `/studio` with no locale segment.
-- **`app/api/` outside `[locale]/`:** API routes are locale-agnostic. The revalidate endpoint is called by Sanity (no locale), the analyze endpoint is called by frontend JS. Neither benefits from locale routing.
-- **`sanity/schemaTypes/blocks/`:** Block schemas in a subdirectory keeps the flat `schemaTypes/` from becoming unwieldy as the page builder grows. Each block file exports one schema object.
-- **`i18n/navigation.ts`:** next-intl's `createNavigation(routing)` generates locale-aware `Link`, `useRouter`, `redirect`, and `usePathname` that wrap Next.js primitives. Import from here, not directly from `next/navigation`.
+**No `[locale]` dynamic segment.** Astro i18n with `prefixDefaultLocale: false` requires the default locale's pages to live at the root of `src/pages/`. Non-default locales (`en/`, `es/`) live in matching subdirectories. This is a fundamental difference from Next.js App Router — there is no dynamic `[locale]` param at all.
+
+**`src/pages/api/analyze.ts` with `export const prerender = false`.** The Cloudflare adapter defaults to `output: 'server'` (all pages server-rendered). For this project the better approach is to keep `output: 'static'` (all pages pre-rendered) and mark only the one dynamic endpoint explicitly. This avoids running all page renders through a Worker on every request.
+
+**`src/i18n/` for UI strings.** Astro has no built-in `useTranslations` equivalent. A lightweight `t(key, locale)` helper loaded from JSON files in frontmatter is the idiomatic pattern — no library required. Keep it simple.
+
+**`src/sanity/` not `src/lib/sanity/`.** Mirrors the existing project convention and keeps GROQ queries co-located with the client that runs them.
+
+**Layouts, not nested routes.** Astro uses explicit layout imports (`<BaseLayout>`) rather than Next.js's implicit `layout.tsx` nesting. One `BaseLayout.astro` handles `<html lang="{locale}">`, meta tags, and Tailwind CSS. Blog posts use `BlogLayout.astro` which wraps `BaseLayout`.
 
 ---
 
-## Architectural Patterns
+## Data Fetching Pattern
 
-### Pattern 1: Page Builder — Sanity Array → Switch Dispatcher
+### Build-Time (Static, Default for All Pages)
 
-**What:** Sanity stores page content as `content: array of block objects`. Each block has a `_type` field. `PageBuilder.tsx` iterates the array and dispatches to a block component based on `_type`.
+All marketing pages and blog posts are pre-rendered at build time. The Sanity client is called directly in Astro frontmatter — no wrapper or cache layer needed because each build is a fresh fetch.
 
-**When to use:** Any page whose layout is content-managed. The home page and marketing pages are the primary consumers.
-
-**Trade-offs:** Simple to add new blocks (add schema type + React component + one case). The switch statement must stay in sync with the schema; TypeScript with Sanity TypeGen eliminates drift.
-
-**Example:**
 ```typescript
-// components/blocks/PageBuilder.tsx
-import { HeroBlock } from './HeroBlock'
-import { FeaturesBlock } from './FeaturesBlock'
-import type { PageQueryResult } from '@/sanity/lib/types' // TypeGen output
+// src/pages/index.astro (de home, simplified)
+---
+import { sanityClient } from 'sanity:client'
+import { PAGE_BY_SLUG_QUERY } from '../sanity/queries'
 
-type Props = {
-  content: NonNullable<PageQueryResult>['content']
-}
-
-export function PageBuilder({ content }: Props) {
-  if (!Array.isArray(content)) return null
-
-  return (
-    <>
-      {content.map((block) => {
-        const key = block._key
-        switch (block._type) {
-          case 'hero':
-            return <HeroBlock key={key} {...block} />
-          case 'features':
-            return <FeaturesBlock key={key} {...block} />
-          case 'testimonials':
-            return <TestimonialsBlock key={key} {...block} />
-          case 'cta':
-            return <CtaBlock key={key} {...block} />
-          default:
-            return null // never show "block not found" in production
-        }
-      })}
-    </>
-  )
-}
+const locale = 'de'
+const page = await sanityClient.fetch(PAGE_BY_SLUG_QUERY, {
+  slug: 'home',
+  language: locale,
+})
+---
+<BaseLayout locale={locale} seo={page?.seo}>
+  <PageBuilder sections={page?.sections ?? []} locale={locale} />
+</BaseLayout>
 ```
 
-### Pattern 2: next-intl Static Rendering via setRequestLocale
-
-**What:** Calling `setRequestLocale(locale)` at the top of every layout and page stores the locale in a React cache slot, making it available to `useTranslations` / `getTranslations` in Server Components without reading dynamic headers. This keeps pages statically renderable.
-
-**When to use:** Every layout and page under `app/[locale]/`. Required — skipping it forces dynamic rendering.
-
-**Trade-offs:** Must be called before any `next-intl` function. It is not required in leaf components (only in layouts/pages that receive `params`).
-
-**Example:**
 ```typescript
-// app/[locale]/layout.tsx
-import { setRequestLocale } from 'next-intl/server'
-import { NextIntlClientProvider } from 'next-intl'
-import { routing } from '@/i18n/routing'
-import { notFound } from 'next/navigation'
-
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }))
-}
-
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-
-  if (!routing.locales.includes(locale as any)) notFound()
-
-  setRequestLocale(locale) // must be called before any next-intl usage
-
-  return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
-      </body>
-    </html>
-  )
-}
+// src/pages/en/index.astro — same query, locale = 'en'
 ```
 
-### Pattern 3: Sanity Webhook → revalidateTag Cache Invalidation
+**For the `[slug].astro` blog route**, use `getStaticPaths()` to enumerate all slugs at build time:
 
-**What:** Sanity fires a webhook POST on document publish/unpublish. The `/api/revalidate` route handler verifies the signature and calls `revalidateTag` to bust the Next.js cache for affected content.
-
-**When to use:** Whenever Sanity content changes and the site uses static rendering (the default for `sanityFetch` with cache tags).
-
-**Trade-offs:** With `revalidateTag('page', 'max')` (stale-while-revalidate semantics introduced in Next.js 15), users see stale content briefly but get fresh content on the next request without blocking. Simpler than triggering a full rebuild.
-
-**Example:**
 ```typescript
-// app/api/revalidate/route.ts
-import { revalidateTag } from 'next/cache'
-import { type NextRequest, NextResponse } from 'next/server'
-import { parseBody } from 'next-sanity/webhook' // signature verification
+// src/pages/blog/[slug].astro (de posts)
+---
+import { sanityClient } from 'sanity:client'
+import { ALL_POSTS_QUERY, POST_BY_SLUG_QUERY } from '../../sanity/queries'
 
-export async function POST(req: NextRequest) {
-  try {
-    const { isValidSignature, body } = await parseBody<{ _type: string }>(
-      req,
-      process.env.SANITY_WEBHOOK_SECRET
-    )
-
-    if (!isValidSignature) {
-      return NextResponse.json({ message: 'Invalid signature' }, { status: 401 })
-    }
-
-    // Tag the affected document type; queries tagged with same value are busted
-    revalidateTag(body._type, 'max')
-
-    return NextResponse.json({ revalidated: true, now: Date.now() })
-  } catch (err) {
-    return NextResponse.json({ message: String(err) }, { status: 500 })
-  }
+export async function getStaticPaths() {
+  const posts = await sanityClient.fetch(ALL_POSTS_QUERY, { language: 'de' })
+  return posts.map((post) => ({
+    params: { slug: post.slug.current },
+  }))
 }
+
+const { slug } = Astro.params
+const post = await sanityClient.fetch(POST_BY_SLUG_QUERY, {
+  slug,
+  language: 'de',
+})
+---
 ```
 
-### Pattern 4: Dual I18n — Sanity Content Fields vs next-intl UI Strings
+The same file is duplicated under `en/blog/[slug].astro` and `es/blog/[slug].astro` with `language: 'en'` and `language: 'es'` respectively. **Do not try to share `getStaticPaths` across locale pages — each locale page is its own Astro route file.**
 
-**What:** Two separate translation systems coexist. Sanity stores translated *content* (body copy, headings from editors). next-intl stores translated *UI strings* (button labels, nav items, form placeholders that developers control). They must not be conflated.
+### On-Demand (Server, Only the Analyse Endpoint)
 
-**When to use:** Always in this stack.
+The `src/pages/api/analyze.ts` endpoint runs inside a Cloudflare Worker on every POST request:
 
-**Trade-offs:** Requires discipline. Editors manage Sanity translations in Studio. Developers manage `messages/*.json` files. The GROQ query receives `$locale` as a parameter and uses `coalesce()` to fall back to a base language when a translation is missing.
-
-**Example:**
 ```typescript
-// sanity/lib/queries.ts — pass locale to GROQ
-export const PAGE_QUERY = groq`
-  *[_type == "page" && slug.current == $slug && language == $locale][0]{
-    _id,
-    title,
-    "content": pageBuilder[]{ ... }
-  }
-`
+// src/pages/api/analyze.ts
+export const prerender = false   // opt this route out of static build
 
-// app/[locale]/page.tsx — server component
-const page = await sanityFetch({
-  query: PAGE_QUERY,
-  params: { slug: 'home', locale }, // locale from [locale] segment
-  tags: ['page'],
+import type { APIRoute } from 'astro'
+import { z } from 'zod'
+
+export const POST: APIRoute = async ({ request }) => {
+  const body = await request.json()
+  // validation + scoring logic
+  return new Response(JSON.stringify({ scores }), {
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+
+export const OPTIONS: APIRoute = async () =>
+  new Response(null, { status: 204 })
+```
+
+Cloudflare environment bindings (e.g., future KV or AI binding) are accessed via `context.locals.runtime.env` when using `@astrojs/cloudflare`.
+
+---
+
+## Content Revalidation Strategy
+
+**Recommended approach: Cloudflare Pages Deploy Hook (full rebuild).**
+
+This is the correct strategy for a mostly-static Astro site. The alternatives and why to reject them are documented below.
+
+### Option A: Deploy Hook (Recommended)
+
+1. In Cloudflare dashboard → Pages project → Settings → Builds → **Add deploy hook**
+2. Name it `sanity-publish`, set branch to `main`
+3. Copy the generated hook URL
+4. In Sanity project settings → API → Webhooks → add new webhook:
+   - URL: the Cloudflare deploy hook URL
+   - Trigger: `Create`, `Update`, `Delete`
+   - Filter: `_type == "page" || _type == "post" || _type == "siteSettings"`
+   - Dataset: `production`
+
+On publish, Sanity POSTs to the hook URL. Cloudflare Pages triggers a full rebuild from the main branch. Build time for this project (small page count, fast Sanity fetches) will be under 90 seconds. Resulting pages are served from Cloudflare's global CDN — no Worker involved.
+
+**No custom revalidate endpoint needed.** This removes an entire API route and eliminates the webhook signature verification complexity. The trade-off is a ~60–90 second propagation delay after publish, which is acceptable for a marketing site.
+
+### Option B: On-Demand ISR via `@astrojs/cloudflare` (Rejected)
+
+This would require switching to `output: 'server'` and implementing caching logic inside Workers (using Cache API or KV). It would:
+- Route every page request through a Worker (adds latency, adds cost)
+- Require Worker caching boilerplate that does not exist in Astro the way `revalidateTag` does in Next.js
+- Add significant complexity for no meaningful UX benefit on a low-traffic marketing site
+
+**Reject unless rebuild time exceeds 5 minutes or content editors need sub-minute propagation.**
+
+### Option C: `astro:content` + Git-based CMS (Not applicable)
+
+Not relevant — content lives in Sanity, not the repo.
+
+---
+
+## i18n File and Route Organization
+
+### Astro `astro.config.mjs` i18n Block
+
+```javascript
+// astro.config.mjs
+export default defineConfig({
+  i18n: {
+    locales: ['de', 'en', 'es'],
+    defaultLocale: 'de',
+    routing: {
+      prefixDefaultLocale: false,   // de → /, en → /en/, es → /es/
+    },
+  },
+  // ...
 })
 ```
 
+This mirrors the existing `next-intl` routing behaviour exactly:
+- `/` and `/blog/…` serve German (no prefix)
+- `/en/` and `/en/blog/…` serve English
+- `/es/` and `/es/blog/…` serve Spanish
+
+### UI String Translation (No Library)
+
+There is no `next-intl` equivalent in Astro. The idiomatic approach is a small helper:
+
+```typescript
+// src/i18n/utils.ts
+import de from './messages/de.json'
+import en from './messages/en.json'
+import es from './messages/es.json'
+
+const messages = { de, en, es } as const
+type Locale = keyof typeof messages
+
+export function t(locale: Locale, key: string): string {
+  const map = messages[locale] as Record<string, string>
+  return map[key] ?? key  // return key as fallback (visible in UI, easy to catch)
+}
+```
+
+```astro
+// in any .astro file
 ---
-
-## Data Flow
-
-### Request Flow (Static Page, Cache Hit)
-
-```
-Browser GET /de/uber-uns
-    ↓
-middleware.ts
-  - detects "de" prefix from URL
-  - rewrites to internal [locale]="de" param
-  - sets locale cookie
-    ↓
-app/[locale]/page.tsx (Server Component)
-  - setRequestLocale("de")
-  - sanityFetch({ query: PAGE_QUERY, params: { locale: "de", slug: "uber-uns" } })
-    ↓
-Next.js cache layer
-  - cache tag: "page"
-  - CACHE HIT → return cached HTML
-    ↓
-React renders PageBuilder with content[]
-    ↓
-Static HTML streamed to browser
+import { t } from '../../i18n/utils'
+const locale = 'de'
+---
+<button>{t(locale, 'cta.label')}</button>
 ```
 
-### Request Flow (Cache Miss or Stale — Sanity Fetch)
+The locale is passed as a prop from the page down through `BaseLayout` to all components. No React context, no provider needed — Astro components are server-rendered per request.
+
+### Locale Prop Threading
+
+Because Astro has no equivalent of `NextIntlClientProvider`, locale must be threaded explicitly:
 
 ```
-sanityFetch({ query, params, tags: ['page'] })
-    ↓
-Sanity Content Lake API (GROQ over HTTPS)
-  - returns JSON document with all localized fields
-    ↓
-Next.js stores response in cache tagged "page"
-    ↓
-PageBuilder.tsx receives content[]
-  - maps _type to block components
-  - each block receives its Sanity data as props
-    ↓
-Block component renders (e.g. HeroBlock)
-  - Sanity data: props.title, props.image, props.body
-  - UI strings: t('cta.label') from messages/de.json via useTranslations
+src/pages/en/index.astro
+  → locale = 'en' (hardcoded, no dynamic param)
+  → <BaseLayout locale="en">
+      → <PageBuilder sections={…} locale="en">
+          → <HeroSection locale="en" …>
 ```
 
-### Cache Invalidation Flow (Content Published in Sanity)
+This is explicit and type-safe. Each locale's page file sets the locale constant. There is no runtime locale detection — locale is fully determined by which file handles the route.
 
-```
-Editor publishes document in Sanity Studio
-    ↓
-Sanity fires webhook POST to https://yourdomain.com/api/revalidate
-  - headers: sanity-webhook-signature
-  - body: { _type: "page", _id: "...", ... }
-    ↓
-app/api/revalidate/route.ts
-  - parseBody() verifies HMAC signature
-  - calls revalidateTag(body._type, 'max')
-    ↓
-Next.js marks all cached entries tagged "page" as stale
-    ↓
-Next request for any page route re-fetches from Sanity
-  - stale-while-revalidate: current request serves stale, background refresh happens
-```
+### Astro `currentLocale` Helper
 
-### I18n Translation Flow
+For components that need locale at runtime, Astro provides `Astro.currentLocale` — this returns the locale Astro inferred from the URL path based on the `i18n` config. Use this as a safety fallback in shared components, but prefer the explicit prop approach to avoid ambiguity.
 
-```
-[locale] URL segment ("en", "es", "de")
-    ↓
-middleware.ts → [locale] dynamic param
-    ↓
-app/[locale]/layout.tsx
-  - setRequestLocale(locale) → stored in React cache
-    ↓
-i18n/request.ts (getRequestConfig)
-  - reads requestLocale
-  - validates against routing.locales
-  - loads messages/[locale].json
-    ↓
-useTranslations('namespace') in any Server or Client Component
-  - Server: reads from React cache (static-safe, no dynamic header)
-  - Client: reads from NextIntlClientProvider context
-```
+### Message JSON Structure
+
+Keep the same `de.json`, `en.json`, `es.json` structure from the existing project. The only change is importing them directly instead of going through next-intl.
 
 ---
 
-## Integration Points
+## Cloudflare Pages Build Configuration
 
-### External Services
+### `astro.config.mjs` (Relevant Parts)
 
-| Service | Integration Pattern | Notes |
-|---------|---------------------|-------|
-| Sanity Content Lake | `sanityFetch` in Server Components via GROQ | Use `next-sanity` package; tag all fetches for cache invalidation |
-| Sanity Studio | Embedded at `/studio` via `NextStudio` component | Exclude `/studio` from next-intl middleware matcher |
-| Sanity Webhooks | POST to `/api/revalidate`; signature via `parseBody` from `next-sanity/webhook` | Store `SANITY_WEBHOOK_SECRET` in env; never skip signature check |
-| PM2 + Nginx (VPS) | `output: 'standalone'` in `next.config.ts`; PM2 runs `.next/standalone/server.js` | Copy `public/` and `.next/static/` into `.next/standalone/` after build — Next.js does NOT do this automatically |
-| Lead gen / website analysis | `/api/analyze` Route Handler; returns JSON to client component | Stub for now; external scraping or Lighthouse API integrations go here |
+```javascript
+import { defineConfig } from 'astro/config'
+import cloudflare from '@astrojs/cloudflare'
+import tailwindcss from '@tailwindcss/vite'
+import sanity from '@sanity/astro'
 
-### Internal Boundaries
+export default defineConfig({
+  output: 'static',              // Pre-render everything by default
+  adapter: cloudflare(),         // Needed for the /api/analyze server endpoint
+                                 // Even in static mode, adapter handles the one
+                                 // on-demand endpoint and Worker function bundling
 
-| Boundary | Communication | Notes |
-|----------|---------------|-------|
-| Sanity schema ↔ React components | TypeGen-generated types in `sanity/lib/types.ts` | Run `npx sanity typegen generate` after schema changes to keep types in sync |
-| Sanity fetch ↔ Next.js cache | Cache tags string (e.g. `'page'`, `'post'`) | Tag names must match exactly between `sanityFetch` and `revalidateTag` calls |
-| next-intl routing ↔ middleware | `routing` object imported from `i18n/routing.ts` | Single source of truth — only define locales in one place |
-| Block components ↔ PageBuilder | TypeScript props typed via `Extract<PageQueryResult['content'][number], { _type: 'hero' }>` | Prevents runtime mismatches between schema and component |
-| Client Components ↔ next-intl | `NextIntlClientProvider` in layout; no message serialization needed manually | Provider automatically receives messages from server |
+  integrations: [
+    sanity({
+      projectId: import.meta.env.SANITY_PROJECT_ID,
+      dataset: import.meta.env.SANITY_DATASET,
+      useCdn: false,             // false for builds — avoids CDN cache returning
+                                 // stale content mid-build
+    }),
+  ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  i18n: {
+    locales: ['de', 'en', 'es'],
+    defaultLocale: 'de',
+    routing: { prefixDefaultLocale: false },
+  },
+})
+```
+
+**Note on `output: 'static'` + `adapter: cloudflare()`.** The adapter is required even for a static-first site because one route (`/api/analyze`) has `export const prerender = false`. Without the adapter, Astro cannot produce a Worker bundle for that endpoint. The adapter's presence does not force all pages to be server-rendered.
+
+### `wrangler.jsonc`
+
+```jsonc
+{
+  "name": "nestorsegura-real-estate",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist"
+  }
+}
+```
+
+**`nodejs_compat` flag** is required to use Node.js built-ins (e.g., `Buffer`, `crypto`) that may be needed by the Sanity client or Zod. Set `compatibility_date` to 2024-09-23 or later so `nodejs_compat_v2` (better polyfills) is also included.
+
+**Known issue:** There is an open Astro 6 bug (`#15434`) where `nodejs_compat` + middleware + SSR pages can return `[object Object]`. Workaround is to add `"disable_nodejs_process_v2"` to `compatibility_flags` if this manifests. Monitor the issue.
+
+### Cloudflare Pages Dashboard Build Settings
+
+| Setting | Value |
+|---------|-------|
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node.js version | 20 (set in environment variables: `NODE_VERSION=20`) |
+| Production branch | `main` |
 
 ---
 
-## Build Order
-
-Build phases should follow these dependency chains. Items lower on the list depend on items above.
+## System Architecture Diagram
 
 ```
-1. Sanity schema types (pageType, postType, block types)
-      ↓
-2. Sanity TypeGen (run after schema is stable to generate types.ts)
-      ↓
-3. sanity/lib/queries.ts (typed GROQ using generated types)
-      ↓
-4. i18n/routing.ts + i18n/request.ts + middleware.ts (i18n plumbing)
-      ↓
-5. app/[locale]/layout.tsx (locale shell, NextIntlClientProvider)
-      ↓
-6. Individual block components (HeroBlock, FeaturesBlock, etc.)
-      ↓
-7. PageBuilder.tsx (imports and dispatches to block components)
-      ↓
-8. app/[locale]/page.tsx (wires sanityFetch + PageBuilder together)
-      ↓
-9. app/api/revalidate/route.ts (cache invalidation, needs schema + cache tags)
-      ↓
-10. app/[locale]/blog/[slug]/page.tsx (blog route, simpler than page builder)
-      ↓
-11. app/api/analyze/route.ts (stub, no hard dependencies)
-      ↓
-12. app/studio/[[...tool]]/page.tsx (can be done anytime after schema is stable)
+┌────────────────────────────────────────────────────────────────┐
+│                         SANITY                                  │
+│  Sanity Studio (sanity.io/manage)                               │
+│  Content Lake (GROQ API)                                        │
+│  Webhooks → Cloudflare Pages Deploy Hook                        │
+└──────────────────────────┬─────────────────────────────────────┘
+                           │ GROQ fetch (build time, useCdn: false)
+                           ▼
+┌────────────────────────────────────────────────────────────────┐
+│                    ASTRO BUILD (CI / Deploy Hook)               │
+│                                                                 │
+│  getStaticPaths() for blog [slug].astro per locale             │
+│  Frontmatter fetch for all index pages                          │
+│  PageBuilder.astro dispatches block components                  │
+│  UI strings loaded from i18n/messages/*.json                    │
+│                                                                 │
+│  Output: dist/ — fully static HTML + CSS + JS + Worker bundle  │
+└──────────────────────────┬─────────────────────────────────────┘
+                           │ npx wrangler deploy (or git push)
+                           ▼
+┌────────────────────────────────────────────────────────────────┐
+│                  CLOUDFLARE PAGES (edge CDN)                    │
+│                                                                 │
+│  Static assets served from Cloudflare CDN (dist/)              │
+│  GET /                     → dist/index.html                   │
+│  GET /en/                  → dist/en/index.html                │
+│  GET /blog/[slug]          → dist/blog/[slug]/index.html       │
+│                                                                 │
+│  ┌──────────────────────────────────────────────┐              │
+│  │  Cloudflare Worker (_worker.js)               │              │
+│  │  POST /api/analyze → analyze.ts handler       │              │
+│  └──────────────────────────────────────────────┘              │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-**Key dependency:** TypeGen (step 2) must run before writing GROQ queries (step 3) and block component props (step 6). If you write components before TypeGen exists, you will be writing `any` types that need retrofitting.
+---
 
-**Second key dependency:** `i18n/routing.ts` must be created before middleware.ts and before any layout/page that calls `setRequestLocale`. Everything in the `[locale]` tree depends on it.
+## Component Responsibility Map
+
+| Component | Responsibility | Communicates With |
+|-----------|---------------|-------------------|
+| `astro.config.mjs` | Adapter, integrations, i18n config | Cloudflare adapter, Sanity integration |
+| `wrangler.jsonc` | Cloudflare runtime compat, asset dir | Cloudflare build system |
+| `src/pages/index.astro` (× 3 locales) | Fetch home page data, render layout | `sanity:client`, `PageBuilder.astro`, `BaseLayout.astro` |
+| `src/pages/blog/[slug].astro` (× 3 locales) | `getStaticPaths` → all slugs, fetch post by slug | `sanity:client`, `BlogLayout.astro` |
+| `src/pages/api/analyze.ts` | Server endpoint, POST handler | Cloudflare Worker runtime |
+| `src/components/blocks/PageBuilder.astro` | Switch on `_type`, render block component | All block `.astro` files |
+| `src/components/blocks/*.astro` | Render one Sanity block type | `i18n/utils.ts` (for UI strings), Sanity data via props |
+| `src/layouts/BaseLayout.astro` | `<html lang>`, `<head>`, meta/OG, Tailwind | `i18n/utils.ts`, all pages |
+| `src/i18n/utils.ts` | `t(locale, key)` helper, message loading | `messages/*.json` |
+| `src/sanity/queries.ts` | Named GROQ constants | `sanity:client` |
+| `src/sanity/image.ts` | `imageUrlFor()` builder | `@sanity/image-url` |
+
+---
+
+## Build Order (Dependency Chain)
+
+Items below depend on items above them. This order maps to phase structure.
+
+```
+1. Astro project scaffold
+   npx create astro@latest — TypeScript, Tailwind, no framework
+   npx astro add cloudflare
+   npx astro add @sanity/astro
+        ↓
+2. wrangler.jsonc + astro.config.mjs
+   adapter, i18n config, Sanity integration, useCdn: false
+        ↓
+3. src/i18n/ setup
+   locales.ts (LOCALES constant)
+   messages/{de,en,es}.json — port from existing next-intl messages
+   utils.ts (t() helper)
+        ↓
+4. src/sanity/
+   queries.ts — port existing GROQ from src/sanity/lib/queries.ts verbatim
+   image.ts   — imageUrlFor helper
+   (sanity:client is auto-configured by @sanity/astro integration)
+        ↓
+5. src/layouts/BaseLayout.astro
+   <html lang={locale}>, Tailwind import, meta/OG tags
+        ↓
+6. src/components/blocks/ — port block components from React to Astro
+   One file per _type, matching existing blocks/ directory
+   (React components can stay as React if needed — Astro supports them)
+        ↓
+7. src/components/blocks/PageBuilder.astro
+   Dispatcher switch on _type (same logic as PageBuilder.tsx)
+        ↓
+8. src/pages/index.astro (de) + en/index.astro + es/index.astro
+   Thin wrappers: fetch data → pass to PageBuilder
+        ↓
+9. src/pages/blog/ — blog list + [slug].astro (× 3 locales)
+   getStaticPaths per locale, post rendering
+        ↓
+10. src/pages/api/analyze.ts
+    Port existing route handler logic; add prerender = false
+        ↓
+11. Cloudflare Pages project creation
+    Connect repo, set build settings, add env vars
+        ↓
+12. Sanity webhook → Cloudflare deploy hook
+    Set up in Sanity project settings
+```
+
+**Critical dependency:** Step 4 (queries.ts) can be done before step 6 (block components), but block components must not be started before the GROQ shape is confirmed — field names must match between Sanity queries and component props.
+
+**React vs Astro components:** Block components that have heavy client-side interactivity (e.g., a carousel, accordion with animation) can remain as React components. Import them into `.astro` wrapper components with `client:load` or `client:visible`. This avoids a full rewrite of complex UI.
 
 ---
 
 ## Anti-Patterns
 
-### Anti-Pattern 1: Fetching Sanity Data in Client Components
+### Anti-Pattern 1: Using `output: 'server'` for the Entire Site
 
-**What people do:** Mark a component `'use client'` and call the Sanity client directly inside it with `useEffect`.
+**What goes wrong:** Every page render runs through a Cloudflare Worker. Worker cold starts add latency. The site is no longer served from Cloudflare CDN cache — it runs compute on every request.
 
-**Why it's wrong:** Exposes the Sanity API token in the browser bundle. Also bypasses the Next.js cache layer entirely, causing unnecessary refetches and blocking the cache invalidation webhook from working.
+**Do instead:** Keep `output: 'static'`. Mark only `/api/analyze` with `export const prerender = false`.
 
-**Do this instead:** Fetch in Server Components (layouts/pages), pass data down as props. If a Client Component needs Sanity data, fetch it in a parent Server Component and serialize the result.
+### Anti-Pattern 2: Trying to Replicate `revalidateTag` Behaviour
 
-### Anti-Pattern 2: Skipping setRequestLocale in Layouts and Pages
+**What goes wrong:** Developers attempt to build an on-demand invalidation endpoint similar to the existing `/api/revalidate`. In Astro+Cloudflare, there is no equivalent of Next.js's full-route revalidation cache. Worker-level caching (Cache API) exists but requires manual keying, has no tag concept, and is complex to invalidate correctly.
 
-**What people do:** Omit `setRequestLocale(locale)` and rely on dynamic headers for locale detection.
+**Do instead:** Use Cloudflare Pages deploy hooks. Rebuild times for this site will be fast (< 90 seconds). Accept the short propagation delay.
 
-**Why it's wrong:** Forces the entire route to dynamic rendering, disabling static generation. Performance degrades and Next.js loses the ability to pre-render locale-specific pages at build time.
+### Anti-Pattern 3: Sharing `getStaticPaths` Across Locales via Dynamic `[locale]` Segment
 
-**Do this instead:** Call `setRequestLocale(locale)` as the first line of every layout and page that receives `params.locale`. Also export `generateStaticParams` from layouts to pre-render all locale variants.
+**What goes wrong:** Creating `src/pages/[locale]/blog/[slug].astro` to handle all locales from one file. This works in Next.js but fights Astro's i18n system — `Astro.currentLocale` becomes unreliable, the `i18n` config no longer controls routing, and deploy-time type safety breaks.
 
-### Anti-Pattern 3: Using Next.js `Link` / `useRouter` Directly (Instead of next-intl Navigation)
+**Do instead:** Duplicate the page file per locale (`de/`, `en/`, `es/`). The duplication is minimal (locale constant + query param), and it maps cleanly to Astro's file-based i18n.
 
-**What people do:** Import `Link` from `next/link` and `useRouter` from `next/navigation` throughout the app.
+### Anti-Pattern 4: Calling `sanityClient.fetch()` in Client Components
 
-**Why it's wrong:** These primitives are not locale-aware. Internal links will not automatically include the locale prefix, breaking navigation between language variants.
+**What goes wrong:** JavaScript bundle includes Sanity client code and credentials. Requests go client-to-Sanity without CDN benefit. Build-time data freshness guarantees are lost.
 
-**Do this instead:** Create `i18n/navigation.ts` using `createNavigation(routing)` and always import `Link`, `useRouter`, `redirect`, and `usePathname` from that module.
+**Do instead:** All Sanity fetches in `.astro` frontmatter (server-side at build time). Pass data down as props. React components receive only serializable data.
 
-### Anti-Pattern 4: Putting Studio Under [locale]
+### Anti-Pattern 5: Embedding Studio in Astro
 
-**What people do:** Place `app/studio/` inside `app/[locale]/` for organizational consistency.
+**What goes wrong:** `@sanity/astro` can embed Studio at a route. But this means Studio is built into the Cloudflare Pages deploy, adding bundle size and a complex route exclusion from the i18n middleware.
 
-**Why it's wrong:** The next-intl middleware will attempt to match Studio routes and inject a locale prefix. Sanity Studio does not expect a locale segment in its URL. It also means Studio is only reachable at a locale-prefixed URL, which is unexpected.
-
-**Do this instead:** Keep `app/studio/` as a sibling to `app/[locale]/`, and ensure the middleware `matcher` explicitly excludes `/studio/(.*)`.
-
-### Anti-Pattern 5: Mismatched Cache Tags Between Fetch and Revalidate
-
-**What people do:** Tag a fetch as `tags: ['pages']` (plural) and call `revalidateTag('page')` (singular) in the webhook handler.
-
-**Why it's wrong:** The revalidation silently does nothing. Cache entries remain stale indefinitely after content changes. This is hard to debug because no error is thrown.
-
-**Do this instead:** Define cache tag names as constants in a shared file (e.g. `sanity/lib/tags.ts`) and import them in both `sanityFetch` calls and the revalidate route. Never spell tag names inline as strings.
-
----
-
-## Scaling Considerations
-
-This is a landing page / lead gen site. Scaling is not a primary concern — correctness and fast initial load are. Noted for completeness.
-
-| Scale | Architecture Adjustments |
-|-------|--------------------------|
-| 0-10k monthly visitors | Current architecture is appropriate. Static pages served from PM2/Nginx cache. No changes needed. |
-| 10k-500k monthly visitors | Add a CDN (Cloudflare) in front of Nginx. Cache static pages at edge. Sanity CDN API is already used by default. |
-| 500k+ monthly visitors | Migrate to a managed platform (Vercel, Cloudflare Pages) for edge rendering. The standalone output can be containerized if staying on self-hosted infra. |
-
-**First bottleneck:** The `/api/analyze` route if it does heavy external HTTP calls per request. Add request-level caching or a queue if usage grows.
-
-**Second bottleneck:** The Sanity Content Lake API rate limits. Use `sanity.io/cdn` (the Sanity CDN) for read queries, which the `next-sanity` client does by default for non-draft requests.
+**Do instead:** Use Sanity-hosted Studio (`yourid.sanity.studio`). Remove all Studio-related code from the Astro project. No `app/studio/` equivalent is needed.
 
 ---
 
 ## Sources
 
-- [next-intl App Router setup (with-i18n-routing)](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing) — HIGH confidence, official docs. `setRequestLocale`, `getRequestConfig`, `NextIntlClientProvider` patterns verified here.
-- [next-intl routing configuration (localePrefix: as-needed)](https://next-intl.dev/docs/routing/configuration) — HIGH confidence, official docs. URL prefix behavior, cookie, and redirect behavior confirmed.
-- [Sanity: Render page builder blocks](https://www.sanity.io/learn/course/page-building/rendering-page-builder-blocks) — HIGH confidence, official Sanity Learn course. `_type` switch pattern, `_key` as React key, TypeGen type extraction confirmed.
-- [Sanity: Create page builder schema types](https://www.sanity.io/learn/course/page-building/create-page-builder-schema-types) — HIGH confidence, official Sanity Learn course. Array of block objects schema structure confirmed.
-- [Sanity localization docs](https://www.sanity.io/docs/studio/localization) — HIGH confidence, official docs. Document-level vs field-level i18n approaches, GROQ coalesce pattern confirmed.
-- [Next.js Caching and Revalidating](https://nextjs.org/docs/app/getting-started/caching-and-revalidating) — HIGH confidence, official Next.js docs (last updated 2026-02-27). `revalidateTag` with `'max'` profile (stale-while-revalidate) confirmed. `cacheTag` directive for non-fetch caching confirmed.
-- [Sanity Webhooks docs](https://www.sanity.io/docs/webhooks) — MEDIUM confidence (payload structure not fully detailed in fetched content; signature mechanism confirmed as HMAC similar to Stripe pattern).
-- [next-intl middleware docs](https://next-intl.dev/docs/routing/middleware) — HIGH confidence, official docs. Matcher configuration for `localePrefix: 'as-needed'` confirmed.
-
----
-
-*Architecture research for: Next.js 15 + Sanity v3 + next-intl multilingual landing page*
-*Researched: 2026-03-15*
+- [Astro Cloudflare adapter — @astrojs/cloudflare](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) — HIGH confidence, official Astro docs. Hybrid rendering, `prerender` per-route, Cloudflare bindings via `context.locals.runtime.env` verified.
+- [Astro deploy to Cloudflare](https://docs.astro.build/en/guides/deploy/cloudflare/) — HIGH confidence, official Astro docs. Build command `npm run build`, output dir `dist`, wrangler.jsonc structure verified.
+- [Astro i18n routing](https://docs.astro.build/en/guides/internationalization/) — HIGH confidence, official Astro docs. `prefixDefaultLocale: false`, file structure, `Astro.currentLocale`, helper functions verified.
+- [Astro on-demand rendering](https://docs.astro.build/en/guides/on-demand-rendering/) — HIGH confidence, official Astro docs. `export const prerender = false` per-route verified; static default confirmed.
+- [Cloudflare Pages deploy hooks](https://developers.cloudflare.com/pages/configuration/deploy-hooks/) — HIGH confidence, official Cloudflare docs. Sanity webhook → deploy hook pattern, dataset filtering verified.
+- [Cloudflare Pages Astro guide](https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/) — HIGH confidence, official Cloudflare docs. Build settings, Pages Functions on SSR, adapter installation verified.
+- [Cloudflare nodejs_compat flag](https://developers.cloudflare.com/workers/runtime-apis/nodejs/) — HIGH confidence, official Cloudflare docs. `nodejs_compat` + `compatibility_date >= 2024-09-23` pattern confirmed.
+- [sanity-astro — @sanity/astro](https://github.com/sanity-io/sanity-astro) — HIGH confidence, official Sanity repo. `sanity:client` virtual import, `useCdn: false` for static builds confirmed.
+- [Sanity Astro blog guide](https://www.sanity.io/docs/developer-guides/sanity-astro-blog) — HIGH confidence, official Sanity docs. `getStaticPaths` + GROQ pattern for slug-based routes confirmed.
+- [Astro + Cloudflare deep dive (heckmann.app)](https://heckmann.app/en/blog/astro-cloudflare-deep-dive/) — MEDIUM confidence, third-party but detailed. `_routes.json` separation, `server:defer` for islands, `platformProxy` for local dev noted. Cross-referenced with official docs.
+- [Astro 6 + Cloudflare + nodejs_compat [object Object] bug #15434](https://github.com/withastro/astro/issues/15434) — MEDIUM confidence, GitHub issue. Workaround: add `"disable_nodejs_process_v2"` to compatibility_flags. Monitor for resolution.
