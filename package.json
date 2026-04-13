@@ -10,19 +10,20 @@
     "wrangler:dev": "astro build && wrangler dev --config dist/server/wrangler.json"
   },
   "dependencies": {
-    "astro": "^6.0.0",
     "@astrojs/cloudflare": "^13.0.0",
     "@sanity/astro": "^3.0.0",
-    "sanity": "^4.22.0",
+    "@sanity/document-internationalization": "^6.1.0",
+    "astro": "^6.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-is": "^19.0.0"
+    "react-is": "^19.0.0",
+    "sanity": "^4.22.0"
   },
   "devDependencies": {
-    "wrangler": "^4.0.0",
     "@cloudflare/vite-plugin": "1.25.6",
     "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.0.0",
     "typescript": "^5.0.0",
-    "@types/node": "^22.0.0"
+    "wrangler": "^4.0.0"
   }
 }
