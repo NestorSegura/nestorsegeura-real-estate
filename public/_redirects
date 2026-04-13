@@ -1,0 +1,3 @@
+# Canonical: German content lives at / (no prefix), not /de
+/de       /         301
+/de/*     /:splat   301

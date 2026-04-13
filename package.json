@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/check-i18n-keys.mjs && astro build",
+    "check:i18n": "node scripts/check-i18n-keys.mjs",
     "preview": "astro preview",
     "wrangler:dev": "astro build && wrangler dev --config dist/server/wrangler.json"
   },
