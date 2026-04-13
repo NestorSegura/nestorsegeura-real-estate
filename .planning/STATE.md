@@ -64,7 +64,7 @@ None.
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
-| 001 | Update domain to realestatestrategy.eu | 2026-04-13 | pending | [001-update-domain-to-realestatestrategy-eu](./quick/001-update-domain-to-realestatestrategy-eu/) |
+| 001 | Update domain to realestatestrategy.eu | 2026-04-13 | 79a12de | [001-update-domain-to-realestatestrategy-eu](./quick/001-update-domain-to-realestatestrategy-eu/) |
 
 ## Session Continuity
 
