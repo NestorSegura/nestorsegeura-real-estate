@@ -110,8 +110,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: Configure Astro i18n routing (de default no-prefix, /en, /es), create src/i18n/utils.ts, migrate messages/*.json
-- [ ] 07-02: Write locale-filtered GROQ queries, build BaseLayout.astro with font loading and global styles
+- [ ] 07-01-PLAN.md — Stand up Astro i18n routing, src/i18n/utils.ts + routes.ts, per-locale page files (including translated /analyse segments), public/_redirects for /de/* canonicalization, and build-time missing-key audit
+- [ ] 07-02-PLAN.md — Install @sanity/document-internationalization, build locale-filtered GROQ helpers, subset and self-host Clash Display + Chivo fonts, author BaseLayout.astro with preloads, apply BaseLayout to all locale pages with DE fallback banner
 
 ### Phase 8: Static Blocks and Blog
 **Goal**: Visiting the German homepage renders all eight content blocks from Sanity as server-rendered HTML with zero JavaScript shipped. The blog listing and post pages work for all locales. Sitemap, robots.txt, and all SEO metadata are in place.
