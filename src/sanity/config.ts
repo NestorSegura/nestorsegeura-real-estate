@@ -10,8 +10,8 @@ const singletonTypes = new Set(['siteSettings'])
 export default defineConfig({
   name: 'nestorsegura-real-estate',
   title: 'Nestor Segura Real Estate',
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET! || 'production',
+  projectId: process.env.PUBLIC_SANITY_PROJECT_ID ?? '0cn4widw',
+  dataset: process.env.PUBLIC_SANITY_DATASET ?? 'production',
   basePath: '/studio',
   plugins: [
     documentInternationalization({
