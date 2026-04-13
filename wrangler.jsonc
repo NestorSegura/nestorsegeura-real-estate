@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "nestorsegura-real-estate",
+  "name": "realestatestrategy-eu",
   "compatibility_date": "2026-03-05",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {

@@ -8,8 +8,8 @@ const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 const singletonTypes = new Set(['siteSettings'])
 
 export default defineConfig({
-  name: 'nestorsegura-real-estate',
-  title: 'Nestor Segura Real Estate',
+  name: 'realestatestrategy-eu',
+  title: 'Real Estate Strategy',
   projectId: process.env.PUBLIC_SANITY_PROJECT_ID ?? '0cn4widw',
   dataset: process.env.PUBLIC_SANITY_DATASET ?? 'production',
   basePath: '/studio',
