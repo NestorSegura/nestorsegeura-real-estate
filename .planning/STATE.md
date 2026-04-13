@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 ## Current Position
 
 Phase: 6 of 10 (Infrastructure)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-04-13 — Completed 06-01-PLAN.md (Astro scaffold)
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-04-13 — Completed 06-02-PLAN.md (Sanity client wiring)
 
-Progress: [##########░░░░░░░░░░] 50%+ (06-01 complete)
+Progress: [###########░░░░░░░░░] Phase 6 complete — 18/26+ plans done
 
 ## Performance Metrics
 
@@ -28,7 +28,7 @@ Progress: [##########░░░░░░░░░░] 50%+ (06-01 complete)
 | Phase | Plans | Milestone |
 |-------|-------|-----------|
 | 1–5 | 16/16 | v1.0 Complete |
-| 6 | 1/2 | v2.0 In progress |
+| 6 | 2/2 | v2.0 Phase complete |
 | 7–10 | 0/10 | v2.0 Not started |
 
 ## Accumulated Context
@@ -47,6 +47,9 @@ Progress: [##########░░░░░░░░░░] 50%+ (06-01 complete)
 - [06-01]: Build output is dist/server/entry.mjs + dist/client/ — NOT dist/_worker.js/index.js (changed in @astrojs/cloudflare@13); wrangler:dev uses dist/server/wrangler.json (adapter-generated)
 - [06-01]: compatibility_date=2026-03-05 — installed workerd (via @cloudflare/vite-plugin@1.25.6) max supported date
 - [06-01]: env vars renamed NEXT_PUBLIC_ -> PUBLIC_ in .env.local; sanity.config.ts updated with PUBLIC_ prefix + fallback hardcoded values
+- [06-02]: import { sanityClient } from 'sanity:client' — named export from @sanity/astro virtual module; works in .astro frontmatter at build time
+- [06-02]: Sanity fetch runs at prerender time (output=static); data is baked into HTML during astro build — no runtime Worker fetch needed
+- [06-02]: siteSettings document confirmed populated in production: siteName="nestorsegura.com", tagline="Web Design für Immobilienmakler"
 
 ### Pending Todos
 
@@ -60,5 +63,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-13
-Stopped at: Completed 06-01-PLAN.md — Astro scaffold working
+Stopped at: Completed 06-02-PLAN.md — Sanity client wiring verified
 Resume file: None
