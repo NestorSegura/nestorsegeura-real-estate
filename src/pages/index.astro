@@ -1,15 +1,54 @@
 ---
 import '../styles/global.css';
+import { sanityClient } from "sanity:client";
+
+let sanityStatus = "connecting...";
+let siteName = "";
+let tagline = "";
+let fetchError = "";
+
+try {
+  const settings = await sanityClient.fetch(
+    `*[_type == "siteSettings"][0]{ siteName, tagline }`
+  );
+  if (settings) {
+    sanityStatus = "OK";
+    siteName = settings.siteName ?? "(no siteName field)";
+    tagline = settings.tagline ?? "";
+  } else {
+    // Fallback: prove connectivity with any document
+    const anyDoc = await sanityClient.fetch(`*[0]{ _type, _id }`);
+    if (anyDoc) {
+      sanityStatus = `Connected — no siteSettings doc, found _type: ${anyDoc._type}`;
+    } else {
+      sanityStatus = "Connected but dataset appears empty";
+    }
+  }
+} catch (e) {
+  sanityStatus = "FAILED";
+  fetchError = e instanceof Error ? e.message : String(e);
+  console.error("Sanity fetch failed:", e);
+}
 ---
 <!doctype html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nestorsegura.com — Astro scaffold</title>
+    <title>{siteName || 'Astro scaffold'}</title>
   </head>
-  <body class="bg-white text-gray-900 p-8">
+  <body class="bg-white text-gray-900 p-8 max-w-2xl mx-auto">
     <h1 class="text-3xl font-bold">Astro 6 + Cloudflare Workers</h1>
-    <p class="mt-4">Scaffold working. Sanity client wired in plan 02.</p>
+    <div class="mt-6 p-4 rounded border">
+      <h2 class="text-lg font-semibold">Infrastructure Status</h2>
+      <ul class="mt-2 space-y-1 text-sm">
+        <li>Astro: <span class="text-green-600 font-mono">OK</span></li>
+        <li>Sanity: <span class={sanityStatus === "OK" ? "text-green-600 font-mono" : "text-amber-600 font-mono"}>{sanityStatus}</span></li>
+        {siteName && <li>Site name: <span class="font-mono">{siteName}</span></li>}
+        {tagline && <li>Tagline: <span class="font-mono">{tagline}</span></li>}
+        {fetchError && <li class="text-red-600">Error: {fetchError}</li>}
+      </ul>
+    </div>
+    <p class="mt-6 text-sm text-gray-500">Phase 6 scaffold complete. No pages, no components — just foundation.</p>
   </body>
 </html>
