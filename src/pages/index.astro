@@ -1,29 +1,54 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { useTranslations, DEFAULT_LOCALE } from '../i18n/utils';
+import { getHomepageForLocale } from '../lib/sanity';
 
-const t = useTranslations(DEFAULT_LOCALE);
+const locale = DEFAULT_LOCALE;
+const t = useTranslations(locale);
+
+// isFallback is always false for DE (source of truth locale) — destructured for API consistency
+const { page } = await getHomepageForLocale(locale);
+
+if (!page) {
+  console.warn('[07-02] No homepage document found in Sanity for locale "de". Rendering placeholder.');
+}
 ---
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{t('hero.title')}</title>
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li>{t('nav.home')}</li>
-        <li>{t('nav.services')}</li>
-        <li>{t('nav.about')}</li>
-        <li>{t('nav.contact')}</li>
-        <li>{t('nav.blog')}</li>
-      </ul>
-    </nav>
-    <main>
-      <h1>{t('hero.title')}</h1>
-      <p>{t('hero.subtitle')}</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title={page?.title ?? t('hero.title')} locale={locale}>
+  <script is:inline>
+    (function() {
+      var m = document.cookie.match(/(?:^|; )ns_locale=([^;]+)/);
+      var loc = m && m[1];
+      if (loc && loc !== 'de' && !sessionStorage.getItem('ns_locale_redirected')) {
+        var map = { en: '/en', es: '/es' };
+        if (map[loc]) {
+          sessionStorage.setItem('ns_locale_redirected', '1');
+          window.location.replace(map[loc]);
+        }
+      }
+    })();
+  </script>
+  <nav>
+    <ul>
+      <li>{t('nav.home')}</li>
+      <li>{t('nav.services')}</li>
+      <li>{t('nav.about')}</li>
+      <li>{t('nav.contact')}</li>
+      <li>{t('nav.blog')}</li>
+    </ul>
+  </nav>
+  <main>
+    {page ? (
+      <>
+        <h1>{page.title ?? t('hero.title')}</h1>
+        <p>{t('hero.subtitle')}</p>
+        <p class="debug-sections">sections: {page.sections?.length ?? 0}</p>
+      </>
+    ) : (
+      <>
+        <h1>{t('hero.title')}</h1>
+        <p>{t('hero.subtitle')}</p>
+        <p class="debug-sections">sections: 0</p>
+      </>
+    )}
+  </main>
+</BaseLayout>

@@ -67,6 +67,7 @@ export async function getPageForLocale(
  * Fetch a page for the given locale, falling back to the German ("de")
  * document when no exact match exists.
  *
+ * Strategy: fetch exact-locale match first; if null, fetch the DE version.
  * Returns `{ page, isFallback }` where `isFallback` is true when the
  * returned document's language field differs from the requested locale.
  * This drives the "translation pending" banner in the template.
@@ -75,17 +76,24 @@ export async function getPageWithFallback(
   slug: string,
   locale: Locale,
 ): Promise<WithFallback<SanityPage>> {
-  const query = `*[_type == "page" && slug.current == $slug && language in [$locale, "de"]] | order(language == $locale desc)[0]{
-    _id,
-    _type,
-    language,
-    title,
-    slug,
-    sections
-  }`;
-  const page = await sanityClient.fetch<SanityPage | null>(query, { slug, locale });
-  const isFallback = page !== null && page.language !== locale;
-  return { page, isFallback };
+  const fields = `{ _id, _type, language, title, slug, sections }`;
+
+  // Try exact locale match first
+  const exactQuery = `*[_type == "page" && slug.current == $slug && language == $locale][0]${fields}`;
+  let page = await sanityClient.fetch<SanityPage | null>(exactQuery, { slug, locale });
+
+  if (page !== null) {
+    return { page, isFallback: false };
+  }
+
+  // Fall back to DE when locale is not "de"
+  if (locale !== 'de') {
+    const fallbackQuery = `*[_type == "page" && slug.current == $slug && language == "de"][0]${fields}`;
+    page = await sanityClient.fetch<SanityPage | null>(fallbackQuery, { slug });
+    return { page, isFallback: page !== null };
+  }
+
+  return { page: null, isFallback: false };
 }
 
 /**

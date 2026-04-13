@@ -1,29 +1,45 @@
 ---
-import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { useTranslations } from '../../i18n/utils';
+import { getHomepageForLocale } from '../../lib/sanity';
 
-const t = useTranslations('en');
+const locale = 'en' as const;
+const t = useTranslations(locale);
+
+const { page, isFallback } = await getHomepageForLocale(locale);
+
+if (!page) {
+  console.warn('[07-02] No homepage document found in Sanity for locale "en" (or "de" fallback). Rendering placeholder.');
+}
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{t('hero.title')}</title>
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li>{t('nav.home')}</li>
-        <li>{t('nav.services')}</li>
-        <li>{t('nav.about')}</li>
-        <li>{t('nav.contact')}</li>
-        <li>{t('nav.blog')}</li>
-      </ul>
-    </nav>
-    <main>
-      <h1>{t('hero.title')}</h1>
-      <p>{t('hero.subtitle')}</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title={page?.title ?? t('hero.title')} locale={locale}>
+  <nav>
+    <ul>
+      <li>{t('nav.home')}</li>
+      <li>{t('nav.services')}</li>
+      <li>{t('nav.about')}</li>
+      <li>{t('nav.contact')}</li>
+      <li>{t('nav.blog')}</li>
+    </ul>
+  </nav>
+  <main>
+    {isFallback && page && (
+      <div class="translation-banner" role="status">
+        This page isn't translated yet — showing the German version.
+      </div>
+    )}
+    {page ? (
+      <>
+        <h1>{page.title ?? t('hero.title')}</h1>
+        <p>{t('hero.subtitle')}</p>
+        <p class="debug-sections">sections: {page.sections?.length ?? 0}</p>
+      </>
+    ) : (
+      <>
+        <h1>{t('hero.title')}</h1>
+        <p>{t('hero.subtitle')}</p>
+        <p class="debug-sections">sections: 0</p>
+      </>
+    )}
+  </main>
+</BaseLayout>
