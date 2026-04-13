@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/ClashDisplay-Variable-subset.woff2') format('woff2-variations'),
+       url('/fonts/ClashDisplay-Variable-subset.woff2') format('woff2');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chivo';
+  src: url('/fonts/Chivo-Variable-subset.woff2') format('woff2-variations'),
+       url('/fonts/Chivo-Variable-subset.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme inline {
+  --font-heading: 'Clash Display', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Chivo', ui-sans-serif, system-ui, sans-serif;
+}
+
+body { font-family: var(--font-body); }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }

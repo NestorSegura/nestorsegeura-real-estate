@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+import { type Locale, DEFAULT_LOCALE } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  locale?: Locale;
+  description?: string;
+}
+
+const { title, locale = DEFAULT_LOCALE, description } = Astro.props;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link
+      rel="preload"
+      href="/fonts/ClashDisplay-Variable-subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Chivo-Variable-subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
