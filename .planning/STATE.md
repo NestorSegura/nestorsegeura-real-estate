@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 ## Current Position
 
 Phase: 7 of 10 (i18n and Content Layer)
-Plan: 1 of 3+ in current phase
+Plan: 2 of 3+ in current phase
 Status: In progress
-Last activity: 2026-04-13 — Completed 07-01-PLAN.md (i18n routing and translation utilities)
+Last activity: 2026-04-13 — Completed 07-02-PLAN.md (fonts, BaseLayout, locale Sanity fetches)
 
-Progress: [###########░░░░░░░░░] Phase 7 in progress — 19/26+ plans done
+Progress: [###########░░░░░░░░░] Phase 7 in progress — 20/26+ plans done
 
 ## Performance Metrics
 
@@ -55,6 +55,10 @@ Progress: [###########░░░░░░░░░] Phase 7 in progress — 19/26
 - [07-01]: check-i18n-keys.mjs exits 0 (warnings only, not build blocker) — change to exit(1) when enforcement desired
 - [07-01]: /de/* redirect in public/_redirects, not Astro middleware — zero-runtime, Cloudflare edge handles it
 - [07-01]: @sanity/document-internationalization@^6.1.0 installed — was referenced in sanity/config.ts but missing from package.json (required --legacy-peer-deps)
+- [07-02]: Two-query GROQ fallback pattern — order(language == $locale desc) is invalid GROQ syntax; use two sequential fetches (exact locale, then 'de' fallback) in getPageWithFallback
+- [07-02]: Font subsetting via pip3 fonttools + brotli — @web-alchemy/fonttools npx approach fails (WASM pyodide error); pip3 pyftsubset works; one-time step, not in package.json
+- [07-02]: BaseLayout.astro is the single HTML shell for all locale pages — owns doctype, meta, font preloads (crossorigin), lang attribute, global.css import
+- [07-02]: getPageWithFallback returns { page, isFallback } tuple — isFallback drives translation-pending banner; DE root never shows banner (source-of-truth locale)
 
 ### Pending Todos
 
@@ -75,5 +79,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-13
-Stopped at: Completed 07-01-PLAN.md — i18n routing and translation utilities
+Stopped at: Completed 07-02-PLAN.md — fonts, BaseLayout, locale Sanity fetches
 Resume file: None
