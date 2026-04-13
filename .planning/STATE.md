@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 6 — Infrastructure (Astro scaffold + Cloudflare adapter)
+**Current focus:** Phase 7 — i18n and Content Layer
 
 ## Current Position
 
-Phase: 6 of 10 (Infrastructure)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-04-13 — Completed quick task 002: Rename project slugs to realestatestrategy-eu
+Phase: 7 of 10 (i18n and Content Layer)
+Plan: 1 of 3+ in current phase
+Status: In progress
+Last activity: 2026-04-13 — Completed 07-01-PLAN.md (i18n routing and translation utilities)
 
-Progress: [###########░░░░░░░░░] Phase 6 complete — 18/26+ plans done
+Progress: [###########░░░░░░░░░] Phase 7 in progress — 19/26+ plans done
 
 ## Performance Metrics
 
@@ -50,6 +50,11 @@ Progress: [###########░░░░░░░░░] Phase 6 complete — 18/26+ p
 - [06-02]: import { sanityClient } from 'sanity:client' — named export from @sanity/astro virtual module; works in .astro frontmatter at build time
 - [06-02]: Sanity fetch runs at prerender time (output=static); data is baked into HTML during astro build — no runtime Worker fetch needed
 - [06-02]: siteSettings document confirmed populated in production: siteName="nestorsegura.com", tagline="Web Design für Immobilienmakler"
+- [07-01]: File-based routing for translated segments (/analyse vs /en/analyze) — simpler than middleware rewrite for static output
+- [07-01]: useTranslations(locale) returns the key itself for missing keys (not empty string) — makes missing translations visible in dev
+- [07-01]: check-i18n-keys.mjs exits 0 (warnings only, not build blocker) — change to exit(1) when enforcement desired
+- [07-01]: /de/* redirect in public/_redirects, not Astro middleware — zero-runtime, Cloudflare edge handles it
+- [07-01]: @sanity/document-internationalization@^6.1.0 installed — was referenced in sanity/config.ts but missing from package.json (required --legacy-peer-deps)
 
 ### Pending Todos
 
@@ -70,5 +75,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-13
-Stopped at: Completed 06-02-PLAN.md — Sanity client wiring verified
+Stopped at: Completed 07-01-PLAN.md — i18n routing and translation utilities
 Resume file: None
