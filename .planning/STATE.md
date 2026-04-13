@@ -65,7 +65,7 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 001 | Update domain to realestatestrategy.eu | 2026-04-13 | 79a12de | [001-update-domain-to-realestatestrategy-eu](./quick/001-update-domain-to-realestatestrategy-eu/) |
-| 002 | Rename project slugs to realestatestrategy-eu | 2026-04-13 | pending | [002-rename-project-slugs-to-realestatestrategy-eu](./quick/002-rename-project-slugs-to-realestatestrategy-eu/) |
+| 002 | Rename project slugs to realestatestrategy-eu | 2026-04-13 | c4d830f | [002-rename-project-slugs-to-realestatestrategy-eu](./quick/002-rename-project-slugs-to-realestatestrategy-eu/) |
 
 ## Session Continuity
 
