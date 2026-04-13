@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "services": "Leistungen",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "blog": "Blog",
+    "cta": "Erstgespräch vereinbaren",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen"
+  },
+  "hero": {
+    "title": "Mehr Anfragen. Mehr Kunden. Mehr Umsatz.",
+    "subtitle": "Professionelle Websites für Immobilienmakler in Deutschland — damit aus Besuchern zahlende Kunden werden.",
+    "cta": "Kostenlose Beratung anfordern",
+    "trustSignal": "Bereits über 30 Immobilienmakler vertrauen uns"
+  },
+  "features": {
+    "title": "Was macht uns besonders?",
+    "subtitle": "Wir kennen die Herausforderungen von Immobilienmaklern — und bauen Websites, die genau darauf ausgerichtet sind.",
+    "items": [
+      {
+        "title": "Lokale Marktkenntnis",
+        "description": "Wir verstehen den deutschen Immobilienmarkt und sprechen die Sprache Ihrer Kunden."
+      },
+      {
+        "title": "Conversion-optimiert",
+        "description": "Jedes Element Ihrer Website ist darauf ausgelegt, Besucher in qualifizierte Anfragen umzuwandeln."
+      },
+      {
+        "title": "Schnell & zuverlässig",
+        "description": "Blitzschnelle Ladezeiten und 99,9% Verfügbarkeit — damit Sie keine Anfragen verpassen."
+      }
+    ]
+  },
+  "problem": {
+    "title": "Kennen Sie das?",
+    "subtitle": "Viele Immobilienmakler kämpfen täglich mit denselben Problemen.",
+    "items": [
+      {
+        "title": "Ihre Website bringt keine Anfragen",
+        "description": "Besucher kommen, aber niemand füllt das Kontaktformular aus."
+      },
+      {
+        "title": "Sie verlieren Kunden an die Konkurrenz",
+        "description": "Potenzielle Verkäufer wählen den Makler mit der überzeugenderem Online-Präsenz."
+      },
+      {
+        "title": "Keine Zeit für Marketing",
+        "description": "Als Makler ist Ihr Tag bereits verplant — für Website-Pflege bleibt keine Zeit."
+      }
+    ]
+  },
+  "solution": {
+    "title": "Unsere Lösung",
+    "subtitle": "Eine professionelle Website, die rund um die Uhr für Sie arbeitet.",
+    "items": [
+      {
+        "title": "Design, das Vertrauen schafft",
+        "description": "Modernes, professionelles Design, das Ihre Expertise auf den ersten Blick kommuniziert."
+      },
+      {
+        "title": "Texte, die überzeugen",
+        "description": "Zielgruppengerechte Inhalte, die Ihre Alleinstellungsmerkmale klar hervorheben."
+      },
+      {
+        "title": "Technik, die funktioniert",
+        "description": "Schnell, mobiloptimiert und suchmaschinenfreundlich — von Anfang an."
+      }
+    ]
+  },
+  "services": {
+    "title": "Unsere Leistungen",
+    "subtitle": "Alles, was Sie für eine erfolgreiche Online-Präsenz brauchen.",
+    "items": [
+      {
+        "title": "Website-Erstellung",
+        "description": "Individuelle Website für Ihr Maklerbüro — von der Konzeption bis zum Launch."
+      },
+      {
+        "title": "Website-Analyse",
+        "description": "Wir analysieren Ihre aktuelle Website und zeigen konkrete Verbesserungspotenziale auf."
+      },
+      {
+        "title": "Laufende Betreuung",
+        "description": "Regelmäßige Updates, neue Inhalte und technischer Support — damit Sie sich aufs Makeln konzentrieren."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Das sagen unsere Kunden",
+    "subtitle": "Echte Ergebnisse von echten Immobilienmaklern."
+  },
+  "references": {
+    "title": "Referenzen",
+    "subtitle": "Websites, die wir für Immobilienmakler in ganz Deutschland gebaut haben."
+  },
+  "faq": {
+    "title": "Häufige Fragen",
+    "items": [
+      {
+        "question": "Wie lange dauert die Erstellung meiner Website?",
+        "answer": "Typischerweise 2–4 Wochen vom ersten Gespräch bis zum Launch — je nach Umfang und wie schnell Sie uns Inhalte liefern."
+      },
+      {
+        "question": "Was kostet eine professionelle Makler-Website?",
+        "answer": "Unsere Projekte beginnen ab 1.500 € einmalig. Im kostenlosen Erstgespräch erstellen wir ein individuelles Angebot für Ihre Anforderungen."
+      },
+      {
+        "question": "Kann ich die Website später selbst pflegen?",
+        "answer": "Ja. Wir arbeiten mit einem benutzerfreundlichen CMS — damit können Sie Texte und Bilder jederzeit selbst aktualisieren, ohne technisches Wissen."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Bereit für mehr Anfragen?",
+    "subtitle": "Starten Sie noch heute mit einer kostenlosen Website-Analyse oder einem unverbindlichen Beratungsgespräch.",
+    "buttonText": "Jetzt kostenlos starten"
+  },
+  "contact": {
+    "title": "Kontakt aufnehmen",
+    "name": "Ihr Name",
+    "email": "Ihre E-Mail-Adresse",
+    "message": "Ihre Nachricht",
+    "submit": "Nachricht senden"
+  },
+  "footer": {
+    "rights": "Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum"
+  },
+  "analysis": {
+    "title": "Kostenlose Website-Analyse",
+    "subtitle": "Geben Sie die URL Ihrer aktuellen Website ein — wir zeigen Ihnen in Sekunden, wo Verbesserungspotenzial steckt.",
+    "placeholder": "https://ihre-makler-website.de",
+    "submit": "Website analysieren",
+    "loading": "Analyse läuft...",
+    "resultTitle": "Ihr Analyseergebnis"
+  },
+  "common": {
+    "readMore": "Mehr erfahren",
+    "learnMore": "Mehr lesen",
+    "bookAppointment": "Termin buchen",
+    "backToHome": "Zurück zur Startseite"
+  }
+}
