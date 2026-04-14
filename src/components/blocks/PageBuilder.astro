@@ -1,0 +1,42 @@
+---
+import type { Locale } from '../../i18n/utils'
+import LandingHero from './LandingHero.astro'
+import LandingProblem from './LandingProblem.astro'
+import LandingOffer from './LandingOffer.astro'
+import LandingGuide from './LandingGuide.astro'
+import LandingPlan from './LandingPlan.astro'
+import LandingTestimonials from './LandingTestimonials.astro'
+import LandingFaq from './LandingFaq.astro'
+import LandingCtaFinal from './LandingCtaFinal.astro'
+
+interface Props {
+  sections: Array<{ _type: string; _key: string; enabled?: boolean; [key: string]: unknown }>
+  locale: Locale
+}
+
+const { sections, locale } = Astro.props
+const enabled = sections.filter((s) => s.enabled !== false)
+---
+
+{enabled.map((block) => {
+  switch (block._type) {
+    case 'landingHero':
+      return <LandingHero {...(block as any)} locale={locale} />
+    case 'landingProblem':
+      return <LandingProblem {...(block as any)} locale={locale} />
+    case 'landingOffer':
+      return <LandingOffer {...(block as any)} locale={locale} />
+    case 'landingGuide':
+      return <LandingGuide {...(block as any)} locale={locale} />
+    case 'landingPlan':
+      return <LandingPlan {...(block as any)} locale={locale} />
+    case 'landingTestimonials':
+      return <LandingTestimonials {...(block as any)} locale={locale} />
+    case 'landingFaq':
+      return <LandingFaq {...(block as any)} locale={locale} />
+    case 'landingCtaFinal':
+      return <LandingCtaFinal {...(block as any)} locale={locale} />
+    default:
+      return null
+  }
+})}

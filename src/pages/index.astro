@@ -1,19 +1,16 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { useTranslations, DEFAULT_LOCALE } from '../i18n/utils';
-import { getHomepageForLocale } from '../lib/sanity';
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageBuilder from '../components/blocks/PageBuilder.astro'
+import { getHomepageWithSections, getSiteSettings } from '../lib/sanity'
 
-const locale = DEFAULT_LOCALE;
-const t = useTranslations(locale);
-
-// isFallback is always false for DE (source of truth locale) — destructured for API consistency
-const { page } = await getHomepageForLocale(locale);
-
-if (!page) {
-  console.warn('[07-02] No homepage document found in Sanity for locale "de". Rendering placeholder.');
-}
+const locale = 'de' as const
+const page = await getHomepageWithSections(locale)
+const settings = await getSiteSettings()
+const sections = page?.sections ?? []
+const title = page?.seo?.title ?? settings?.seo?.title ?? settings?.siteName ?? 'nestorsegura.com'
+const description = page?.seo?.description ?? settings?.seo?.description ?? settings?.tagline
 ---
-<BaseLayout title={page?.title ?? t('hero.title')} locale={locale}>
+<BaseLayout {title} {locale} {description}>
   <script is:inline>
     (function() {
       var m = document.cookie.match(/(?:^|; )ns_locale=([^;]+)/);
@@ -27,28 +24,5 @@ if (!page) {
       }
     })();
   </script>
-  <nav>
-    <ul>
-      <li>{t('nav.home')}</li>
-      <li>{t('nav.services')}</li>
-      <li>{t('nav.about')}</li>
-      <li>{t('nav.contact')}</li>
-      <li>{t('nav.blog')}</li>
-    </ul>
-  </nav>
-  <main>
-    {page ? (
-      <>
-        <h1>{page.title ?? t('hero.title')}</h1>
-        <p>{t('hero.subtitle')}</p>
-        <p class="debug-sections">sections: {page.sections?.length ?? 0}</p>
-      </>
-    ) : (
-      <>
-        <h1>{t('hero.title')}</h1>
-        <p>{t('hero.subtitle')}</p>
-        <p class="debug-sections">sections: 0</p>
-      </>
-    )}
-  </main>
+  <PageBuilder {sections} {locale} />
 </BaseLayout>

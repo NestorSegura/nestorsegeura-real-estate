@@ -1,45 +1,15 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { useTranslations } from '../../i18n/utils';
-import { getHomepageForLocale } from '../../lib/sanity';
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageBuilder from '../../components/blocks/PageBuilder.astro'
+import { getHomepageWithSections, getSiteSettings } from '../../lib/sanity'
 
-const locale = 'es' as const;
-const t = useTranslations(locale);
-
-const { page, isFallback } = await getHomepageForLocale(locale);
-
-if (!page) {
-  console.warn('[07-02] No homepage document found in Sanity for locale "es" (or "de" fallback). Rendering placeholder.');
-}
+const locale = 'es' as const
+const page = await getHomepageWithSections(locale)
+const settings = await getSiteSettings()
+const sections = page?.sections ?? []
+const title = page?.seo?.title ?? settings?.seo?.title ?? settings?.siteName ?? 'nestorsegura.com'
+const description = page?.seo?.description ?? settings?.seo?.description ?? settings?.tagline
 ---
-<BaseLayout title={page?.title ?? t('hero.title')} locale={locale}>
-  <nav>
-    <ul>
-      <li>{t('nav.home')}</li>
-      <li>{t('nav.services')}</li>
-      <li>{t('nav.about')}</li>
-      <li>{t('nav.contact')}</li>
-      <li>{t('nav.blog')}</li>
-    </ul>
-  </nav>
-  <main>
-    {isFallback && page && (
-      <div class="translation-banner" role="status">
-        Esta página aún no está traducida — mostrando la versión en alemán.
-      </div>
-    )}
-    {page ? (
-      <>
-        <h1>{page.title ?? t('hero.title')}</h1>
-        <p>{t('hero.subtitle')}</p>
-        <p class="debug-sections">sections: {page.sections?.length ?? 0}</p>
-      </>
-    ) : (
-      <>
-        <h1>{t('hero.title')}</h1>
-        <p>{t('hero.subtitle')}</p>
-        <p class="debug-sections">sections: 0</p>
-      </>
-    )}
-  </main>
+<BaseLayout {title} {locale} {description}>
+  <PageBuilder {sections} {locale} />
 </BaseLayout>
