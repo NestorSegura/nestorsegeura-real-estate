@@ -6,6 +6,12 @@ import { DEFAULT_LOCALE } from './utils';
  * DE gets no prefix; EN/ES get /{locale} prefix.
  */
 export const ROUTE_SEGMENTS: Record<string, Record<Locale, string>> = {
+  // Empty segment = root of each locale (/, /en/, /es/)
+  home: {
+    de: '',
+    en: '',
+    es: '',
+  },
   blog: {
     de: 'blog',
     en: 'blog',
