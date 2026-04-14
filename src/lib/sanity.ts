@@ -196,6 +196,10 @@ export interface SiteSettings {
   } | null;
   navigation?: unknown[];
   footer?: { socialLinks?: unknown[] } | null;
+  // Phase 9: per-locale navigation items and CTA
+  navItems?: Array<{ key: string; labelDe: string; labelEn?: string; labelEs?: string }>;
+  ctaLabel?: { de?: string; en?: string; es?: string };
+  ctaHref?: string;
 }
 
 /** Homepage page document with deeply-projected sections array. */
@@ -273,7 +277,10 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
     siteName, tagline, defaultCtaHref,
     seo { title, description, ogImage { asset->{ _ref, _id } } },
     navigation[],
-    footer { socialLinks[] }
+    footer { socialLinks[] },
+    navItems[]{ key, labelDe, labelEn, labelEs },
+    ctaLabel{ de, en, es },
+    ctaHref
   }`;
   return sanityClient.fetch<SiteSettings | null>(query);
 }
