@@ -23,5 +23,26 @@
   --font-body: 'Chivo', ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Jibemates purple primary scale (hue 290 OKLCH). See .planning/phases/08-static-blocks-and-blog/08-RESEARCH.md */
+@theme {
+  --color-primary-50:  oklch(0.97 0.02 290);
+  --color-primary-100: oklch(0.93 0.05 290);
+  --color-primary-200: oklch(0.87 0.08 290);
+  --color-primary-300: oklch(0.78 0.12 290);
+  --color-primary-400: oklch(0.68 0.16 290);
+  --color-primary-500: oklch(0.58 0.20 290);
+  --color-primary-600: oklch(0.50 0.20 290);
+  --color-primary-700: oklch(0.42 0.18 290);
+  --color-primary-800: oklch(0.33 0.14 290);
+  --color-primary-900: oklch(0.25 0.10 290);
+  --color-primary-950: oklch(0.17 0.07 290);
+
+  /* Brand neutrals (from jibemates.de actual CSS: #131313 and #EFEEEC) */
+  --color-brand-dark:      #131313;
+  --color-brand-cream:     #efeeec;
+  --color-brand-warm-50:   #f7f6f4;
+  --color-brand-warm-100:  #efeeec;
+}
+
 body { font-family: var(--font-body); }
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
