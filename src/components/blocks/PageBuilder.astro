@@ -1,13 +1,13 @@
 ---
 import type { Locale } from '../../i18n/utils'
-import LandingHero from './LandingHero.astro'
-import LandingProblem from './LandingProblem.astro'
-import LandingOffer from './LandingOffer.astro'
-import LandingGuide from './LandingGuide.astro'
-import LandingPlan from './LandingPlan.astro'
-import LandingTestimonials from './LandingTestimonials.astro'
-import LandingFaq from './LandingFaq.astro'
-import LandingCtaFinal from './LandingCtaFinal.astro'
+import HeroSection from './HeroSection.astro'
+import FeatureStrip from './FeatureStrip.astro'
+import ProblemSolutionBlock from './ProblemSolutionBlock.astro'
+import ServicesBlock from './ServicesBlock.astro'
+import TestimonialsBlock from './TestimonialsBlock.astro'
+import ReferencesBlock from './ReferencesBlock.astro'
+import FaqBlock from './FaqBlock.astro'
+import CtaBlock from './CtaBlock.astro'
 
 interface Props {
   sections: Array<{ _type: string; _key: string; enabled?: boolean; [key: string]: unknown }>
@@ -20,22 +20,22 @@ const enabled = sections.filter((s) => s.enabled !== false)
 
 {enabled.map((block) => {
   switch (block._type) {
-    case 'landingHero':
-      return <LandingHero {...(block as any)} locale={locale} />
-    case 'landingProblem':
-      return <LandingProblem {...(block as any)} locale={locale} />
-    case 'landingOffer':
-      return <LandingOffer {...(block as any)} locale={locale} />
-    case 'landingGuide':
-      return <LandingGuide {...(block as any)} locale={locale} />
-    case 'landingPlan':
-      return <LandingPlan {...(block as any)} locale={locale} />
-    case 'landingTestimonials':
-      return <LandingTestimonials {...(block as any)} locale={locale} />
-    case 'landingFaq':
-      return <LandingFaq {...(block as any)} locale={locale} />
-    case 'landingCtaFinal':
-      return <LandingCtaFinal {...(block as any)} locale={locale} />
+    case 'heroSection':
+      return <HeroSection {...(block as any)} locale={locale} />
+    case 'featureStrip':
+      return <FeatureStrip {...(block as any)} locale={locale} />
+    case 'problemSolutionBlock':
+      return <ProblemSolutionBlock {...(block as any)} locale={locale} />
+    case 'servicesBlock':
+      return <ServicesBlock {...(block as any)} locale={locale} />
+    case 'testimonialsBlock':
+      return <TestimonialsBlock {...(block as any)} locale={locale} />
+    case 'referencesBlock':
+      return <ReferencesBlock {...(block as any)} locale={locale} />
+    case 'faqBlock':
+      return <FaqBlock {...(block as any)} locale={locale} />
+    case 'ctaBlock':
+      return <CtaBlock {...(block as any)} locale={locale} />
     default:
       return null
   }
