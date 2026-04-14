@@ -148,3 +148,158 @@ export async function getPostWithTranslations(
   }`;
   return sanityClient.fetch(query, { slug, locale });
 }
+
+// ---------------------------------------------------------------------------
+// Phase 8: Extended post + homepage + site-settings helpers
+// ---------------------------------------------------------------------------
+
+/** Full post document for blog detail pages. */
+export interface FullPost {
+  _id: string;
+  _type: 'post';
+  language: string;
+  title?: string;
+  slug?: { current: string };
+  publishedAt?: string;
+  mainImage?: { asset?: { _ref: string; _id: string }; alt?: string } | null;
+  excerpt?: string;
+  body?: unknown[];
+  author?: { name?: string; image?: { asset?: { _ref: string; _id: string } } | null } | null;
+  category?: string;
+  tags?: string[];
+  seo?: { title?: string; description?: string } | null;
+  _translations?: Array<{ language: string; slug: string }>;
+}
+
+/** Minimal post shape for blog index cards. */
+export interface PostCard {
+  _id: string;
+  title?: string;
+  slug?: { current: string };
+  publishedAt?: string;
+  mainImage?: { asset?: { _ref: string; _id: string }; alt?: string } | null;
+  excerpt?: string;
+  author?: { name?: string } | null;
+  category?: string;
+  tags?: string[];
+}
+
+/** Site-wide singleton settings document. */
+export interface SiteSettings {
+  siteName?: string;
+  tagline?: string;
+  defaultCtaHref?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: { asset?: { _ref: string; _id: string } } | null;
+  } | null;
+  navigation?: unknown[];
+  footer?: { socialLinks?: unknown[] } | null;
+}
+
+/** Homepage page document with deeply-projected sections array. */
+export interface PageWithSections {
+  _id: string;
+  _type: 'page';
+  language: string;
+  title?: string;
+  slug?: { current: string };
+  seo?: { title?: string; description?: string } | null;
+  sections?: unknown[];
+}
+
+/**
+ * Fetch a full post document for use on blog detail pages.
+ * Includes body, mainImage, author, category, tags, seo, and translation refs.
+ * Does NOT modify getPostWithTranslations (Phase 9 locale-switcher contract).
+ */
+export async function getFullPostForLocale(
+  slug: string,
+  locale: Locale,
+): Promise<FullPost | null> {
+  const query = `*[_type == "post" && slug.current == $slug && language == $locale][0]{
+    _id, _type, language,
+    title,
+    slug,
+    publishedAt,
+    mainImage { asset->{ _ref, _id }, alt },
+    excerpt,
+    body[]{
+      ...,
+      _type == "image" => { ..., asset->{ _ref, _id } }
+    },
+    author->{ name, image { asset->{ _ref, _id } } },
+    category,
+    tags,
+    seo { title, description },
+    "_translations": *[_type == "translation.metadata" && references(^._id)][0].translations[]{
+      language,
+      "slug": value->slug.current
+    }
+  }`;
+  return sanityClient.fetch<FullPost | null>(query, { slug, locale });
+}
+
+/**
+ * Fetch all posts for a locale for the blog index (card grid).
+ * Ordered by publishedAt descending.
+ */
+export async function getAllPostsForLocale(
+  locale: Locale,
+): Promise<PostCard[]> {
+  const query = `*[_type == "post" && language == $locale && defined(slug.current)] | order(publishedAt desc){
+    _id, title,
+    slug,
+    publishedAt,
+    mainImage { asset->{ _ref, _id }, alt },
+    excerpt,
+    author->{ name },
+    category,
+    tags
+  }`;
+  return sanityClient.fetch<PostCard[]>(query, { locale });
+}
+
+/**
+ * Fetch site-wide settings singleton (no language filter).
+ * Includes seo.ogImage asset reference for the SEO fallback chain.
+ *
+ * @see Pitfall 4 in RESEARCH.md — siteSettings has no language field; querying
+ *   with language == $locale returns null.
+ */
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  const query = `*[_type == "siteSettings"][0]{
+    siteName, tagline, defaultCtaHref,
+    seo { title, description, ogImage { asset->{ _ref, _id } } },
+    navigation[],
+    footer { socialLinks[] }
+  }`;
+  return sanityClient.fetch<SiteSettings | null>(query);
+}
+
+/**
+ * Fetch the homepage document with deep section projections.
+ * Deep-projects image assets inside landingGuide and landingTestimonials blocks
+ * so @sanity/image-url can resolve them without additional queries.
+ */
+export async function getHomepageWithSections(
+  locale: Locale,
+): Promise<PageWithSections | null> {
+  const query = `*[_type == "page" && slug.current == "home" && language == $locale][0]{
+    _id, _type, language, title, slug,
+    seo { title, description },
+    sections[]{
+      ...,
+      _type == "landingGuide" => {
+        ...,
+        image { asset->{ _ref, _id } }
+      },
+      _type == "landingTestimonials" => {
+        ...,
+        testimonials[]{ ..., image { asset->{ _ref, _id } } }
+      }
+    }
+  }`;
+  return sanityClient.fetch<PageWithSections | null>(query, { locale });
+}
