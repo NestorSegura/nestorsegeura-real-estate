@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
+import react from '@astrojs/react';
 import sanity from '@sanity/astro';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -11,6 +12,7 @@ export default defineConfig({
     prerenderEnvironment: 'node',
   }),
   integrations: [
+    react(),
     sanity({
       projectId: '0cn4widw',
       dataset: 'production',
