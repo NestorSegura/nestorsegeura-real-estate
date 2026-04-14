@@ -64,6 +64,7 @@ Progress: [###########░░░░░░░░░] Phase 8 in progress — 21/30
 - [08-01]: @sanity/image-url already transitively installed via sanity@4.22.0 — no extra install needed
 - [08-01]: getSiteSettings has no language filter — siteSettings is a Sanity singleton without a language field
 - [08-01]: getPostWithTranslations preserved untouched — Phase 9 locale-switcher contract requires exact current signature
+- [08-02]: Real Sanity v1 _type names are heroSection/featureStrip/problemSolutionBlock/servicesBlock/testimonialsBlock/referencesBlock/faqBlock/ctaBlock — NOT landingHero/etc; components renamed to match; testimonialsBlock uses `author` (not `name`); problemSolutionBlock uses `headline` per problem (not `title`); ctaBlock uses `subtext` (not `copy`)
 
 ### Pending Todos
 
@@ -84,5 +85,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-14
-Stopped at: Completed 08-01-PLAN.md — color tokens, blockContent schema, GROQ helpers, lib utilities
+Stopped at: 08-02 schema mismatch fix — rewired PageBuilder + all 8 block components to v1 _type names (heroSection etc.); all 8 sections render in built HTML (Vertriebskanal confirmed)
 Resume file: None
