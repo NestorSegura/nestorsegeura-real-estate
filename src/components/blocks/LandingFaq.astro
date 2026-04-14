@@ -1,0 +1,64 @@
+---
+import type { Locale } from '../../i18n/utils'
+
+interface FaqItem {
+  _key?: string
+  question?: string
+  answer?: string
+}
+
+interface Props {
+  locale: Locale
+  headline?: string
+  faqs?: FaqItem[]
+  [key: string]: unknown
+}
+
+const { headline, faqs = [] } = Astro.props
+---
+
+<section id="faq" class="bg-gray-50 py-16 md:py-24 px-6">
+  <div class="max-w-3xl mx-auto">
+    {headline && (
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+        {headline}
+      </h2>
+    )}
+
+    {faqs.length > 0 && (
+      <div class="flex flex-col gap-3">
+        {faqs.map((faq) => (
+          <details class="faq-item bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer font-semibold text-base text-gray-900 select-none list-none">
+              <span>{faq.question}</span>
+              <span class="faq-icon shrink-0 w-6 h-6 flex items-center justify-center text-primary-600 font-bold text-xl leading-none" aria-hidden="true">+</span>
+            </summary>
+            <p class="px-6 pb-5 text-base text-gray-600 leading-relaxed">
+              {faq.answer}
+            </p>
+          </details>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  details summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details[open] .faq-icon {
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .faq-icon {
+    transition: transform 0.2s ease;
+  }
+</style>
