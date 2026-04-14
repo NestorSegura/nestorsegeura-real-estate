@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import FeaturedPost from '../../components/blog/FeaturedPost.astro'
+import PostCard from '../../components/blog/PostCard.astro'
+import BlogPagination from '../../components/blog/BlogPagination.astro'
+import { getAllPostsForLocale, getSiteSettings } from '../../lib/sanity'
+import { useTranslations } from '../../i18n/utils'
+
+const locale = 'de' as const
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getAllPostsForLocale('de')
+  return paginate(posts, { pageSize: 10 })
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props
+const settings = await getSiteSettings()
+const t = useTranslations(locale)
+
+// Featured = first post on page 1; rest = grid. On page 2+ all posts go in grid.
+const isFirstPage = page.currentPage === 1
+const featured = isFirstPage && page.data.length > 0 ? page.data[0] : null
+const grid = isFirstPage ? page.data.slice(1) : page.data
+---
+<BaseLayout title={`Blog — ${settings?.siteName ?? 'Blog'}`} locale={locale} description={settings?.tagline}>
+  <main class="container mx-auto px-4 py-12 max-w-6xl">
+    <h1 class="text-4xl lg:text-5xl font-bold font-display mb-10">Blog</h1>
+    {featured && <FeaturedPost post={featured} locale={locale} />}
+    {grid.length > 0 ? (
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-8">
+        {grid.map(post => <PostCard post={post} locale={locale} />)}
+      </div>
+    ) : (
+      page.data.length === 0 && <p class="text-gray-500">{t('blog.empty')}</p>
+    )}
+    <BlogPagination page={page} />
+  </main>
+</BaseLayout>
