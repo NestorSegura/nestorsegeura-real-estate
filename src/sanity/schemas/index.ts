@@ -1,4 +1,5 @@
 import { type SchemaTypeDefinition } from 'sanity'
+import { blockContentType } from './objects/blockContent'
 import { pageType } from './documents/page'
 import { postType } from './documents/post'
 import { authorType } from './documents/author'
@@ -21,6 +22,7 @@ import { landingFaqType } from './blocks/landingFaq'
 import { landingCtaFinalType } from './blocks/landingCtaFinal'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
+  blockContentType,
   pageType,
   postType,
   authorType,

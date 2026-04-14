@@ -49,28 +49,7 @@ export const postType = defineType({
     defineField({
       name: 'body',
       title: 'Body',
-      type: 'array',
-      of: [
-        {
-          type: 'block',
-        },
-        {
-          type: 'image',
-          options: { hotspot: true },
-          fields: [
-            defineField({
-              name: 'alt',
-              title: 'Alt Text',
-              type: 'string',
-            }),
-            defineField({
-              name: 'caption',
-              title: 'Caption',
-              type: 'string',
-            }),
-          ],
-        },
-      ],
+      type: 'blockContent',
     }),
     defineField({
       name: 'author',
