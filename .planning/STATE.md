@@ -83,6 +83,9 @@ Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09
 - [09-02]: Locale switcher hrefs pre-computed at build time via localizeRoute() in Astro frontmatter, serialized as data-href on buttons; inline script reads btn.getAttribute('data-href') — zero client-side routing logic
 - [09-02]: home route added to ROUTE_SEGMENTS with empty segments ('', '', ''); localizeRoute('home', locale) → '/', '/en/', '/es/'
 - [09-02]: navLocaleUrls prop added to BaseLayout (optional) — page-specific locale URL map for blog posts and /analyse pages; defaults to homepage URLs
+- [09-02 rev]: DOM structure rebuilt to match osmo VERBATIM — [data-menu-wrap] root, [data-menu-logo], [data-nav-list][data-mobile-nav] with two <ul>s (.mega-nav__bar-list + .is--actions), [data-burger-line="top|mid|bot"], [data-mobile-back], empty [data-dropdown-wrapper] > [data-dropdown-container] > [data-dropdown-bg], [data-menu-backdrop]
+- [09-02 rev]: initMegaNavDirectionalHover controller inlined with DUR constants, state, openDropdown/closeDropdown/switchPanel, hover intent, mobile open/close w/ stagger, burger X animation, resize handler — toggles[] and panels[] are empty arrays in Phase 9 (no throws)
+- [09-02 rev]: fallbackNavItems in BaseLayout (Blog/Analyse/Kontakt) with locale-aware labels — localeUrls declared before fallback so #kontakt anchor resolves correctly; used when sanityNavItems.length === 0
 
 ### Pending Todos
 
@@ -102,6 +105,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-14T14:00:00Z
-Stopped at: Completed 09-02-PLAN.md tasks 1+2 — MegaNav.astro + BaseLayout integration — awaiting checkpoint:human-verify
+Last session: 2026-04-14T22:46:00Z
+Stopped at: 09-02 revision complete (commit 35d6066) — MegaNav DOM rebuilt to match osmo spec verbatim — awaiting checkpoint:human-verify
 Resume file: None
