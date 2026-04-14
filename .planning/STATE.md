@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 ## Current Position
 
 Phase: 8 of 10 (Static Blocks and Blog)
-Plan: 1 of 4 in current phase
-Status: In progress
-Last activity: 2026-04-14 — Completed 08-01-PLAN.md (color tokens, blockContent schema, GROQ helpers, lib utilities)
+Plan: 2 of 4 in current phase
+Status: In progress (Phase 8 wave 2 complete)
+Last activity: 2026-04-14 — Completed 08-02-PLAN.md (18 block components, PageBuilder dual-schema dispatch, StackingCards, Lenis)
 
-Progress: [###########░░░░░░░░░] Phase 8 in progress — 21/30+ plans done
+Progress: [###########░░░░░░░░░] Phase 8 in progress — 22/30+ plans done
 
 ## Performance Metrics
 
@@ -65,6 +65,9 @@ Progress: [###########░░░░░░░░░] Phase 8 in progress — 21/30
 - [08-01]: getSiteSettings has no language filter — siteSettings is a Sanity singleton without a language field
 - [08-01]: getPostWithTranslations preserved untouched — Phase 9 locale-switcher contract requires exact current signature
 - [08-02]: Real Sanity v1 _type names are heroSection/featureStrip/problemSolutionBlock/servicesBlock/testimonialsBlock/referencesBlock/faqBlock/ctaBlock — NOT landingHero/etc; components renamed to match; testimonialsBlock uses `author` (not `name`); problemSolutionBlock uses `headline` per problem (not `title`); ctaBlock uses `subtext` (not `copy`)
+- [08-02]: Dual-schema dispatch — DE/EN homepages use v1 _types (heroSection etc.), ES uses landing* _types (landingHero etc.); PageBuilder dispatches all 16 cases; getHomepageWithSections prefers *-landing slug documents when both exist
+- [08-02]: StackingCards.astro — reusable GSAP/ScrollTrigger pin+scrub wrapper; applied to LandingProblem, LandingPlan, ProblemSolutionBlock; Phase 9 scroll interactions should extend this pattern
+- [08-02]: Lenis smooth scroll added globally in BaseLayout.astro with GSAP ScrollTrigger RAF sync; Phase 9 navbar scroll logic should use Lenis API (not raw window.scrollY)
 
 ### Pending Todos
 
@@ -85,5 +88,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-14
-Stopped at: 08-02 schema mismatch fix — rewired PageBuilder + all 8 block components to v1 _type names (heroSection etc.); all 8 sections render in built HTML (Vertriebskanal confirmed)
+Stopped at: Completed 08-02-PLAN.md — 18 block components, PageBuilder dual-schema dispatch (16 _types), StackingCards GSAP wrapper, Lenis smooth scroll, all 3 locale homepages wired to Sanity
 Resume file: None
