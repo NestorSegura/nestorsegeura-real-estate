@@ -699,19 +699,22 @@ const localeLabels: Record<'de' | 'en' | 'es', string> = {
   // ── Burger animation ─────────────────────────────────────────────────
   function animateBurgerOpen() {
     if (!window.gsap || prefersReducedMotion) return;
-    var tl = gsap.timeline();
-    tl.to(burgerLines.mid, { scaleX: 0, duration: DUR.burgerOpen * 0.4, ease: 'power2.in' })
-      .to(burgerLines.top, { y: 0, rotation: 45, duration: DUR.burgerOpen * 0.6, ease: 'power3.out' }, '-=0.05')
-      .to(burgerLines.bot, { y: 0, rotation: -45, duration: DUR.burgerOpen * 0.6, ease: 'power3.out' }, '<');
+    var tl = gsap.timeline({ defaults: { ease: 'power2.inOut' } });
+    tl.to(burgerLines.top, { y: '0.3125em', duration: 0.15 }, 0)
+      .to(burgerLines.bot, { y: '-0.3125em', duration: 0.15 }, 0)
+      .to(burgerLines.mid, { autoAlpha: 0, duration: 0.1 }, 0.1)
+      .to(burgerLines.top, { rotation: 45, duration: 0.2 }, 0.15)
+      .to(burgerLines.bot, { rotation: -45, duration: 0.2 }, 0.15);
   }
 
   function animateBurgerClose() {
     if (!window.gsap || prefersReducedMotion) return;
-    var tl = gsap.timeline();
-    tl.to([burgerLines.top, burgerLines.bot], { rotation: 0, duration: DUR.burgerClose * 0.6, ease: 'power3.out' })
-      .to(burgerLines.top, { y: '-0.25rem', duration: DUR.burgerClose * 0.5, ease: 'power2.out' }, '-=0.1')
-      .to(burgerLines.bot, { y: '0.25rem',  duration: DUR.burgerClose * 0.5, ease: 'power2.out' }, '<')
-      .to(burgerLines.mid, { scaleX: 1, duration: DUR.burgerClose * 0.4, ease: 'power2.out' }, '-=0.1');
+    var tl = gsap.timeline({ defaults: { ease: 'power2.inOut' } });
+    tl.to(burgerLines.top, { rotation: 0, duration: 0.2 }, 0)
+      .to(burgerLines.bot, { rotation: 0, duration: 0.2 }, 0)
+      .to(burgerLines.top, { y: 0, duration: 0.15 }, 0.15)
+      .to(burgerLines.bot, { y: 0, duration: 0.15 }, 0.15)
+      .to(burgerLines.mid, { autoAlpha: 1, duration: 0.1 }, 0.15);
   }
 
   // ── Mobile menu open/close ───────────────────────────────────────────
