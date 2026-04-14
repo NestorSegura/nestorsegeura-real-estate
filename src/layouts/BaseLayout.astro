@@ -2,8 +2,10 @@
 import '../styles/global.css';
 import { type Locale, DEFAULT_LOCALE } from '../i18n/utils';
 import { getSiteSettings } from '../lib/sanity';
+import { localizeRoute } from '../i18n/routes';
 import { buildOrganizationSchema } from '../lib/seo';
 import JsonLd from '../components/seo/JsonLd.astro';
+import MegaNav from '../components/nav/MegaNav.astro';
 
 const SITE_URL =
   (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://realestatestrategy.eu';
@@ -17,6 +19,19 @@ interface Props {
   canonical?: string;       // full URL
   hreflangUrls?: Record<string, string>;
   jsonLd?: Record<string, unknown>[];  // per-page schemas (Person, Article, Breadcrumb)
+  /**
+   * Page-specific locale URL map for the locale switcher.
+   * Pass this from pages that have cross-locale equivalents (e.g., blog posts via
+   * getPostWithTranslations, /analyse pages via localizeRoute('analyse', locale)).
+   * When omitted, defaults to each locale's homepage (/, /en/, /es/).
+   *
+   * Example for /analyse pages:
+   *   navLocaleUrls={{ de: '/analyse', en: '/en/analyze', es: '/es/analizar' }}
+   *
+   * Example for blog posts (computed from _translations):
+   *   navLocaleUrls={{ de: '/blog/slug-de', en: '/en/blog/slug-en', es: '/es/blog/slug-es' }}
+   */
+  navLocaleUrls?: Record<'de' | 'en' | 'es', string>;
 }
 
 const {
@@ -28,14 +43,56 @@ const {
   canonical,
   hreflangUrls,
   jsonLd = [],
+  navLocaleUrls,
 } = Astro.props;
 
 const canonicalUrl = canonical ?? Astro.url.href;
 const resolvedOgImage = ogImage ?? `${SITE_URL}/og-default.png`;
 
-// Fetch siteSettings for Organization JSON-LD (once per page, baked at build time)
+// Fetch siteSettings for MegaNav + Organization JSON-LD (once per page, baked at build time)
 const settings = await getSiteSettings();
 const orgSchema = buildOrganizationSchema(settings, SITE_URL);
+
+// ── MegaNav data ─────────────────────────────────────────────────────────────
+
+// Resolve nav items for the current locale (label fallback chain: locale → de)
+const navItems = (settings?.navItems ?? []).map((item) => {
+  const localeKey = `label${locale.charAt(0).toUpperCase() + locale.slice(1)}` as
+    | 'labelDe'
+    | 'labelEn'
+    | 'labelEs';
+  const label = (item as Record<string, string>)[localeKey] ?? item.labelDe ?? item.key;
+
+  // Resolve href via localizeRoute if the key is a known route, else use key as path segment
+  let href: string;
+  try {
+    href = localizeRoute(item.key, locale);
+  } catch {
+    const prefix = locale === DEFAULT_LOCALE ? '' : `/${locale}`;
+    href = `${prefix}/${item.key}`;
+  }
+
+  return { href, label };
+});
+
+// Kontakt special case: if no navItem key resolves to a dedicated page,
+// anchor it to the CTA section on the homepage.
+// The CTA section in the homepage template should have id="kontakt".
+// (Editors can override via siteSettings navItems with key="kontakt".)
+
+const ctaLabel =
+  settings?.ctaLabel?.[locale] ??
+  settings?.ctaLabel?.['de'] ??
+  (locale === 'en' ? 'Book appointment' : locale === 'es' ? 'Reservar cita' : 'Termin buchen');
+
+const ctaHref = settings?.ctaHref ?? '#';
+
+// Locale URLs: use page-specific map if provided, otherwise default to homepages.
+const localeUrls: Record<'de' | 'en' | 'es', string> = navLocaleUrls ?? {
+  de: localizeRoute('home', 'de'),   // → '/'
+  en: localizeRoute('home', 'en'),   // → '/en/'
+  es: localizeRoute('home', 'es'),   // → '/es/'
+};
 ---
 <!doctype html>
 <html lang={locale}>
@@ -84,6 +141,14 @@ const orgSchema = buildOrganizationSchema(settings, SITE_URL);
     ))}
   </head>
   <body>
+    <!-- MegaNav: sticky top nav — osmo mega-nav restyled for brand (Phase 9-02) -->
+    <MegaNav
+      locale={locale}
+      navItems={navItems}
+      ctaLabel={ctaLabel}
+      ctaHref={ctaHref}
+      localeUrls={localeUrls}
+    />
     <slot />
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.min.js" is:inline></script>
     <script is:inline>
