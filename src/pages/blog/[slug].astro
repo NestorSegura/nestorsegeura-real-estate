@@ -1,0 +1,97 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PTRenderer from '../../components/portabletext/PTRenderer.astro'
+import BlogTOC from '../../components/blog/BlogTOC.astro'
+import { getAllPostSlugsForLocale, getFullPostForLocale, getSiteSettings } from '../../lib/sanity'
+import { extractToc } from '../../lib/tocFromPT'
+import { readingTime } from '../../lib/readingTime'
+import { urlFor } from '../../lib/imageUrl'
+
+const locale = 'de' as const
+
+export const getStaticPaths = (async () => {
+  const slugs = await getAllPostSlugsForLocale('de')
+  return slugs.map(({ slug }) => ({ params: { slug } }))
+}) satisfies GetStaticPaths
+
+const { slug } = Astro.params
+const post = await getFullPostForLocale(slug!, locale)
+if (!post) return Astro.redirect('/404')
+
+const settings = await getSiteSettings()
+const toc = extractToc(post.body ?? [])
+const minutes = readingTime(post.body ?? [], locale)
+const dateLocale = 'de-DE'
+const dateFmt = post.publishedAt
+  ? new Intl.DateTimeFormat(dateLocale, { dateStyle: 'long' }).format(new Date(post.publishedAt))
+  : null
+
+const title = post.seo?.title ?? post.title ?? slug!
+const description = post.seo?.description ?? post.excerpt
+
+const authorImgSrc = post.author?.image
+  ? urlFor(post.author.image as any)?.width(80).format('webp').url()
+  : null
+const mainImgSrc = post.mainImage
+  ? urlFor(post.mainImage as any)?.width(1280).format('webp').url()
+  : null
+---
+<BaseLayout title={title} locale={locale} description={description}>
+  <article class="container mx-auto px-4 py-12 max-w-6xl">
+    <header class="mb-8 max-w-3xl">
+      <h1 class="text-4xl lg:text-5xl font-bold font-display mb-4">{post.title}</h1>
+      <div class="flex items-center gap-3 text-sm text-gray-600 flex-wrap">
+        {authorImgSrc && (
+          <img
+            src={authorImgSrc}
+            alt={post.author?.name ?? ''}
+            width="40"
+            height="40"
+            class="rounded-full w-10 h-10 object-cover"
+            loading="lazy"
+          />
+        )}
+        {post.author?.name && <span>{post.author.name}</span>}
+        {post.author?.name && dateFmt && <span>·</span>}
+        {dateFmt && <time datetime={post.publishedAt}>{dateFmt}</time>}
+        <span>·</span>
+        <span>{minutes} min</span>
+      </div>
+      {((post.tags && post.tags.length > 0) || post.category) && (
+        <div class="flex gap-2 mt-3 flex-wrap">
+          {post.category && (
+            <span class="px-3 py-1 text-xs bg-brand-cream text-gray-700 rounded-full border border-gray-200">
+              {post.category}
+            </span>
+          )}
+          {post.tags?.map(tag => (
+            <span class="px-3 py-1 text-xs bg-primary-50 text-primary-700 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    {mainImgSrc && (
+      <img
+        src={mainImgSrc}
+        alt={post.mainImage?.alt ?? ''}
+        class="w-full rounded-xl mb-12 aspect-video object-cover"
+        loading="eager"
+        width="1280"
+        height="720"
+      />
+    )}
+
+    <div class="grid gap-12 lg:grid-cols-[1fr_240px]">
+      <div class="prose prose-lg max-w-none prose-headings:font-display prose-a:text-primary-700">
+        <PTRenderer value={post.body ?? []} />
+      </div>
+      <aside>
+        <BlogTOC items={toc} locale={locale} />
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
