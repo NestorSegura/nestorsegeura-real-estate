@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 8 — Static Blocks and Blog
+**Current focus:** Phase 9 — Interactive Islands
 
 ## Current Position
 
 Phase: 9 of 10 (Interactive Islands)
-Plan: 1 of 3 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-04-14 — Completed 09-01 (siteSettings nav schema + getSiteSettings data layer)
+Last activity: 2026-04-14 — Completed 09-03 (@astrojs/react integration + /api/analyze Cloudflare Worker endpoint)
 
-Progress: [###############░░░░░] Phase 9 underway — 09-01 complete
+Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09-03 complete
 
 ## Performance Metrics
 
@@ -75,6 +75,10 @@ Progress: [###############░░░░░] Phase 9 underway — 09-01 complete
 - [09-01]: siteSettings extended with navItems[] (key, labelDe, labelEn, labelEs), ctaLabel{ de, en, es }, ctaHref — Phase 9 data layer complete; editors must populate in Studio before MegaNav shows real content
 - [09-01]: Legacy navigation[] preserved alongside new navItems[] — additive, no Phase 8 breakage
 - [09-01]: SiteSettings navItems uses flat labelDe/labelEn/labelEs sibling fields (not nested locale object)
+- [09-03]: @astrojs/react@5.0.3 installed — react() placed before sanity() in integrations array; tsx islands with client:visible now supported
+- [09-03]: /api/analyze uses prerender=false — single route opted into Cloudflare Worker on-demand while rest of site stays static; build correctly excludes it from prerendered routes list
+- [09-03]: CORS Allow-Origin: * in V1 API endpoint — tighten to PUBLIC_SITE_URL env var in LEAD-V2-01 when real PageSpeed integration lands
+- [09-03]: Locale validation in /api/analyze uses ALLOWED_LOCALES as const tuple — both runtime allow-list check and TypeScript type narrowing
 
 ### Pending Todos
 
@@ -94,6 +98,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-14
-Stopped at: Completed 09-01 — siteSettings nav schema + getSiteSettings GROQ/types; build passes
+Last session: 2026-04-14T11:33:49Z
+Stopped at: Completed 09-03-PLAN.md — @astrojs/react integration + /api/analyze Cloudflare Worker endpoint
 Resume file: None
