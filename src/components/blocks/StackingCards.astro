@@ -1,0 +1,290 @@
+---
+/**
+ * StackingCards — reusable wrapper for the osmo.supply stacking sticky cards effect.
+ *
+ * Props:
+ *   variant:         'narrow' | 'wide'
+ *   desktopRotate?:  comma-separated rotate values per card (Variant 1 only)
+ *   desktopX?:       comma-separated translateX values per card (Variant 1 only)
+ *   desktopY?:       comma-separated translateY values per card (Variant 1 only)
+ *   tabletRotate?:   overrides for tablet breakpoint
+ *   tabletX?:        overrides for tablet breakpoint
+ *   tabletY?:        overrides for tablet breakpoint
+ *   mobileRotate?:   overrides for mobile breakpoint
+ *   mobileX?:        overrides for mobile breakpoint
+ *   mobileY?:        overrides for mobile breakpoint
+ *
+ * Usage (Variant 1 – narrow rotated):
+ *   <StackingCards variant="narrow" desktopRotate="-5, 2, 6" desktopX="-13.75em, 0em, 13em" desktopY="2.125em, 0em, 4.5em">
+ *     <div data-stacking-card class="cards-stack__item">…</div>
+ *   </StackingCards>
+ *
+ * Usage (Variant 2 – wide):
+ *   <StackingCards variant="wide">
+ *     <div data-stacking-card class="cards-stack__item is--wide">…</div>
+ *   </StackingCards>
+ */
+
+interface Props {
+  variant: 'narrow' | 'wide'
+  desktopRotate?: string
+  desktopX?: string
+  desktopY?: string
+  tabletRotate?: string
+  tabletX?: string
+  tabletY?: string
+  mobileRotate?: string
+  mobileX?: string
+  mobileY?: string
+}
+
+const {
+  variant,
+  desktopRotate,
+  desktopX,
+  desktopY,
+  tabletRotate,
+  tabletX,
+  tabletY,
+  mobileRotate,
+  mobileX,
+  mobileY,
+} = Astro.props
+
+const sectionAttrs: Record<string, string> = {
+  'data-stacking-cards-init': '',
+  'data-stacking-cards-desktop': 'true',
+  'data-stacking-cards-tablet': 'true',
+  'data-stacking-cards-mobile': 'true',
+}
+
+if (desktopRotate) sectionAttrs['data-stacking-cards-desktop-rotate'] = desktopRotate
+if (desktopX)      sectionAttrs['data-stacking-cards-desktop-x']      = desktopX
+if (desktopY)      sectionAttrs['data-stacking-cards-desktop-y']       = desktopY
+if (tabletRotate)  sectionAttrs['data-stacking-cards-tablet-rotate']   = tabletRotate
+if (tabletX)       sectionAttrs['data-stacking-cards-tablet-x']        = tabletX
+if (tabletY)       sectionAttrs['data-stacking-cards-tablet-y']        = tabletY
+if (mobileRotate)  sectionAttrs['data-stacking-cards-mobile-rotate']   = mobileRotate
+if (mobileX)       sectionAttrs['data-stacking-cards-mobile-x']        = mobileX
+if (mobileY)       sectionAttrs['data-stacking-cards-mobile-y']        = mobileY
+---
+
+<section {...sectionAttrs} class={`cards-stack${variant === 'wide' ? ' is--wide' : ''}`}>
+  <div class="container">
+    <div class="cards-stack__collection">
+      <div data-stacking-card-stack class="cards-stack__list">
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* ============================================================
+   OSMO SUPPLY — Stacking Cards Effect
+   Adapted for nestorsegura.com — color overrides at bottom
+   ============================================================ */
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ---- Section shell ---- */
+.cards-stack {
+  padding-top: 15dvh;
+  padding-bottom: 15dvh;
+}
+
+/* ---- Container ---- */
+.cards-stack .container {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* ---- Collection ---- */
+.cards-stack__collection {
+  position: relative;
+}
+
+/* ---- List (scroll-linked sticky stack area) ---- */
+.cards-stack__list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- Item wrapper ---- */
+.cards-stack__item {
+  position: sticky;
+  top: 8rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+  /* Each item gets its initial transform from JS */
+}
+
+.cards-stack__item.is--wide {
+  top: 6rem;
+}
+
+/* ---- Card face ---- */
+.cards-stack-card {
+  width: 100%;
+  max-width: 26rem;      /* narrow variant default */
+  border-radius: 1.5rem;
+  background-color: #fff;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
+  will-change: transform;
+  transform-origin: center top;
+}
+
+.cards-stack-card.is--wide {
+  max-width: 66rem;
+  padding: 3rem 3.5rem;
+}
+
+/* ---- Color variants ---- */
+/* is--green → project primary purple */
+.cards-stack-card.is--green {
+  background-color: var(--color-primary-600, oklch(0.50 0.20 290));
+  color: #fff;
+}
+
+/* is--dark → brand dark */
+.cards-stack-card.is--dark {
+  background-color: var(--color-brand-dark, #131313);
+  color: #fff;
+}
+
+/* ---- Number in card ---- */
+.cards-stack-card .card-number {
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+/* ---- Responsive: on mobile collapse sticky to normal flow ---- */
+@media (max-width: 47.9375rem) {
+  .cards-stack__item {
+    position: relative;
+    top: auto;
+  }
+}
+</style>
+
+<!-- GSAP + ScrollTrigger (CDN) + stacking cards init -->
+<script is:inline>
+(function () {
+  // Guard: only register once per page load
+  if (window._cardsStackInitialized) return;
+  window._cardsStackInitialized = true;
+
+  function loadScript(src, onload) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = onload;
+    document.head.appendChild(s);
+  }
+
+  function initStackingCards() {
+    var cardsSections = document.querySelectorAll('[data-stacking-cards-init]');
+    if (!cardsSections.length) return;
+
+    cardsSections.forEach(function (section) {
+      var stack      = section.querySelector('[data-stacking-card-stack]');
+      var cardItems  = section.querySelectorAll('[data-stacking-card]');
+      if (!stack || !cardItems.length) return;
+
+      // Determine which breakpoint data set to use
+      var w = window.innerWidth;
+      var isDesktop = w >= 992;
+      var isTablet  = w >= 768 && w < 992;
+      // mobile = w < 768
+
+      var prefix =
+        isDesktop ? 'desktop' :
+        isTablet  ? 'tablet'  :
+                    'mobile';
+
+      // Check if effect is enabled for this breakpoint
+      var enabledAttr = section.getAttribute('data-stacking-cards-' + prefix);
+      if (enabledAttr !== 'true') return;
+
+      // Parse per-card offset arrays (rotate, x, y)
+      function parseAttr(attr) {
+        var raw = section.getAttribute('data-stacking-cards-' + prefix + '-' + attr);
+        if (!raw) return null;
+        return raw.split(',').map(function (v) { return v.trim(); });
+      }
+
+      var rotates = parseAttr('rotate');
+      var xs      = parseAttr('x');
+      var ys      = parseAttr('y');
+
+      // Set initial transforms (stacked appearance)
+      cardItems.forEach(function (item, i) {
+        var rotate = rotates && rotates[i] ? parseFloat(rotates[i]) : 0;
+        var x      = xs      && xs[i]      ? xs[i]      : '0em';
+        var y      = ys      && ys[i]      ? ys[i]      : '0em';
+        gsap.set(item, { rotate: rotate, x: x, y: y });
+      });
+
+      // ScrollTrigger: scrub cards back to flat as user scrolls into the stack
+      var stackHeight = stack.offsetHeight;
+
+      ScrollTrigger.create({
+        trigger: stack,
+        start: 'top top+=96',   /* matches sticky top: 8rem  */
+        end: '+=' + stackHeight,
+        scrub: true,
+        onUpdate: function (self) {
+          var progress = self.progress;
+          cardItems.forEach(function (item, i) {
+            var total = cardItems.length;
+            // Each card unwinds in sequence: card i starts unwinding at progress = i/(total)
+            var cardStart = i / total;
+            var cardEnd   = (i + 1) / total;
+            var p = Math.max(0, Math.min(1, (progress - cardStart) / (cardEnd - cardStart)));
+
+            var rotate = rotates && rotates[i] ? parseFloat(rotates[i]) * (1 - p) : 0;
+            var x      = xs && xs[i]           ? xs[i]      : '0em';
+            var y      = ys && ys[i]           ? ys[i]      : '0em';
+
+            // Interpolate x/y from initial to 0
+            var xVal = xs && xs[i]  ? parseFloat(xs[i])  * (1 - p) : 0;
+            var yVal = ys && ys[i]  ? parseFloat(ys[i])  * (1 - p) : 0;
+            var xUnit = xs && xs[i]  ? xs[i].replace(/[^a-z%]+/gi, '')  : 'em';
+            var yUnit = ys && ys[i]  ? ys[i].replace(/[^a-z%]+/gi, '')  : 'em';
+
+            gsap.set(item, {
+              rotate: rotate,
+              x: xVal + xUnit,
+              y: yVal + yUnit,
+            });
+          });
+        },
+      });
+    });
+  }
+
+  // Load GSAP then ScrollTrigger then init
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', function () {
+      gsap.registerPlugin(ScrollTrigger);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initStackingCards);
+      } else {
+        initStackingCards();
+      }
+    });
+  });
+})();
+</script>
