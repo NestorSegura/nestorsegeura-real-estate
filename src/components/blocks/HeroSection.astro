@@ -1,0 +1,86 @@
+---
+import type { Locale } from '../../i18n/utils'
+
+interface Props {
+  locale: Locale
+  badge?: string
+  headline?: string
+  highlightedText?: string
+  subheadline?: string
+  ctaLabel?: string
+  ctaHref?: string
+  ctaSecondaryText?: string
+  colorScheme?: 'light' | 'dark'
+  [key: string]: unknown
+}
+
+const {
+  badge,
+  headline,
+  highlightedText,
+  subheadline,
+  ctaLabel,
+  ctaHref,
+  ctaSecondaryText,
+  colorScheme = 'dark',
+} = Astro.props
+
+const isDark = colorScheme === 'dark'
+const sectionClass = isDark
+  ? 'bg-primary-900 text-white'
+  : 'bg-white text-gray-900'
+
+// Split headline around highlightedText for accent rendering
+let headlineBefore = headline ?? ''
+let headlineHighlight = ''
+let headlineAfter = ''
+if (headline && highlightedText && headline.includes(highlightedText)) {
+  const idx = headline.indexOf(highlightedText)
+  headlineBefore = headline.slice(0, idx)
+  headlineHighlight = highlightedText
+  headlineAfter = headline.slice(idx + highlightedText.length)
+}
+---
+
+<section id="hero" class={`${sectionClass} py-24 lg:py-32 px-6`}>
+  <div class="max-w-4xl mx-auto text-center">
+    {badge && (
+      <span class="inline-block mb-6 px-4 py-1.5 rounded-full text-sm font-semibold bg-primary-700/30 text-primary-300 border border-primary-700/40 tracking-wide uppercase">
+        {badge}
+      </span>
+    )}
+
+    {headline && (
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6">
+        {headlineHighlight ? (
+          <>
+            {headlineBefore}<span class="text-primary-400">{headlineHighlight}</span>{headlineAfter}
+          </>
+        ) : headline}
+      </h1>
+    )}
+
+    {subheadline && (
+      <p class={`text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed ${isDark ? 'text-white/80' : 'text-gray-600'}`}>
+        {subheadline}
+      </p>
+    )}
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      {ctaHref && ctaLabel && (
+        <a
+          href={ctaHref}
+          class="inline-block bg-primary-700 hover:bg-primary-800 text-white font-semibold text-lg px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-px"
+        >
+          {ctaLabel}
+        </a>
+      )}
+
+      {ctaSecondaryText && (
+        <p class={`text-base ${isDark ? 'text-primary-300' : 'text-gray-500'}`}>
+          {ctaSecondaryText}
+        </p>
+      )}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,86 @@
+---
+import type { Locale } from '../../i18n/utils'
+
+interface ServiceItem {
+  _key?: string
+  number?: string
+  name?: string
+  description?: string
+  features?: string[]
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+interface Props {
+  locale: Locale
+  title?: string
+  services?: ServiceItem[]
+  colorScheme?: 'light' | 'dark'
+  [key: string]: unknown
+}
+
+const { title, services = [], colorScheme = 'light' } = Astro.props
+
+const isDark = colorScheme === 'dark'
+const sectionClass = isDark ? 'bg-primary-900 text-white' : 'bg-gray-50 text-gray-900'
+const cardClass = isDark
+  ? 'bg-primary-800/50 border-primary-700/40 text-white'
+  : 'bg-white border-gray-200 text-gray-900'
+const descClass = isDark ? 'text-primary-200' : 'text-gray-600'
+const featureClass = isDark ? 'text-primary-200' : 'text-gray-700'
+---
+
+<section id="services" class={`${sectionClass} py-16 md:py-24 px-6`}>
+  <div class="max-w-6xl mx-auto">
+    {title && (
+      <h2 class="text-3xl md:text-4xl font-bold mb-12">
+        {title}
+      </h2>
+    )}
+
+    {services.length > 0 && (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {services.map((service) => (
+          <div class={`flex flex-col gap-5 p-8 rounded-2xl border ${cardClass}`}>
+            {service.number && (
+              <span
+                class="text-5xl font-black leading-none tabular-nums select-none text-primary-300"
+                aria-hidden="true"
+              >
+                {service.number}
+              </span>
+            )}
+
+            {service.name && (
+              <h3 class="text-xl font-bold">{service.name}</h3>
+            )}
+
+            {service.description && (
+              <p class={`text-base leading-relaxed ${descClass}`}>{service.description}</p>
+            )}
+
+            {service.features && service.features.length > 0 && (
+              <ul class="flex flex-col gap-2 mt-auto">
+                {service.features.map((feat) => (
+                  <li class={`flex items-start gap-2 text-sm ${featureClass}`}>
+                    <span class="text-primary-400 shrink-0 mt-0.5" aria-hidden="true">✓</span>
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {service.ctaHref && service.ctaLabel && (
+              <a
+                href={service.ctaHref}
+                class="mt-auto inline-block text-center bg-primary-700 hover:bg-primary-800 text-white font-semibold text-sm px-6 py-3 rounded-lg transition-all duration-200 hover:-translate-y-px"
+              >
+                {service.ctaLabel}
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

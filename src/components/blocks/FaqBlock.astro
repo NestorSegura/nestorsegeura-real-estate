@@ -9,19 +9,19 @@ interface FaqItem {
 
 interface Props {
   locale: Locale
-  headline?: string
+  title?: string
   faqs?: FaqItem[]
   [key: string]: unknown
 }
 
-const { headline, faqs = [] } = Astro.props
+const { title, faqs = [] } = Astro.props
 ---
 
 <section id="faq" class="bg-gray-50 py-16 md:py-24 px-6">
   <div class="max-w-3xl mx-auto">
-    {headline && (
+    {title && (
       <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
-        {headline}
+        {title}
       </h2>
     )}
 
@@ -31,9 +31,13 @@ const { headline, faqs = [] } = Astro.props
           <details class="faq-item bg-white border border-gray-200 rounded-xl overflow-hidden">
             <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer font-semibold text-base text-gray-900 select-none list-none">
               <span>{faq.question}</span>
-              <span class="faq-icon shrink-0 w-6 h-6 flex items-center justify-center text-primary-600 font-bold text-xl leading-none" aria-hidden="true">+</span>
+              <span class="faq-chevron shrink-0 w-6 h-6 flex items-center justify-center text-primary-600" aria-hidden="true">
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                  <path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </summary>
-            <p class="px-6 pb-5 text-base text-gray-600 leading-relaxed">
+            <p class="px-6 pb-5 pt-1 text-base text-gray-600 leading-relaxed">
               {faq.answer}
             </p>
           </details>
@@ -53,12 +57,11 @@ const { headline, faqs = [] } = Astro.props
     display: none;
   }
 
-  details[open] .faq-icon {
-    transform: rotate(45deg);
-    transition: transform 0.2s ease;
+  details[open] .faq-chevron svg {
+    transform: rotate(180deg);
   }
 
-  .faq-icon {
+  .faq-chevron svg {
     transition: transform 0.2s ease;
   }
 </style>

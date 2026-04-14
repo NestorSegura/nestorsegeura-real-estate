@@ -4,7 +4,7 @@ import { urlFor } from '../../lib/imageUrl'
 
 interface TestimonialItem {
   _key?: string
-  name?: string
+  author?: string
   role?: string
   quote?: string
   image?: { asset?: { _ref: string; _id: string } } | null
@@ -12,37 +12,29 @@ interface TestimonialItem {
 
 interface Props {
   locale: Locale
-  headline?: string
-  subtitle?: string
+  title?: string
   testimonials?: TestimonialItem[]
   [key: string]: unknown
 }
 
-const { headline, subtitle, testimonials = [] } = Astro.props
+const { title, testimonials = [] } = Astro.props
 ---
 
 <section id="testimonials" class="bg-white py-16 md:py-24 px-6">
   <div class="max-w-6xl mx-auto">
-    {headline && (
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-3">
-        {headline}
+    {title && (
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
+        {title}
       </h2>
-    )}
-
-    {subtitle && (
-      <p class="text-lg text-gray-500 text-center max-w-xl mx-auto mb-12">
-        {subtitle}
-      </p>
     )}
 
     {testimonials.length > 0 && (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {testimonials.map((t) => {
           const avatarSrc = urlFor(t.image as any)?.width(160).format('webp').url() ?? null
-          const initial = (t.name ?? 'A').charAt(0).toUpperCase()
+          const initial = (t.author ?? 'A').charAt(0).toUpperCase()
           return (
             <figure class="flex flex-col gap-4 p-8 rounded-2xl bg-gray-50 border border-gray-100 relative">
-              {/* Opening quote mark */}
               <span class="text-5xl font-serif leading-none select-none absolute top-4 left-6 text-primary-200 opacity-60" aria-hidden="true">
                 &ldquo;
               </span>
@@ -55,7 +47,7 @@ const { headline, subtitle, testimonials = [] } = Astro.props
                 {avatarSrc ? (
                   <img
                     src={avatarSrc}
-                    alt={t.name ?? ''}
+                    alt={t.author ?? ''}
                     width="40"
                     height="40"
                     loading="lazy"
@@ -67,8 +59,8 @@ const { headline, subtitle, testimonials = [] } = Astro.props
                   </div>
                 )}
                 <div>
-                  {t.name && (
-                    <p class="text-sm font-semibold text-gray-900">{t.name}</p>
+                  {t.author && (
+                    <p class="text-sm font-semibold text-gray-900">{t.author}</p>
                   )}
                   {t.role && (
                     <p class="text-xs text-gray-500">{t.role}</p>

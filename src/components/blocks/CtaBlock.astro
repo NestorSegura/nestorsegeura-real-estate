@@ -1,0 +1,51 @@
+---
+import type { Locale } from '../../i18n/utils'
+
+interface Props {
+  locale: Locale
+  headline?: string
+  subtext?: string
+  ctaLabel?: string
+  ctaHref?: string
+  variant?: string
+  colorScheme?: 'light' | 'dark'
+  [key: string]: unknown
+}
+
+const {
+  headline,
+  subtext,
+  ctaLabel,
+  ctaHref,
+  colorScheme = 'dark',
+} = Astro.props
+
+const isDark = colorScheme === 'dark'
+const sectionClass = isDark ? 'bg-primary-900 text-white' : 'bg-gray-50 text-gray-900'
+const subtextClass = isDark ? 'text-white/80' : 'text-gray-600'
+---
+
+<section id="cta" class={`${sectionClass} py-16 md:py-24 px-6 text-center`}>
+  <div class="max-w-3xl mx-auto">
+    {headline && (
+      <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+        {headline}
+      </h2>
+    )}
+
+    {subtext && (
+      <p class={`text-lg md:text-xl mb-10 leading-relaxed ${subtextClass}`}>
+        {subtext}
+      </p>
+    )}
+
+    {ctaHref && ctaLabel && (
+      <a
+        href={ctaHref}
+        class="inline-block bg-primary-700 hover:bg-primary-800 text-white font-semibold text-xl px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-px"
+      >
+        {ctaLabel}
+      </a>
+    )}
+  </div>
+</section>
