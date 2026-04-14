@@ -93,10 +93,10 @@
 
 ### i18n (I18N)
 
-- [ ] **I18N-01**: Built-in Astro i18n routing with de (no prefix), /en, /es
-- [ ] **I18N-02**: `src/i18n/utils.ts` helper loading UI strings from messages/*.json
-- [ ] **I18N-03**: Locale threaded as prop from page to layout to components (no runtime hooks)
-- [ ] **I18N-04**: GROQ queries filter by language field for correct locale content
+- [x] **I18N-01**: Built-in Astro i18n routing with de (no prefix), /en, /es
+- [x] **I18N-02**: `src/i18n/utils.ts` helper loading UI strings from messages/*.json
+- [x] **I18N-03**: Locale threaded as prop from page to layout to components (no runtime hooks)
+- [x] **I18N-04**: GROQ queries filter by language field for correct locale content
 
 ### Block Components (BLCK)
 
@@ -133,9 +133,9 @@
 
 ### Design (DSGN)
 
-- [ ] **DSGN-01**: Clash Display font for headings
-- [ ] **DSGN-02**: Chivo font for body text
-- [ ] **DSGN-03**: BaseLayout.astro with font loading and global styles
+- [x] **DSGN-01**: Clash Display font for headings
+- [x] **DSGN-02**: Chivo font for body text
+- [x] **DSGN-03**: BaseLayout.astro with font loading and global styles
 
 ## Future Requirements
 
@@ -174,10 +174,10 @@
 | INFR-06 | Phase 10 | Pending |
 | INFR-07 | Phase 10 | Pending |
 | INFR-08 | Phase 10 | Pending |
-| I18N-01 | Phase 7 | Pending |
-| I18N-02 | Phase 7 | Pending |
-| I18N-03 | Phase 7 | Pending |
-| I18N-04 | Phase 7 | Pending |
+| I18N-01 | Phase 7 | Complete |
+| I18N-02 | Phase 7 | Complete |
+| I18N-03 | Phase 7 | Complete |
+| I18N-04 | Phase 7 | Complete |
 | BLCK-11 | Phase 8 | Pending |
 | BLCK-12 | Phase 8 | Pending |
 | BLCK-13 | Phase 8 | Pending |
@@ -199,9 +199,9 @@
 | SEO-08 | Phase 8 | Pending |
 | SEO-09 | Phase 8 | Pending |
 | SEO-10 | Phase 8 | Pending |
-| DSGN-01 | Phase 7 | Pending |
-| DSGN-02 | Phase 7 | Pending |
-| DSGN-03 | Phase 7 | Pending |
+| DSGN-01 | Phase 7 | Complete |
+| DSGN-02 | Phase 7 | Complete |
+| DSGN-03 | Phase 7 | Complete |
 
 **Coverage:**
 - v2 requirements: 36 total

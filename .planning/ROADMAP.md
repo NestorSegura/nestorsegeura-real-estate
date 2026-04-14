@@ -75,7 +75,7 @@ Plans:
 **Milestone Goal:** Rewrite the site in Astro with zero-JS static blocks, React islands for interactive components, and deploy on Cloudflare Workers. Same content model, same 3 locales, better performance, free hosting.
 
 - [ ] **Phase 6: Infrastructure** - Astro project scaffolded, Cloudflare adapter configured, Sanity client wired, dev environment working
-- [ ] **Phase 7: i18n and Content Layer** - Built-in Astro i18n routing live, GROQ queries locale-filtered, BaseLayout with Clash Display and Chivo fonts
+- [x] **Phase 7: i18n and Content Layer** - Built-in Astro i18n routing live, GROQ queries locale-filtered, BaseLayout with Clash Display and Chivo fonts
 - [ ] **Phase 8: Static Blocks and Blog** - All 9 block components as .astro (zero JS), PageBuilder dispatcher, blog pages, sitemap, all SEO metadata
 - [ ] **Phase 9: Interactive Islands** - NavbarClient, AnalysePageClient, /api/analyze Worker function, scroll animations
 - [ ] **Phase 10: Production Deployment** - Cloudflare project live, custom domain, env vars, deploy hook, Auto Minify disabled
@@ -110,8 +110,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Stand up Astro i18n routing, src/i18n/utils.ts + routes.ts, per-locale page files (including translated /analyse segments), public/_redirects for /de/* canonicalization, and build-time missing-key audit
-- [ ] 07-02-PLAN.md — Install @sanity/document-internationalization, build locale-filtered GROQ helpers, subset and self-host Clash Display + Chivo fonts, author BaseLayout.astro with preloads, apply BaseLayout to all locale pages with DE fallback banner
+- [x] 07-01-PLAN.md — Stand up Astro i18n routing, src/i18n/utils.ts + routes.ts, per-locale page files (including translated /analyse segments), public/_redirects for /de/* canonicalization, and build-time missing-key audit
+- [x] 07-02-PLAN.md — Install @sanity/document-internationalization, build locale-filtered GROQ helpers, subset and self-host Clash Display + Chivo fonts, author BaseLayout.astro with preloads, apply BaseLayout to all locale pages with DE fallback banner
 
 ### Phase 8: Static Blocks and Blog
 **Goal**: Visiting the German homepage renders all eight content blocks from Sanity as server-rendered HTML with zero JavaScript shipped. The blog listing and post pages work for all locales. Sitemap, robots.txt, and all SEO metadata are in place.
@@ -175,7 +175,7 @@ Phases execute in dependency order: 6 → 7 → 8 → 9 → 10
 | 4. Blog and SEO | v1.0 | 3/3 | Complete | 2026-03-15 |
 | 5. Deployment | v1.0 | 3/3 | Complete | 2026-03-16 |
 | 6. Infrastructure | v2.0 | 0/2 | Not started | - |
-| 7. i18n and Content Layer | v2.0 | 0/2 | Not started | - |
+| 7. i18n and Content Layer | v2.0 | 2/2 | Complete | 2026-04-14 |
 | 8. Static Blocks and Blog | v2.0 | 0/3 | Not started | - |
 | 9. Interactive Islands | v2.0 | 0/3 | Not started | - |
 | 10. Production Deployment | v2.0 | 0/2 | Not started | - |
