@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 ## Current Position
 
 Phase: 9 of 10 (Interactive Islands)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase (09-02 complete — awaiting checkpoint approval)
 Status: In progress
-Last activity: 2026-04-14 — Completed 09-03 (@astrojs/react integration + /api/analyze Cloudflare Worker endpoint)
+Last activity: 2026-04-14 — Completed 09-02 (MegaNav.astro + BaseLayout integration) — checkpoint pending human verify
 
 Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09-03 complete
 
@@ -79,6 +79,10 @@ Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09
 - [09-03]: /api/analyze uses prerender=false — single route opted into Cloudflare Worker on-demand while rest of site stays static; build correctly excludes it from prerendered routes list
 - [09-03]: CORS Allow-Origin: * in V1 API endpoint — tighten to PUBLIC_SITE_URL env var in LEAD-V2-01 when real PageSpeed integration lands
 - [09-03]: Locale validation in /api/analyze uses ALLOWED_LOCALES as const tuple — both runtime allow-list check and TypeScript type narrowing
+- [09-02]: MegaNav implemented as .astro + <script is:inline> — NOT React island; GSAP lazy-loaded from CDN in nav inline script (guard: if !window.gsap), same CDN URL pattern as StackingCards.astro
+- [09-02]: Locale switcher hrefs pre-computed at build time via localizeRoute() in Astro frontmatter, serialized as data-href on buttons; inline script reads btn.getAttribute('data-href') — zero client-side routing logic
+- [09-02]: home route added to ROUTE_SEGMENTS with empty segments ('', '', ''); localizeRoute('home', locale) → '/', '/en/', '/es/'
+- [09-02]: navLocaleUrls prop added to BaseLayout (optional) — page-specific locale URL map for blog posts and /analyse pages; defaults to homepage URLs
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-14T11:33:49Z
-Stopped at: Completed 09-03-PLAN.md — @astrojs/react integration + /api/analyze Cloudflare Worker endpoint
+Last session: 2026-04-14T14:00:00Z
+Stopped at: Completed 09-02-PLAN.md tasks 1+2 — MegaNav.astro + BaseLayout integration — awaiting checkpoint:human-verify
 Resume file: None
