@@ -1,0 +1,44 @@
+---
+/**
+ * Sticky table of contents sidebar (lg+ only).
+ *
+ * Renders anchor links to h2/h3 headings in the post body.
+ * Hides when fewer than 2 headings are present.
+ * TOC title is locale-aware via i18n utils.
+ */
+import type { TocItem } from '../../lib/tocFromPT'
+import type { Locale } from '../../i18n/utils'
+import { useTranslations } from '../../i18n/utils'
+
+interface Props {
+  items: TocItem[]
+  locale: Locale
+}
+
+const { items, locale } = Astro.props
+const t = useTranslations(locale)
+
+const shouldRender = items.length >= 2
+---
+{shouldRender && (
+  <nav
+    aria-label={t('blog.toc.title')}
+    class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-auto"
+  >
+    <p class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+      {t('blog.toc.title')}
+    </p>
+    <ol class="space-y-1.5">
+      {items.map(item => (
+        <li class={item.level === 3 ? 'pl-4' : ''}>
+          <a
+            href={`#${item.id}`}
+            class="text-sm text-gray-600 hover:text-primary-700 transition-colors line-clamp-2 leading-snug"
+          >
+            {item.text}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

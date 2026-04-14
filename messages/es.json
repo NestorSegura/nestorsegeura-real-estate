@@ -142,5 +142,11 @@
     "learnMore": "Saber más",
     "bookAppointment": "Reservar cita",
     "backToHome": "Volver al inicio"
+  },
+  "blog": {
+    "toc": {
+      "title": "Contenido"
+    },
+    "empty": "Aún no hay artículos."
   }
 }

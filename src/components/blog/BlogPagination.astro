@@ -1,0 +1,58 @@
+---
+/**
+ * Pagination control for blog index pages.
+ *
+ * Renders prev/next links using Astro's paginate() output.
+ * Shows "Page X / Y" in the middle.
+ * Hides prev on page 1, next on last page.
+ */
+import type { Page } from 'astro'
+
+interface Props {
+  page: Page<any>
+}
+
+const { page } = Astro.props
+const hasPrev = Boolean(page.url.prev)
+const hasNext = Boolean(page.url.next)
+---
+{(hasPrev || hasNext) && (
+  <nav
+    aria-label="Pagination"
+    class="flex items-center justify-center gap-6 mt-12 pt-8 border-t border-gray-200"
+  >
+    {hasPrev ? (
+      <a
+        href={page.url.prev}
+        class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-700 hover:border-primary-500 hover:text-primary-700 transition-colors text-sm font-medium"
+      >
+        <span aria-hidden="true">←</span>
+        <span>Zurück</span>
+      </a>
+    ) : (
+      <span class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-gray-300 text-sm font-medium cursor-not-allowed select-none">
+        <span aria-hidden="true">←</span>
+        <span>Zurück</span>
+      </span>
+    )}
+
+    <span class="text-sm text-gray-500">
+      {page.currentPage} / {page.lastPage}
+    </span>
+
+    {hasNext ? (
+      <a
+        href={page.url.next}
+        class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary-700 text-white hover:bg-primary-800 transition-colors text-sm font-medium"
+      >
+        <span>Weiter</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    ) : (
+      <span class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-gray-300 text-sm font-medium cursor-not-allowed select-none">
+        <span>Weiter</span>
+        <span aria-hidden="true">→</span>
+      </span>
+    )}
+  </nav>
+)}

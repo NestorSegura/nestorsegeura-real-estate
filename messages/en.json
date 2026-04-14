@@ -142,5 +142,11 @@
     "learnMore": "Learn more",
     "bookAppointment": "Book an appointment",
     "backToHome": "Back to home"
+  },
+  "blog": {
+    "toc": {
+      "title": "Contents"
+    },
+    "empty": "No posts yet."
   }
 }

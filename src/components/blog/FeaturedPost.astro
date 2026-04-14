@@ -1,0 +1,72 @@
+---
+/**
+ * Featured post hero component for blog index page 1.
+ *
+ * Two-column layout on lg: image left (16:9), content right.
+ * Cream background panel for visual separation.
+ */
+import type { PostCard } from '../../lib/sanity'
+import type { Locale } from '../../i18n/utils'
+import { urlFor } from '../../lib/imageUrl'
+
+interface Props {
+  post: PostCard
+  locale: Locale
+}
+
+const { post, locale } = Astro.props
+
+const href =
+  locale === 'de'
+    ? `/blog/${post.slug?.current}`
+    : `/${locale}/blog/${post.slug?.current}`
+
+const imgSrc = post.mainImage
+  ? urlFor(post.mainImage as any)?.width(1200).format('webp').url()
+  : null
+
+const dateLocale = locale === 'de' ? 'de-DE' : locale === 'es' ? 'es-ES' : 'en-US'
+const dateFmt = post.publishedAt
+  ? new Intl.DateTimeFormat(dateLocale, { dateStyle: 'long' }).format(
+      new Date(post.publishedAt),
+    )
+  : null
+---
+<div class="bg-brand-cream rounded-2xl overflow-hidden mb-10 group">
+  <a href={href} class="block lg:grid lg:grid-cols-2 lg:min-h-[360px]">
+    {imgSrc && (
+      <div class="aspect-video lg:aspect-auto overflow-hidden">
+        <img
+          src={imgSrc}
+          alt={post.mainImage?.alt ?? post.title ?? ''}
+          width="1200"
+          height="675"
+          loading="eager"
+          class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+        />
+      </div>
+    )}
+    <div class="p-8 lg:p-12 flex flex-col justify-center">
+      {post.tags && post.tags.length > 0 && (
+        <div class="flex gap-2 mb-4 flex-wrap">
+          {post.tags.slice(0, 2).map(tag => (
+            <span class="text-xs font-medium text-primary-700 bg-primary-100 px-3 py-1 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+      <h2 class="text-2xl lg:text-4xl font-bold font-display text-gray-900 mb-4 group-hover:text-primary-700 transition-colors">
+        {post.title}
+      </h2>
+      {post.excerpt && (
+        <p class="text-gray-700 mb-6 line-clamp-3 lg:line-clamp-4">{post.excerpt}</p>
+      )}
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        {post.author?.name && <span class="font-medium">{post.author.name}</span>}
+        {post.author?.name && dateFmt && <span>·</span>}
+        {dateFmt && <time datetime={post.publishedAt}>{dateFmt}</time>}
+      </div>
+    </div>
+  </a>
+</div>

@@ -1,0 +1,72 @@
+---
+/**
+ * Blog post card for the index grid.
+ *
+ * Displays thumbnail, title, excerpt (line-clamp-3), author, and date.
+ * Clicking anywhere on the card navigates to the post.
+ */
+import type { PostCard } from '../../lib/sanity'
+import type { Locale } from '../../i18n/utils'
+import { urlFor } from '../../lib/imageUrl'
+
+interface Props {
+  post: PostCard
+  locale: Locale
+}
+
+const { post, locale } = Astro.props
+
+const href =
+  locale === 'de'
+    ? `/blog/${post.slug?.current}`
+    : `/${locale}/blog/${post.slug?.current}`
+
+const imgSrc = post.mainImage
+  ? urlFor(post.mainImage as any)?.width(800).format('webp').url()
+  : null
+
+const dateLocale = locale === 'de' ? 'de-DE' : locale === 'es' ? 'es-ES' : 'en-US'
+const dateFmt = post.publishedAt
+  ? new Intl.DateTimeFormat(dateLocale, { dateStyle: 'medium' }).format(
+      new Date(post.publishedAt),
+    )
+  : null
+---
+<article class="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+  <a href={href} class="block">
+    {imgSrc && (
+      <div class="aspect-video overflow-hidden">
+        <img
+          src={imgSrc}
+          alt={post.mainImage?.alt ?? post.title ?? ''}
+          width="800"
+          height="450"
+          loading="lazy"
+          class="w-full h-full object-cover group-hover:-translate-y-1 transition-transform duration-300"
+        />
+      </div>
+    )}
+    <div class="p-5">
+      {post.tags && post.tags.length > 0 && (
+        <div class="flex gap-2 mb-3 flex-wrap">
+          {post.tags.slice(0, 2).map(tag => (
+            <span class="text-xs font-medium text-primary-700 bg-primary-50 px-2 py-0.5 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+      <h3 class="text-lg font-bold font-display text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-700 transition-colors">
+        {post.title}
+      </h3>
+      {post.excerpt && (
+        <p class="text-sm text-gray-600 line-clamp-3 mb-4">{post.excerpt}</p>
+      )}
+      <div class="flex items-center gap-2 text-xs text-gray-500">
+        {post.author?.name && <span>{post.author.name}</span>}
+        {post.author?.name && dateFmt && <span>·</span>}
+        {dateFmt && <time datetime={post.publishedAt}>{dateFmt}</time>}
+      </div>
+    </div>
+  </a>
+</article>
