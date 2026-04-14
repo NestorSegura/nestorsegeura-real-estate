@@ -286,7 +286,10 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 export async function getHomepageWithSections(
   locale: Locale,
 ): Promise<PageWithSections | null> {
-  const query = `*[_type == "page" && slug.current == "home" && language == $locale][0]{
+  // Prefer the *-landing variant when both legacy (v1) and landing documents
+  // share slug.current == "home" for the same language. Sorting by _id desc
+  // puts "page-home-{locale}-landing" before "page-home-{locale}".
+  const query = `*[_type == "page" && slug.current == "home" && language == $locale] | order(_id desc) [0]{
     _id, _type, language, title, slug,
     seo { title, description },
     sections[]{
