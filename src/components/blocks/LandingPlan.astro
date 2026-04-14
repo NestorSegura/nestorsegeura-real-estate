@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../../i18n/utils'
+import StackingCards from './StackingCards.astro'
 
 interface StepItem {
   _key?: string
@@ -17,48 +18,47 @@ interface Props {
 
 const { headline, steps = [] } = Astro.props
 
-// Step background: 0=white card, 1=primary-600 dark, 2=brand-dark
-const stepClasses = [
-  'bg-white border border-gray-200 text-gray-900',
-  'bg-primary-600 text-white',
-  'bg-brand-dark text-white',
-]
-
-const stepNumberClasses = [
-  'text-primary-200',
-  'text-primary-200',
-  'text-primary-300',
-]
+// Step index → extra card class (Variant 2 wide)
+// 0 = white (no extra class), 1 = is--green (primary-600), 2 = is--dark (brand-dark)
+const cardColorClass = ['', 'is--green', 'is--dark']
+const numberColorClass = ['text-primary-200', 'text-primary-200', 'text-primary-300']
 ---
 
-<section id="plan" class="bg-gray-50 py-16 md:py-24 px-6">
-  <div class="max-w-5xl mx-auto">
+<section id="plan" class="bg-gray-50">
+  <div class="max-w-5xl mx-auto px-6 pt-16 md:pt-24">
     {headline && (
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
         {headline}
       </h2>
     )}
+  </div>
 
-    {steps.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {steps.map((step, index) => {
-          const cardClass = stepClasses[index % stepClasses.length]
-          const numClass = stepNumberClasses[index % stepNumberClasses.length]
-          return (
-            <div class={`flex flex-col gap-4 p-8 rounded-2xl shadow-sm ${cardClass}`}>
-              <span class={`text-7xl font-black leading-none tabular-nums select-none ${numClass}`} aria-hidden="true">
-                {step.number ?? String(index + 1).padStart(2, '0')}
+  {steps.length > 0 && (
+    <StackingCards variant="wide">
+      {steps.map((step, index) => {
+        const colorClass = cardColorClass[index % cardColorClass.length]
+        const numClass   = numberColorClass[index % numberColorClass.length]
+        return (
+          <div data-stacking-card class={`cards-stack__item is--wide`}>
+            <div
+              data-stacking-card-target
+              class={`cards-stack-card is--wide${colorClass ? ' ' + colorClass : ''}`}
+            >
+              <span class={`card-number ${numClass}`} aria-hidden="true">
+                {step.number ?? String(index + 1)}
               </span>
               {step.title && (
-                <h3 class="text-xl font-bold">{step.title}</h3>
+                <h3 class="text-2xl md:text-3xl font-bold mt-6 mb-3">{step.title}</h3>
               )}
               {step.description && (
                 <p class="text-base leading-relaxed opacity-80">{step.description}</p>
               )}
             </div>
-          )
-        })}
-      </div>
-    )}
-  </div>
+          </div>
+        )
+      })}
+    </StackingCards>
+  )}
+
+  <div class="pb-8 md:pb-12"></div>
 </section>
