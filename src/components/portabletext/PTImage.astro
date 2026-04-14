@@ -1,0 +1,45 @@
+---
+/**
+ * Portable Text inline image component.
+ *
+ * Renders a responsive <figure> with webp srcset.
+ * Caption rendered only if present.
+ */
+import type { Props as BaseProps } from 'astro-portabletext/types'
+import { urlFor } from '../../lib/imageUrl'
+
+type ImageNode = {
+  _type: 'image'
+  asset?: { _ref: string; _id?: string } | null
+  alt?: string
+  caption?: string
+}
+
+type Props = BaseProps<ImageNode>
+
+const { node } = Astro.props
+
+const src = urlFor(node as any)?.width(960).format('webp').url() ?? ''
+const srcset = [640, 960, 1280]
+  .map(w => `${urlFor(node as any)?.width(w).format('webp').url() ?? ''} ${w}w`)
+  .join(', ')
+---
+{src && (
+  <figure class="my-8">
+    <img
+      src={src}
+      srcset={srcset}
+      sizes="(max-width: 640px) 640px, (max-width: 1024px) 960px, 1280px"
+      width="960"
+      height="auto"
+      alt={node.alt ?? ''}
+      loading="lazy"
+      class="w-full rounded-lg"
+    />
+    {node.caption && (
+      <figcaption class="mt-2 text-center text-sm text-gray-500">
+        {node.caption}
+      </figcaption>
+    )}
+  </figure>
+)}

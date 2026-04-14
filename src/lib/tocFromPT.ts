@@ -13,6 +13,18 @@ export interface TocItem {
 }
 
 /**
+ * Convert heading text to a URL-safe slug ID.
+ * Used both in extractToc and PTHeading to guarantee matching anchor IDs.
+ */
+export function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 60)
+}
+
+/**
  * Extract h2/h3 headings from a Portable Text body array.
  *
  * @param body - The portable text array from a Sanity post's body field.
@@ -28,11 +40,7 @@ export function extractToc(body: unknown[]): TocItem[] {
     .map((block: any) => {
       const text =
         block.children?.map((s: any) => s.text ?? '').join('') ?? ''
-      const id = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .slice(0, 60)
+      const id = slugifyHeading(text)
       return { text, id, level: (block.style === 'h2' ? 2 : 3) as 2 | 3 }
     })
 }

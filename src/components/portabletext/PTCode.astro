@@ -1,0 +1,28 @@
+---
+/**
+ * Portable Text code block component.
+ *
+ * Uses Astro's built-in Shiki highlighter for zero-runtime syntax coloring.
+ * Theme: github-dark-dimmed.
+ */
+import { Code } from 'astro:components'
+import type { Props as BaseProps } from 'astro-portabletext/types'
+
+type CodeNode = {
+  _type: 'code'
+  code?: string
+  language?: string
+  filename?: string
+}
+
+type Props = BaseProps<CodeNode>
+
+const { node } = Astro.props
+---
+<div class="my-6 rounded-lg overflow-hidden">
+  <Code
+    code={node.code ?? ''}
+    lang={(node.language ?? 'text') as any}
+    theme="github-dark-dimmed"
+  />
+</div>

@@ -1,0 +1,29 @@
+---
+/**
+ * Portable Text highlight mark component.
+ *
+ * Renders a <mark> element with variant-based coloring.
+ * Variants: yellow (default), purple.
+ */
+import type { Props as BaseProps } from 'astro-portabletext/types'
+
+type HighlightMark = {
+  _type: 'highlight'
+  variant?: 'yellow' | 'purple'
+}
+
+type Props = BaseProps<HighlightMark>
+
+const { mark } = Astro.props
+const variant = mark.variant ?? 'yellow'
+
+const variantClasses: Record<string, string> = {
+  yellow: 'bg-yellow-200 text-yellow-900',
+  purple: 'bg-primary-200 text-primary-900',
+}
+
+const cls = variantClasses[variant] ?? variantClasses.yellow
+---
+<mark class={`rounded px-0.5 ${cls}`}>
+  <slot />
+</mark>

@@ -1,0 +1,32 @@
+---
+/**
+ * Portable Text heading block component.
+ *
+ * Renders h2 or h3 with a stable anchor ID derived from the heading text.
+ * The slug algorithm is shared with extractToc() via slugifyHeading(),
+ * guaranteeing that TOC anchor hrefs resolve to these IDs.
+ */
+import type { BlockProps } from 'astro-portabletext/types'
+import { slugifyHeading } from '../../lib/tocFromPT'
+
+type Props = BlockProps
+
+const { node } = Astro.props
+
+// Extract plain text from children spans for slug generation
+const text = (node.children ?? [])
+  .map((child: any) => child.text ?? '')
+  .join('')
+
+const id = slugifyHeading(text)
+const level = node.style === 'h3' ? 3 : 2
+---
+{level === 2 ? (
+  <h2 id={id} class="text-2xl lg:text-3xl font-bold mt-10 mb-4 font-display scroll-mt-24">
+    <slot />
+  </h2>
+) : (
+  <h3 id={id} class="text-xl lg:text-2xl font-semibold mt-8 mb-3 font-display scroll-mt-24">
+    <slot />
+  </h3>
+)}

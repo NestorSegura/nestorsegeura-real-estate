@@ -1,0 +1,36 @@
+---
+/**
+ * Portable Text renderer for blog post bodies.
+ *
+ * Maps Sanity blockContent types to dedicated Astro components.
+ * Pass onMissingComponent={false} to suppress warnings for unmapped types.
+ */
+import { PortableText } from 'astro-portabletext'
+import PTImage from './PTImage.astro'
+import PTCode from './PTCode.astro'
+import PTCallout from './PTCallout.astro'
+import PTHighlight from './PTHighlight.astro'
+import PTHeading from './PTHeading.astro'
+
+interface Props {
+  value: unknown[]
+}
+
+const { value } = Astro.props
+
+const components = {
+  type: {
+    image: PTImage,
+    code: PTCode,
+  },
+  mark: {
+    callout: PTCallout,
+    highlight: PTHighlight,
+  },
+  block: {
+    h2: PTHeading,
+    h3: PTHeading,
+  },
+}
+---
+<PortableText value={value} components={components} onMissingComponent={false} />

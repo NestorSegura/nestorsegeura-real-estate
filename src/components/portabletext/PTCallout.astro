@@ -1,0 +1,30 @@
+---
+/**
+ * Portable Text callout mark component.
+ *
+ * Renders an inline callout/alert with variant-based coloring.
+ * Variants: info (purple), warning (yellow), tip (green).
+ */
+import type { Props as BaseProps } from 'astro-portabletext/types'
+
+type CalloutMark = {
+  _type: 'callout'
+  variant?: 'info' | 'warning' | 'tip'
+}
+
+type Props = BaseProps<CalloutMark>
+
+const { mark } = Astro.props
+const variant = mark.variant ?? 'info'
+
+const variantClasses: Record<string, string> = {
+  info: 'bg-primary-50 border-l-4 border-primary-400 text-primary-900',
+  warning: 'bg-yellow-50 border-l-4 border-yellow-400 text-yellow-900',
+  tip: 'bg-green-50 border-l-4 border-green-400 text-green-900',
+}
+
+const cls = variantClasses[variant] ?? variantClasses.info
+---
+<span class={`inline-block px-3 py-2 rounded-r my-1 ${cls}`}>
+  <slot />
+</span>
