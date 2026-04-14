@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Real estate agents land on the site, immediately feel "this is for me," and book an appointment
-**Current focus:** Phase 7 — i18n and Content Layer
+**Current focus:** Phase 8 — Static Blocks and Blog
 
 ## Current Position
 
-Phase: 7 of 10 (i18n and Content Layer)
-Plan: 2 of 3+ in current phase
+Phase: 8 of 10 (Static Blocks and Blog)
+Plan: 1 of 4 in current phase
 Status: In progress
-Last activity: 2026-04-13 — Completed 07-02-PLAN.md (fonts, BaseLayout, locale Sanity fetches)
+Last activity: 2026-04-14 — Completed 08-01-PLAN.md (color tokens, blockContent schema, GROQ helpers, lib utilities)
 
-Progress: [###########░░░░░░░░░] Phase 7 in progress — 20/26+ plans done
+Progress: [###########░░░░░░░░░] Phase 8 in progress — 21/30+ plans done
 
 ## Performance Metrics
 
@@ -59,6 +59,11 @@ Progress: [###########░░░░░░░░░] Phase 7 in progress — 20/26
 - [07-02]: Font subsetting via pip3 fonttools + brotli — @web-alchemy/fonttools npx approach fails (WASM pyodide error); pip3 pyftsubset works; one-time step, not in package.json
 - [07-02]: BaseLayout.astro is the single HTML shell for all locale pages — owns doctype, meta, font preloads (crossorigin), lang attribute, global.css import
 - [07-02]: getPageWithFallback returns { page, isFallback } tuple — isFallback drives translation-pending banner; DE root never shows banner (source-of-truth locale)
+- [08-01]: OKLCH hue 290 confirmed for Jibemates purple primary scale (11 steps, 50-950); brand neutrals #131313 and #efeeec
+- [08-01]: blockContent uses annotations (not decorators) for callout/highlight — required for markDef access in astro-portabletext
+- [08-01]: @sanity/image-url already transitively installed via sanity@4.22.0 — no extra install needed
+- [08-01]: getSiteSettings has no language filter — siteSettings is a Sanity singleton without a language field
+- [08-01]: getPostWithTranslations preserved untouched — Phase 9 locale-switcher contract requires exact current signature
 
 ### Pending Todos
 
@@ -78,6 +83,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-13
-Stopped at: Completed 07-02-PLAN.md — fonts, BaseLayout, locale Sanity fetches
+Last session: 2026-04-14
+Stopped at: Completed 08-01-PLAN.md — color tokens, blockContent schema, GROQ helpers, lib utilities
 Resume file: None
