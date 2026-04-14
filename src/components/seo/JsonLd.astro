@@ -1,0 +1,11 @@
+---
+/**
+ * Injects a JSON-LD structured data script tag.
+ * Uses set:html directive (safe per RESEARCH.md Pattern 7) — no XSS risk.
+ */
+interface Props {
+  schema: Record<string, unknown>
+}
+const { schema } = Astro.props
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

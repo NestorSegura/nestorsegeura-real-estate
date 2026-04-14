@@ -1,14 +1,41 @@
 ---
 import '../styles/global.css';
 import { type Locale, DEFAULT_LOCALE } from '../i18n/utils';
+import { getSiteSettings } from '../lib/sanity';
+import { buildOrganizationSchema } from '../lib/seo';
+import JsonLd from '../components/seo/JsonLd.astro';
+
+const SITE_URL =
+  (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://realestatestrategy.eu';
 
 interface Props {
   title: string;
   locale?: Locale;
   description?: string;
+  ogImage?: string;         // full URL
+  ogType?: 'website' | 'article';
+  canonical?: string;       // full URL
+  hreflangUrls?: Record<string, string>;
+  jsonLd?: Record<string, unknown>[];  // per-page schemas (Person, Article, Breadcrumb)
 }
 
-const { title, locale = DEFAULT_LOCALE, description } = Astro.props;
+const {
+  title,
+  locale = DEFAULT_LOCALE,
+  description,
+  ogImage,
+  ogType = 'website',
+  canonical,
+  hreflangUrls,
+  jsonLd = [],
+} = Astro.props;
+
+const canonicalUrl = canonical ?? Astro.url.href;
+const resolvedOgImage = ogImage ?? `${SITE_URL}/og-default.png`;
+
+// Fetch siteSettings for Organization JSON-LD (once per page, baked at build time)
+const settings = await getSiteSettings();
+const orgSchema = buildOrganizationSchema(settings, SITE_URL);
 ---
 <!doctype html>
 <html lang={locale}>
@@ -32,6 +59,29 @@ const { title, locale = DEFAULT_LOCALE, description } = Astro.props;
       crossorigin
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css" />
+
+    {/* SEO meta — canonical, OG, Twitter, hreflang, sitemap */}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description ?? ''} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+    {/* hreflang alternate links */}
+    {hreflangUrls && Object.entries(hreflangUrls).map(([lang, href]) => (
+      <link rel="alternate" hreflang={lang} href={href} />
+    ))}
+
+    {/* Organization JSON-LD — site-wide */}
+    <JsonLd schema={orgSchema} />
+
+    {/* Per-page JSON-LD (Person, Article, BreadcrumbList) */}
+    {jsonLd.map((schema) => (
+      <JsonLd schema={schema} />
+    ))}
   </head>
   <body>
     <slot />
