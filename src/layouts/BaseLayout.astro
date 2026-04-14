@@ -31,8 +31,43 @@ const { title, locale = DEFAULT_LOCALE, description } = Astro.props;
       type="font/woff2"
       crossorigin
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.css" />
   </head>
   <body>
     <slot />
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.min.js" is:inline></script>
+    <script is:inline>
+      (function () {
+        if (window.__lenisInit) return;
+        window.__lenisInit = true;
+
+        function start() {
+          if (typeof Lenis === 'undefined') return;
+
+          const lenis = new Lenis();
+          window.lenis = lenis;
+
+          // If GSAP + ScrollTrigger are present (loaded by StackingCards), sync them.
+          if (window.gsap && window.ScrollTrigger) {
+            lenis.on('scroll', window.ScrollTrigger.update);
+            window.gsap.ticker.add((time) => lenis.raf(time * 1000));
+            window.gsap.ticker.lagSmoothing(0);
+          } else {
+            // Standalone RAF loop.
+            function raf(time) {
+              lenis.raf(time);
+              requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', start);
+        } else {
+          start();
+        }
+      })();
+    </script>
   </body>
 </html>
