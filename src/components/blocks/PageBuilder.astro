@@ -8,6 +8,14 @@ import TestimonialsBlock from './TestimonialsBlock.astro'
 import ReferencesBlock from './ReferencesBlock.astro'
 import FaqBlock from './FaqBlock.astro'
 import CtaBlock from './CtaBlock.astro'
+import LandingHero from './LandingHero.astro'
+import LandingProblem from './LandingProblem.astro'
+import LandingGuide from './LandingGuide.astro'
+import LandingPlan from './LandingPlan.astro'
+import LandingOffer from './LandingOffer.astro'
+import LandingTestimonials from './LandingTestimonials.astro'
+import LandingFaq from './LandingFaq.astro'
+import LandingCtaFinal from './LandingCtaFinal.astro'
 
 interface Props {
   sections: Array<{ _type: string; _key: string; enabled?: boolean; [key: string]: unknown }>
@@ -20,6 +28,7 @@ const enabled = sections.filter((s) => s.enabled !== false)
 
 {enabled.map((block) => {
   switch (block._type) {
+    // v1 schema — DE and EN pages
     case 'heroSection':
       return <HeroSection {...(block as any)} locale={locale} />
     case 'featureStrip':
@@ -36,6 +45,23 @@ const enabled = sections.filter((s) => s.enabled !== false)
       return <FaqBlock {...(block as any)} locale={locale} />
     case 'ctaBlock':
       return <CtaBlock {...(block as any)} locale={locale} />
+    // landing* schema — ES landing page
+    case 'landingHero':
+      return <LandingHero {...(block as any)} locale={locale} />
+    case 'landingProblem':
+      return <LandingProblem {...(block as any)} locale={locale} />
+    case 'landingGuide':
+      return <LandingGuide {...(block as any)} locale={locale} />
+    case 'landingPlan':
+      return <LandingPlan {...(block as any)} locale={locale} />
+    case 'landingOffer':
+      return <LandingOffer {...(block as any)} locale={locale} />
+    case 'landingTestimonials':
+      return <LandingTestimonials {...(block as any)} locale={locale} />
+    case 'landingFaq':
+      return <LandingFaq {...(block as any)} locale={locale} />
+    case 'landingCtaFinal':
+      return <LandingCtaFinal {...(block as any)} locale={locale} />
     default:
       return null
   }
