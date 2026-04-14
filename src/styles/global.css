@@ -46,3 +46,29 @@
 
 body { font-family: var(--font-body); }
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+
+/*
+ * Site content clearance — keeps page headings from hiding behind the sticky nav.
+ *
+ * Desktop: nav floats at top: 1.25em + nav height 4em = 5.25em total.
+ *   Add ~1em breathing room → padding-top: calc(4em + 2.5em) ≈ 6.5em.
+ *
+ * Mobile (≤991px): nav is flush at top: 0; nav height 4em.
+ *   padding-top: 4em gives exact clearance.
+ *
+ * heroBleed pages (homepage): the hero intentionally extends under the nav.
+ *   body.hero-bleed .site-content zeroes the padding so the purple hero reaches the top.
+ */
+.site-content {
+  padding-top: calc(4em + 2.5em);
+}
+
+@media screen and (max-width: 991px) {
+  .site-content {
+    padding-top: 4em;
+  }
+}
+
+body.hero-bleed .site-content {
+  padding-top: 0;
+}

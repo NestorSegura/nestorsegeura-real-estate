@@ -32,6 +32,14 @@ interface Props {
    *   navLocaleUrls={{ de: '/blog/slug-de', en: '/en/blog/slug-en', es: '/es/blog/slug-es' }}
    */
   navLocaleUrls?: Record<'de' | 'en' | 'es', string>;
+  /**
+   * heroBleed — set true on pages whose hero intentionally extends under the nav
+   * (e.g. the homepage full-bleed purple section). When true, main gets no top
+   * padding so the hero reaches the very top of the viewport. All other pages
+   * (blog, analyse, blog posts) must omit this prop so their headings clear the
+   * sticky nav.
+   */
+  heroBleed?: boolean;
 }
 
 const {
@@ -44,6 +52,7 @@ const {
   hreflangUrls,
   jsonLd = [],
   navLocaleUrls,
+  heroBleed = false,
 } = Astro.props;
 
 const canonicalUrl = canonical ?? Astro.url.href;
@@ -157,7 +166,7 @@ const navItems = sanityNavItems.length ? sanityNavItems : fallbackNavItems;
       <JsonLd schema={schema} />
     ))}
   </head>
-  <body>
+  <body class={heroBleed ? 'hero-bleed' : ''}>
     <!-- MegaNav: sticky top nav — osmo mega-nav restyled for brand (Phase 9-02) -->
     <MegaNav
       locale={locale}
@@ -166,7 +175,9 @@ const navItems = sanityNavItems.length ? sanityNavItems : fallbackNavItems;
       ctaHref={ctaHref}
       localeUrls={localeUrls}
     />
-    <slot />
+    <div class="site-content">
+      <slot />
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.2.3/dist/lenis.min.js" is:inline></script>
     <script is:inline>
       (function () {
