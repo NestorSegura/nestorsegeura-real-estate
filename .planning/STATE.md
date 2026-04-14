@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 Phase: 9 of 10 (Interactive Islands)
 Plan: 4 of 5 in current phase (09-02 complete — awaiting checkpoint approval)
 Status: In progress
-Last activity: 2026-04-14 — Completed 09-02 (MegaNav.astro + BaseLayout integration) — checkpoint pending human verify
+Last activity: 2026-04-14 — 09-02 correction: osmo CSS verbatim replacement + BaseLayout heroBleed — awaiting checkpoint:human-verify
 
 Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09-03 complete
 
@@ -86,6 +86,9 @@ Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09
 - [09-02 rev]: DOM structure rebuilt to match osmo VERBATIM — [data-menu-wrap] root, [data-menu-logo], [data-nav-list][data-mobile-nav] with two <ul>s (.mega-nav__bar-list + .is--actions), [data-burger-line="top|mid|bot"], [data-mobile-back], empty [data-dropdown-wrapper] > [data-dropdown-container] > [data-dropdown-bg], [data-menu-backdrop]
 - [09-02 rev]: initMegaNavDirectionalHover controller inlined with DUR constants, state, openDropdown/closeDropdown/switchPanel, hover intent, mobile open/close w/ stagger, burger X animation, resize handler — toggles[] and panels[] are empty arrays in Phase 9 (no throws)
 - [09-02 rev]: fallbackNavItems in BaseLayout (Blog/Analyse/Kontakt) with locale-aware labels — localeUrls declared before fallback so #kontakt anchor resolves correctly; used when sanityNavItems.length === 0
+- [09-02 fix]: MegaNav CSS replaced with osmo VERBATIM — white pill (#fff bg, border-radius .25em), no backdrop-filter; only additions are logo text + locale-switcher + action wrapper styles
+- [09-02 fix]: Mobile drawer fixed — osmo's .mega-nav__bar-inner at ≤991px: position fixed, top var(--nav-height), left/right/bottom 0, background #fff; GSAP uses autoAlpha not translateX
+- [09-02 fix]: heroBleed prop + site-content wrapper in BaseLayout — padding-top 6.5em desktop / 4em mobile clears sticky nav on /blog, /analyse etc; body.hero-bleed zeroes it for homepage full-bleed heroes
 
 ### Pending Todos
 
