@@ -1,11 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { useTranslations } from '../i18n/utils';
+import { buildBreadcrumbSchema } from '../lib/seo';
 
 const locale = 'de' as const;
 const t = useTranslations(locale);
+
+const SITE_URL =
+  (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://realestatestrategy.eu';
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: t('nav.home'), url: SITE_URL + '/' },
+  { name: t('analysis.title'), url: Astro.url.href },
+]);
 ---
-<BaseLayout title={t('analysis.title')} locale={locale}>
+<BaseLayout
+  title={t('analysis.title')}
+  locale={locale}
+  jsonLd={[breadcrumbSchema]}
+>
   <main>
     <h1>{t('analysis.title')}</h1>
     <p>{t('analysis.subtitle')}</p>

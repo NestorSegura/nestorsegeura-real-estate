@@ -7,8 +7,14 @@ import { getAllPostSlugsForLocale, getFullPostForLocale, getSiteSettings } from 
 import { extractToc } from '../../../lib/tocFromPT'
 import { readingTime } from '../../../lib/readingTime'
 import { urlFor } from '../../../lib/imageUrl'
+import { buildMeta, buildArticleSchema, buildBreadcrumbSchema } from '../../../lib/seo'
+import { useTranslations } from '../../../i18n/utils'
 
 const locale = 'es' as const
+const t = useTranslations(locale)
+
+const SITE_URL =
+  (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://realestatestrategy.eu'
 
 export const getStaticPaths = (async () => {
   const slugs = await getAllPostSlugsForLocale('es')
@@ -36,8 +42,55 @@ const authorImgSrc = post.author?.image
 const mainImgSrc = post.mainImage
   ? urlFor(post.mainImage as any)?.width(1280).format('webp').url()
   : null
+
+// SEO
+const meta = buildMeta({
+  pageSeo: post.seo,
+  settings,
+  fallbackTitle: title,
+  fallbackDescription: description,
+  ogImageRef: post.mainImage as any,
+  ogType: 'article',
+  currentUrl: Astro.url.href,
+})
+
+const articleSchema = buildArticleSchema({
+  post,
+  locale,
+  siteUrl: SITE_URL,
+  postUrl: Astro.url.href,
+})
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: t('nav.home'), url: SITE_URL + '/es/' },
+  { name: t('nav.blog'), url: SITE_URL + '/es/blog/' },
+  { name: post.title ?? slug!, url: Astro.url.href },
+])
+
+// hreflang from translation refs
+const hreflangUrls: Record<string, string> = {
+  es: SITE_URL + '/es/blog/' + slug + '/',
+}
+if (post._translations) {
+  for (const tr of post._translations) {
+    if (tr.language === 'de' && tr.slug) {
+      hreflangUrls['de'] = SITE_URL + '/blog/' + tr.slug + '/'
+    } else if (tr.language === 'en' && tr.slug) {
+      hreflangUrls['en'] = SITE_URL + '/en/blog/' + tr.slug + '/'
+    }
+  }
+}
 ---
-<BaseLayout title={title} locale={locale} description={description}>
+<BaseLayout
+  title={meta.title}
+  locale={locale}
+  description={meta.description}
+  ogImage={meta.ogImage}
+  ogType="article"
+  canonical={meta.canonical}
+  hreflangUrls={hreflangUrls}
+  jsonLd={[articleSchema, breadcrumbSchema]}
+>
   <article class="container mx-auto px-4 py-12 max-w-6xl">
     <header class="mb-8 max-w-3xl">
       <h1 class="text-4xl lg:text-5xl font-bold font-display mb-4">{post.title}</h1>
