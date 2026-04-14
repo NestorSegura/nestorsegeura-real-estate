@@ -56,7 +56,7 @@ const orgSchema = buildOrganizationSchema(settings, SITE_URL);
 // ── MegaNav data ─────────────────────────────────────────────────────────────
 
 // Resolve nav items for the current locale (label fallback chain: locale → de)
-const navItems = (settings?.navItems ?? []).map((item) => {
+const sanityNavItems = (settings?.navItems ?? []).map((item) => {
   const localeKey = `label${locale.charAt(0).toUpperCase() + locale.slice(1)}` as
     | 'labelDe'
     | 'labelEn'
@@ -75,11 +75,6 @@ const navItems = (settings?.navItems ?? []).map((item) => {
   return { href, label };
 });
 
-// Kontakt special case: if no navItem key resolves to a dedicated page,
-// anchor it to the CTA section on the homepage.
-// The CTA section in the homepage template should have id="kontakt".
-// (Editors can override via siteSettings navItems with key="kontakt".)
-
 const ctaLabel =
   settings?.ctaLabel?.[locale] ??
   settings?.ctaLabel?.['de'] ??
@@ -88,11 +83,33 @@ const ctaLabel =
 const ctaHref = settings?.ctaHref ?? '#';
 
 // Locale URLs: use page-specific map if provided, otherwise default to homepages.
+// Defined before fallbackNavItems so the Kontakt anchor can reference the homepage root.
 const localeUrls: Record<'de' | 'en' | 'es', string> = navLocaleUrls ?? {
   de: localizeRoute('home', 'de'),   // → '/'
   en: localizeRoute('home', 'en'),   // → '/en/'
   es: localizeRoute('home', 'es'),   // → '/es/'
 };
+
+// Fallback nav items: used when Sanity siteSettings.navItems is empty (Studio not yet populated).
+// Kontakt anchors to the #kontakt section on the current locale's homepage.
+const fallbackNavItems = [
+  {
+    href: localizeRoute('blog', locale),
+    label: locale === 'en' ? 'Blog' : locale === 'es' ? 'Blog' : 'Blog',
+  },
+  {
+    href: localizeRoute('analyse', locale),
+    label: locale === 'en' ? 'Analyze' : locale === 'es' ? 'Analizar' : 'Analyse',
+  },
+  {
+    // Kontakt: anchor to #kontakt section on the current locale's homepage.
+    // Pages that have a dedicated /kontakt route can override via siteSettings navItems.
+    href: `${localeUrls[locale]}#kontakt`,
+    label: locale === 'en' ? 'Contact' : locale === 'es' ? 'Contacto' : 'Kontakt',
+  },
+];
+
+const navItems = sanityNavItems.length ? sanityNavItems : fallbackNavItems;
 ---
 <!doctype html>
 <html lang={locale}>
