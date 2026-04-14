@@ -100,15 +100,15 @@
 
 ### Block Components (BLCK)
 
-- [ ] **BLCK-11**: HeroSection as .astro component (zero JS)
-- [ ] **BLCK-12**: FeatureStrip as .astro component (zero JS)
-- [ ] **BLCK-13**: TestimonialsBlock as .astro component (zero JS)
-- [ ] **BLCK-14**: CtaBlock as .astro component (zero JS)
-- [ ] **BLCK-15**: ProblemSolutionBlock as .astro component (zero JS)
-- [ ] **BLCK-16**: ServicesBlock as .astro component (zero JS)
-- [ ] **BLCK-17**: FaqBlock as CSS-only details/summary (zero JS)
-- [ ] **BLCK-18**: ReferencesBlock as .astro component (zero JS)
-- [ ] **BLCK-19**: PageBuilder.astro dispatcher mapping _type to block components
+- [x] **BLCK-11**: HeroSection as .astro component (zero JS)
+- [x] **BLCK-12**: FeatureStrip as .astro component (zero JS)
+- [x] **BLCK-13**: TestimonialsBlock as .astro component (zero JS)
+- [x] **BLCK-14**: CtaBlock as .astro component (zero JS)
+- [x] **BLCK-15**: ProblemSolutionBlock as .astro component (zero JS)
+- [x] **BLCK-16**: ServicesBlock as .astro component (zero JS)
+- [x] **BLCK-17**: FaqBlock as CSS-only details/summary (zero JS)
+- [x] **BLCK-18**: ReferencesBlock as .astro component (zero JS)
+- [x] **BLCK-19**: PageBuilder.astro dispatcher mapping _type to block components
 
 ### Interactive (INTR)
 
@@ -119,17 +119,17 @@
 
 ### Blog (BLOG)
 
-- [ ] **BLOG-04**: Blog listing page per locale using astro-portabletext
-- [ ] **BLOG-05**: Blog post detail page with portable text, TOC sidebar
-- [ ] **BLOG-06**: Blog routes use getStaticPaths with Sanity data
+- [x] **BLOG-04**: Blog listing page per locale using astro-portabletext
+- [x] **BLOG-05**: Blog post detail page with portable text, TOC sidebar
+- [x] **BLOG-06**: Blog routes use getStaticPaths with Sanity data
 
 ### SEO (SEO)
 
-- [ ] **SEO-06**: @astrojs/sitemap with hreflang for all 3 locales
-- [ ] **SEO-07**: robots.txt (Studio is external — no /studio to block)
-- [ ] **SEO-08**: JSON-LD structured data (Person) on homepage
-- [ ] **SEO-09**: OG meta tags on all pages from Sanity siteSettings
-- [ ] **SEO-10**: title and meta description on all locale pages
+- [x] **SEO-06**: @astrojs/sitemap with hreflang for all 3 locales
+- [x] **SEO-07**: robots.txt (Studio is external — no /studio to block)
+- [x] **SEO-08**: JSON-LD structured data (Person) on homepage
+- [x] **SEO-09**: OG meta tags on all pages from Sanity siteSettings
+- [x] **SEO-10**: title and meta description on all locale pages
 
 ### Design (DSGN)
 
@@ -178,27 +178,27 @@
 | I18N-02 | Phase 7 | Complete |
 | I18N-03 | Phase 7 | Complete |
 | I18N-04 | Phase 7 | Complete |
-| BLCK-11 | Phase 8 | Pending |
-| BLCK-12 | Phase 8 | Pending |
-| BLCK-13 | Phase 8 | Pending |
-| BLCK-14 | Phase 8 | Pending |
-| BLCK-15 | Phase 8 | Pending |
-| BLCK-16 | Phase 8 | Pending |
-| BLCK-17 | Phase 8 | Pending |
-| BLCK-18 | Phase 8 | Pending |
-| BLCK-19 | Phase 8 | Pending |
+| BLCK-11 | Phase 8 | Complete |
+| BLCK-12 | Phase 8 | Complete |
+| BLCK-13 | Phase 8 | Complete |
+| BLCK-14 | Phase 8 | Complete |
+| BLCK-15 | Phase 8 | Complete |
+| BLCK-16 | Phase 8 | Complete |
+| BLCK-17 | Phase 8 | Complete |
+| BLCK-18 | Phase 8 | Complete |
+| BLCK-19 | Phase 8 | Complete |
 | INTR-01 | Phase 9 | Pending |
 | INTR-02 | Phase 9 | Pending |
 | INTR-03 | Phase 9 | Pending |
 | INTR-04 | Phase 9 | Pending |
-| BLOG-04 | Phase 8 | Pending |
-| BLOG-05 | Phase 8 | Pending |
-| BLOG-06 | Phase 8 | Pending |
-| SEO-06 | Phase 8 | Pending |
-| SEO-07 | Phase 8 | Pending |
-| SEO-08 | Phase 8 | Pending |
-| SEO-09 | Phase 8 | Pending |
-| SEO-10 | Phase 8 | Pending |
+| BLOG-04 | Phase 8 | Complete |
+| BLOG-05 | Phase 8 | Complete |
+| BLOG-06 | Phase 8 | Complete |
+| SEO-06 | Phase 8 | Complete |
+| SEO-07 | Phase 8 | Complete |
+| SEO-08 | Phase 8 | Complete |
+| SEO-09 | Phase 8 | Complete |
+| SEO-10 | Phase 8 | Complete |
 | DSGN-01 | Phase 7 | Complete |
 | DSGN-02 | Phase 7 | Complete |
 | DSGN-03 | Phase 7 | Complete |
@@ -210,4 +210,4 @@
 
 ---
 *Requirements defined: 2026-04-11*
-*Last updated: 2026-04-11 — roadmap v2.0 phases 6–10 assigned*
+*Last updated: 2026-04-14 — Phase 8 requirements (BLCK-11..19, BLOG-04..06, SEO-06..10) marked Complete*

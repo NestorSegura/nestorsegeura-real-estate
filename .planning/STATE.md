@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 ## Current Position
 
-Phase: 8 of 10 (Static Blocks and Blog)
-Plan: 2 of 4 in current phase
-Status: In progress (Phase 8 wave 2 complete)
-Last activity: 2026-04-14 — Completed 08-02-PLAN.md (18 block components, PageBuilder dual-schema dispatch, StackingCards, Lenis)
+Phase: 9 of 10 (Interactive Islands)
+Plan: 0 of 3 in current phase
+Status: In progress (Phase 8 complete)
+Last activity: 2026-04-14 — Phase 8 complete (4/4 plans, sitemap + SEO + all 8 block components + blog)
 
-Progress: [###########░░░░░░░░░] Phase 8 in progress — 22/30+ plans done
+Progress: [##############░░░░░░] Phase 8 complete — 26/30+ plans done
 
 ## Performance Metrics
 
@@ -68,6 +68,10 @@ Progress: [###########░░░░░░░░░] Phase 8 in progress — 22/30
 - [08-02]: Dual-schema dispatch — DE/EN homepages use v1 _types (heroSection etc.), ES uses landing* _types (landingHero etc.); PageBuilder dispatches all 16 cases; getHomepageWithSections prefers *-landing slug documents when both exist
 - [08-02]: StackingCards.astro — reusable GSAP/ScrollTrigger pin+scrub wrapper; applied to LandingProblem, LandingPlan, ProblemSolutionBlock; Phase 9 scroll interactions should extend this pattern
 - [08-02]: Lenis smooth scroll added globally in BaseLayout.astro with GSAP ScrollTrigger RAF sync; Phase 9 navbar scroll logic should use Lenis API (not raw window.scrollY)
+- [08-04]: Site URL: process.env.PUBLIC_SITE_URL ?? 'https://realestatestrategy.eu' — env-overridable with hardcoded production fallback
+- [08-04]: hreflang for blog posts is sparse — only locales with a post._translations document emit alternate links; /analyse pages intentionally have NO hreflang (single-locale slugs by design)
+- [08-04]: Person JSON-LD uses siteSettings.siteName — currently "nestorsegura.com"; update to "Nestor Segura" in Sanity Studio before launch
+- [08-04]: og-default.png is a brand-purple (#241552) placeholder at 1200x630; replace with real brand asset before launch
 
 ### Pending Todos
 
@@ -88,5 +92,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-14
-Stopped at: Completed 08-02-PLAN.md — 18 block components, PageBuilder dual-schema dispatch (16 _types), StackingCards GSAP wrapper, Lenis smooth scroll, all 3 locale homepages wired to Sanity
+Stopped at: Phase 8 complete — 08-04 SEO plan complete, VERIFICATION.md passed, all 6 Phase 8 success criteria met
 Resume file: None

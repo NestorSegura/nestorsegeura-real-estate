@@ -76,7 +76,7 @@ Plans:
 
 - [ ] **Phase 6: Infrastructure** - Astro project scaffolded, Cloudflare adapter configured, Sanity client wired, dev environment working
 - [x] **Phase 7: i18n and Content Layer** - Built-in Astro i18n routing live, GROQ queries locale-filtered, BaseLayout with Clash Display and Chivo fonts
-- [ ] **Phase 8: Static Blocks and Blog** - All 8 block components as .astro (zero JS), PageBuilder dispatcher, blog pages, sitemap, all SEO metadata
+- [x] **Phase 8: Static Blocks and Blog** - All 8 block components as .astro (zero JS), PageBuilder dispatcher, blog pages, sitemap, all SEO metadata
 - [ ] **Phase 9: Interactive Islands** - NavbarClient, AnalysePageClient, /api/analyze Worker function, scroll animations
 - [ ] **Phase 10: Production Deployment** - Cloudflare project live, custom domain, env vars, deploy hook, Auto Minify disabled
 
@@ -127,10 +127,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — Foundation: Jibemates purple palette, blockContent schema with custom marks, GROQ helpers, image/TOC/reading-time utilities
-- [ ] 08-02-PLAN.md — 8 zero-JS landing block components + PageBuilder dispatcher + wire 3 locale homepages
-- [ ] 08-03-PLAN.md — Blog index (paginated, featured + grid) + post detail (sticky TOC, PT renderer, Shiki, callout/highlight marks) for 3 locales
-- [ ] 08-04-PLAN.md — SEO: @astrojs/sitemap with hreflang, robots.txt, JsonLd component, BaseLayout meta extension, per-page Person/Article/Breadcrumb JSON-LD
+- [x] 08-01-PLAN.md — Foundation: Jibemates purple palette, blockContent schema with custom marks, GROQ helpers, image/TOC/reading-time utilities
+- [x] 08-02-PLAN.md — 8 zero-JS landing block components + PageBuilder dispatcher + wire 3 locale homepages
+- [x] 08-03-PLAN.md — Blog index (paginated, featured + grid) + post detail (sticky TOC, PT renderer, Shiki, callout/highlight marks) for 3 locales
+- [x] 08-04-PLAN.md — SEO: @astrojs/sitemap with hreflang, robots.txt, JsonLd component, BaseLayout meta extension, per-page Person/Article/Breadcrumb JSON-LD
 
 ### Phase 9: Interactive Islands
 **Goal**: The navbar is interactive (mobile drawer, locale switcher), the /analyse page submits URLs and shows scores, and page sections animate into view as the user scrolls — all with minimal JavaScript footprint.
@@ -177,6 +177,6 @@ Phases execute in dependency order: 6 → 7 → 8 → 9 → 10
 | 5. Deployment | v1.0 | 3/3 | Complete | 2026-03-16 |
 | 6. Infrastructure | v2.0 | 0/2 | Not started | - |
 | 7. i18n and Content Layer | v2.0 | 2/2 | Complete | 2026-04-14 |
-| 8. Static Blocks and Blog | v2.0 | 0/4 | Not started | - |
+| 8. Static Blocks and Blog | v2.0 | 4/4 | Complete | 2026-04-14 |
 | 9. Interactive Islands | v2.0 | 0/3 | Not started | - |
 | 10. Production Deployment | v2.0 | 0/2 | Not started | - |
