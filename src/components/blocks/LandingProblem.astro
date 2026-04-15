@@ -19,6 +19,9 @@ interface Props {
 }
 
 const { headline, intro, problems = [], closing } = Astro.props
+
+// Problem index → brand card background. Cycles through lilac, purple, dark, teal.
+const cardColorClass = ['is--lilac', 'is--green', 'is--dark', 'is--teal']
 ---
 
 <section id="problem" class="bg-white">
@@ -43,9 +46,11 @@ const { headline, intro, problems = [], closing } = Astro.props
       desktopX="-13.75em, 0em, 13em, 6em"
       desktopY="2.125em, 0em, 4.5em, 8em"
     >
-      {problems.map((problem) => (
+      {problems.map((problem, index) => {
+        const colorClass = cardColorClass[index % cardColorClass.length]
+        return (
         <div data-stacking-card class="cards-stack__item">
-          <div data-stacking-card-target class="cards-stack-card">
+          <div data-stacking-card-target class={`cards-stack-card${colorClass ? ' ' + colorClass : ''}`}>
             <span
               class="card-number text-primary-200"
               aria-hidden="true"
@@ -60,7 +65,8 @@ const { headline, intro, problems = [], closing } = Astro.props
             )}
           </div>
         </div>
-      ))}
+        )
+      })}
     </StackingCards>
   )}
 
