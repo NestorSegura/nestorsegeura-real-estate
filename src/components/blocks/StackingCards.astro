@@ -136,6 +136,24 @@ if (mobileY)       sectionAttrs['data-stacking-cards-mobile-y']       = mobileY
   color: #fff !important;
 }
 
+/* Number: inherit card text color, larger, slightly transparent */
+.cards-stack-card .card-number {
+  color: currentColor !important;
+  opacity: 0.35;
+  font-size: 5rem;
+  font-weight: 600;
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.04em;
+}
+
+@media (min-width: 768px) {
+  .cards-stack-card .card-number {
+    font-size: 6.5rem;
+  }
+}
+
 .cards-stack-card.is--lilac {
   color: #1d1d1f;
   background-color: #ddd7f1;
