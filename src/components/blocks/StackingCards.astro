@@ -130,6 +130,12 @@ if (mobileY)       sectionAttrs['data-stacking-cards-mobile-y']       = mobileY
   background-color: #131313;
 }
 
+/* Force white text on dark variants regardless of tailwind utility colors */
+.cards-stack-card.is--green *,
+.cards-stack-card.is--dark * {
+  color: #fff !important;
+}
+
 .cards-stack-card.is--lilac {
   color: #1d1d1f;
   background-color: #ddd7f1;
