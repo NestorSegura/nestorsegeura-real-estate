@@ -13,7 +13,14 @@ interface Props {
   [key: string]: unknown
 }
 
-const { headline, paragraphs = [], image } = Astro.props
+const { locale, headline, paragraphs = [], image } = Astro.props
+
+const eyebrowCopy: Record<Locale, string> = {
+  de: 'Mein Ansatz',
+  en: 'My approach',
+  es: 'Mi enfoque',
+}
+const eyebrow = eyebrowCopy[locale] ?? eyebrowCopy.de
 
 const imageSrc = urlFor(image as any)?.width(640).format('webp').url() ?? null
 const imageSrcset = imageSrc
@@ -26,9 +33,10 @@ const imageSrcset = imageSrc
 <section id="guide" class="guide-editorial">
   <div class="guide-editorial__inner">
     {headline && (
-      <h2 class="guide-editorial__heading">
-        {headline}
-      </h2>
+      <header class="guide-editorial__header">
+        <span class="section-eyebrow">{eyebrow}</span>
+        <h2 class="section-h2 guide-editorial__heading">{headline}</h2>
+      </header>
     )}
 
     {paragraphs.length > 0 && (
@@ -83,15 +91,12 @@ const imageSrcset = imageSrc
     gap: 5rem;
   }
 
-  /* Standard site-wide h2 size — em-based for Osmo scaling system. */
-  .guide-editorial__heading {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: clamp(1.875em, 3vw, 2.25em);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0;
+  /* Heading uses .section-h2 utility from global.css; component-local
+     style only adds layout constraints. */
+  .guide-editorial__header {
     max-width: 38em;
+  }
+  .guide-editorial__heading {
     color: var(--color-brand-dark, #131313);
   }
 

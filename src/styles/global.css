@@ -46,6 +46,31 @@ body {
   font-size: var(--size-font);
 }
 
+/* ──────────────────────────────────────────────────────────────────
+   Section-level typography utilities
+   Single source of truth so every section h2 + eyebrow looks identical.
+   Use em so they participate in the Osmo scaling system.
+   ────────────────────────────────────────────────────────────────── */
+.section-eyebrow {
+  display: inline-block;
+  font-family: 'Chivo', sans-serif;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary-700, oklch(0.42 0.18 290));
+  margin-bottom: 1.25em;
+}
+
+.section-h2 {
+  font-family: 'Clash Display', system-ui, sans-serif;
+  font-size: clamp(1.875em, 3vw, 2.25em);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
 @font-face {
   font-family: 'Clash Display';
   src: url('/fonts/ClashDisplay-Variable-subset.woff2') format('woff2-variations'),
