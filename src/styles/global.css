@@ -20,6 +20,7 @@ html {
 
 @media screen and (max-width: 991px) {
   :root {
+    --size-unit: 17;
     --size-container-ideal: 834;
     --size-container-min: 768px;
     --size-container-max: 991px;
@@ -28,6 +29,9 @@ html {
 
 @media screen and (max-width: 767px) {
   :root {
+    /* Bump unit so mobile body stays ≥ 16px for readability.
+       At 480px viewport: 480 / (550/19) = 16.6px body. */
+    --size-unit: 19;
     --size-container-ideal: 550;
     --size-container-min: 480px;
     --size-container-max: 767px;
@@ -36,6 +40,9 @@ html {
 
 @media screen and (max-width: 479px) {
   :root {
+    /* At 375px viewport: 375 / (390/20) = 19.2px body
+       At 320px viewport: 320 / (390/20) = 16.4px body */
+    --size-unit: 20;
     --size-container-ideal: 390;
     --size-container-min: 320px;
     --size-container-max: 479px;
