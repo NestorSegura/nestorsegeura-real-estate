@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../../i18n/utils'
+import Button from '../ui/Button.astro'
 
 interface Props {
   locale: Locale
@@ -40,12 +41,7 @@ const subtextClass = isDark ? 'text-white/80' : 'text-gray-600'
     )}
 
     {ctaHref && ctaLabel && (
-      <a
-        href={ctaHref}
-        class="inline-block bg-primary-700 hover:bg-primary-800 text-white font-semibold text-xl px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-px"
-      >
-        {ctaLabel}
-      </a>
+      <Button href={ctaHref} label={ctaLabel} variant="filled" size="large" tone={isDark ? 'white' : 'primary'} />
     )}
   </div>
 </section>

@@ -14,6 +14,8 @@
  * Locale switcher hrefs are pre-computed at build time via data-href attributes.
  */
 
+import Button from '../ui/Button.astro';
+
 interface Props {
   locale: 'de' | 'en' | 'es';
   navItems: Array<{ href: string; label: string }>;
@@ -81,12 +83,7 @@ const localeLabels: Record<'de' | 'en' | 'es', string> = {
             </li>
             <!-- CTA -->
             <li class="mega-nav__bar-action">
-              <a href={ctaHref} class="mega-nav__bar-cta w-inline-block" target="_blank" rel="noopener noreferrer">
-                <span class="mega-nav__bar-link-label">{ctaLabel}</span>
-                <svg class="mega-nav__bar-link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
+              <Button href={ctaHref} label={ctaLabel} variant="filled" tone="primary" target="_blank" />
             </li>
           </ul>
 

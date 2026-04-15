@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../../i18n/utils'
+import Button from '../ui/Button.astro'
 
 interface Props {
   locale: Locale
@@ -38,21 +39,11 @@ const {
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       {ctaHref && ctaLabel && (
-        <a
-          href={ctaHref}
-          class="inline-block bg-primary-700 hover:bg-primary-800 text-white font-semibold text-lg px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-px"
-        >
-          {ctaLabel}
-        </a>
+        <Button href={ctaHref} label={ctaLabel} variant="filled" size="large" tone="white" />
       )}
 
       {ctaSecondaryHref && ctaSecondaryLabel && (
-        <a
-          href={ctaSecondaryHref}
-          class="inline-block border border-primary-300 text-primary-100 hover:bg-primary-800 font-semibold text-lg px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-px"
-        >
-          {ctaSecondaryLabel}
-        </a>
+        <Button href={ctaSecondaryHref} label={ctaSecondaryLabel} variant="ghost" size="large" tone="white" />
       )}
     </div>
   </div>

@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../../i18n/utils'
+import Button from '../ui/Button.astro'
 
 interface Props {
   locale: Locale
@@ -68,12 +69,13 @@ if (headline && highlightedText && headline.includes(highlightedText)) {
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       {ctaHref && ctaLabel && (
-        <a
+        <Button
           href={ctaHref}
-          class="inline-block bg-primary-700 hover:bg-primary-800 text-white font-semibold text-lg px-8 py-4 rounded-lg transition-all duration-200 hover:-translate-y-px"
-        >
-          {ctaLabel}
-        </a>
+          label={ctaLabel}
+          variant="filled"
+          size="large"
+          tone={isDark ? 'white' : 'primary'}
+        />
       )}
 
       {ctaSecondaryText && (

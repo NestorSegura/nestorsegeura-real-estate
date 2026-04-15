@@ -1,0 +1,277 @@
+---
+/**
+ * Osmo icon button (filled + ghost variants).
+ *
+ * Hover choreography (CSS-only, desktop pointer devices):
+ *  - Text slides up by 1.5em, text-shadow duplicate takes its place
+ *  - 3-arrow strip translates 200% right — the arrow that was visible
+ *    slides out, the next one slides into view (loop illusion)
+ *  - Icon bg rotates 90deg
+ *  - [filled only] a dark wipe translates up from below-right at 15deg
+ *
+ * Usage:
+ *   <Button href="#kontakt" label="Termin buchen" />
+ *   <Button href="/analyse" label="Mehr erfahren" variant="ghost" />
+ */
+
+type Variant = 'filled' | 'ghost';
+type Size = 'normal' | 'large';
+type Tone = 'primary' | 'dark' | 'white';
+
+interface Props {
+  href: string;
+  label: string;
+  variant?: Variant;
+  size?: Size;
+  /** Controls base color pair. Default 'primary' uses brand purple. */
+  tone?: Tone;
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  label,
+  variant = 'filled',
+  size = 'normal',
+  tone = 'primary',
+  target,
+  rel,
+  ariaLabel,
+  class: className = '',
+} = Astro.props;
+
+const isExternal = target === '_blank';
+const resolvedRel = rel ?? (isExternal ? 'noopener noreferrer' : undefined);
+
+const classes = [
+  'btn-icon-link',
+  `btn-icon-link--${variant}`,
+  `btn-icon-link--tone-${tone}`,
+  `btn-icon-link--${size}`,
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+<a
+  href={href}
+  class={classes}
+  target={target}
+  rel={resolvedRel}
+  aria-label={ariaLabel}
+>
+  {variant === 'filled' ? (
+    <div class="btn-icon-content">
+      <div class="btn-icon-content__mask">
+        <span data-button-anim-target class="btn-icon-content__text">{label}</span>
+      </div>
+      <div class="btn-icon-icon">
+        <div data-button-anim-target class="btn-icon-icon__bg"></div>
+        <div class="btn-icon-icon__wrap">
+          <div class="btn-icon-icon__list">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 10 8" fill="none" data-button-anim-target class="btn-icon-icon__arrow"><path d="M4.45231 0.385986H6.02531L9.30131 3.99999L6.02531 7.61399H4.45231L7.40331 4.58499H0.695312V3.42799H7.41631L4.45231 0.385986Z" fill="currentColor"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 10 8" fill="none" data-button-anim-target class="btn-icon-icon__arrow"><path d="M4.45231 0.385986H6.02531L9.30131 3.99999L6.02531 7.61399H4.45231L7.40331 4.58499H0.695312V3.42799H7.41631L4.45231 0.385986Z" fill="currentColor"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 10 8" fill="none" data-button-anim-target class="btn-icon-icon__arrow"><path d="M4.45231 0.385986H6.02531L9.30131 3.99999L6.02531 7.61399H4.45231L7.40331 4.58499H0.695312V3.42799H7.41631L4.45231 0.385986Z" fill="currentColor"></path></svg>
+          </div>
+        </div>
+      </div>
+      <div data-button-anim-target class="btn-icon-content__bg"></div>
+    </div>
+  ) : (
+    <>
+      <div class="btn-icon-content__mask">
+        <span data-button-anim-target class="btn-icon-content__text">{label}</span>
+      </div>
+      <div class="btn-icon-icon">
+        <div data-button-anim-target class="btn-icon-icon__bg"></div>
+        <div class="btn-icon-icon__wrap">
+          <div class="btn-icon-icon__list">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 10 8" fill="none" data-button-anim-target class="btn-icon-icon__arrow"><path d="M4.45231 0.385986H6.02531L9.30131 3.99999L6.02531 7.61399H4.45231L7.40331 4.58499H0.695312V3.42799H7.41631L4.45231 0.385986Z" fill="currentColor"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 10 8" fill="none" data-button-anim-target class="btn-icon-icon__arrow"><path d="M4.45231 0.385986H6.02531L9.30131 3.99999L6.02531 7.61399H4.45231L7.40331 4.58499H0.695312V3.42799H7.41631L4.45231 0.385986Z" fill="currentColor"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 10 8" fill="none" data-button-anim-target class="btn-icon-icon__arrow"><path d="M4.45231 0.385986H6.02531L9.30131 3.99999L6.02531 7.61399H4.45231L7.40331 4.58499H0.695312V3.42799H7.41631L4.45231 0.385986Z" fill="currentColor"></path></svg>
+          </div>
+        </div>
+      </div>
+    </>
+  )}
+</a>
+
+<style>
+  /* ------------------------------------------------------------------
+     Osmo icon button — brand-adapted
+     ------------------------------------------------------------------ */
+
+  .btn-icon-link {
+    --btn-bg: var(--color-primary-700, oklch(0.42 0.18 290));
+    --btn-text: #fff;
+    --btn-sweep: var(--color-brand-dark, #131313);
+    --btn-icon-color: inherit;
+    font-size: 1em;
+    line-height: 1.2;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    color: var(--btn-bg);
+  }
+
+  /* Size */
+  .btn-icon-link--normal { font-size: 1rem; }
+  .btn-icon-link--large  { font-size: 1.25rem; }
+
+  /* Tone variants (base bg/text pair) */
+  .btn-icon-link--tone-primary {
+    --btn-bg: var(--color-primary-700, oklch(0.42 0.18 290));
+    --btn-text: #fff;
+    --btn-sweep: var(--color-brand-dark, #131313);
+  }
+  .btn-icon-link--tone-dark {
+    --btn-bg: var(--color-brand-dark, #131313);
+    --btn-text: #fff;
+    --btn-sweep: var(--color-primary-700, oklch(0.42 0.18 290));
+  }
+  .btn-icon-link--tone-white {
+    --btn-bg: #fff;
+    --btn-text: var(--color-brand-dark, #131313);
+    --btn-sweep: var(--color-primary-700, oklch(0.42 0.18 290));
+  }
+
+  /* ── Filled variant (pill) ─────────────────────────────────────── */
+
+  .btn-icon-content {
+    color: var(--btn-text);
+    background-color: var(--btn-bg);
+    border-radius: 0.35em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.75em 1em;
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+  }
+
+  .btn-icon-content__mask {
+    z-index: 1;
+    flex: none;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-icon-content__text {
+    font-size: 0.95em;
+    --text-duplicate-distance: 1.5em;
+    text-shadow: 0 var(--text-duplicate-distance) currentColor;
+  }
+
+  .btn-icon-content__bg {
+    z-index: 0;
+    background-color: var(--btn-sweep);
+    width: 120%;
+    height: 100%;
+    position: absolute;
+    bottom: 0%;
+    left: -10%;
+    transform: translate(0, 175%) rotate(15deg);
+  }
+
+  /* ── Icon (arrow square) ───────────────────────────────────────── */
+
+  .btn-icon-icon {
+    z-index: 1;
+    flex: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1em;
+    height: 1em;
+    position: relative;
+  }
+
+  .btn-icon-icon__bg {
+    background-color: currentColor;
+    border-radius: 0.15em;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  .btn-icon-icon__wrap {
+    color: var(--btn-bg);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* In filled variant, the arrow wrap inverts against the icon bg (which
+     uses currentColor = btn-text) so arrow == btn-bg contrasts inside. */
+  .btn-icon-link--filled .btn-icon-content .btn-icon-icon__wrap {
+    color: var(--btn-bg);
+  }
+  .btn-icon-link--filled .btn-icon-content .btn-icon-icon__bg {
+    background-color: var(--btn-text);
+  }
+
+  /* Ghost variant: link color = btn-bg; icon bg = btn-bg, arrow = btn-text or white */
+  .btn-icon-link--ghost {
+    color: var(--btn-bg);
+  }
+  .btn-icon-link--ghost .btn-icon-icon__bg {
+    background-color: var(--btn-bg);
+  }
+  .btn-icon-link--ghost .btn-icon-icon__wrap {
+    color: var(--btn-text);
+  }
+
+  .btn-icon-icon__list {
+    flex: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+  }
+
+  .btn-icon-icon__arrow {
+    flex: none;
+    width: 1em;
+    height: 100%;
+    padding: 0.2em;
+  }
+
+  /* Global transition */
+  [data-button-anim-target] {
+    transition: transform 0.525s cubic-bezier(0.625, 0.05, 0, 1);
+  }
+
+  /* Hover choreography — pointer-fine devices only */
+  @media (hover: hover) and (pointer: fine) {
+    .btn-icon-link:hover .btn-icon-content__text {
+      transform: translate(0, calc(-1 * var(--text-duplicate-distance)));
+    }
+    .btn-icon-link:hover .btn-icon-icon__bg {
+      transform: rotate(90deg);
+    }
+    .btn-icon-link:hover .btn-icon-icon__arrow {
+      transform: translate(200%, 0);
+    }
+    .btn-icon-link:hover .btn-icon-content__bg {
+      transform: translate(0, 0%) rotate(0deg);
+    }
+  }
+
+  /* Focus — accessibility */
+  .btn-icon-link:focus-visible {
+    outline: 2px solid var(--btn-bg);
+    outline-offset: 3px;
+    border-radius: 0.35em;
+  }
+</style>

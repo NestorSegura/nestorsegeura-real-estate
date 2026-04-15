@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../../i18n/utils'
+import Button from '../ui/Button.astro'
 
 interface Props {
   locale: Locale
@@ -342,10 +343,7 @@ const h = headline ?? t.defaultHeadline
 
     {ctaHref && ctaLabel && (
       <div class="strategy__cta">
-        <a href={ctaHref} class="strategy__cta-btn">
-          {ctaLabel}
-          <span class="strategy__cta-arrow" aria-hidden="true">→</span>
-        </a>
+        <Button href={ctaHref} label={ctaLabel} variant="filled" size="large" tone="white" />
       </div>
     )}
   </div>
