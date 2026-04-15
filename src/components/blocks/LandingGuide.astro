@@ -169,6 +169,15 @@ const imageSrcset = imageSrc
       if (!window.gsap || !window.ScrollTrigger || !window.SplitText) return;
       window.gsap.registerPlugin(window.ScrollTrigger, window.SplitText);
 
+      // Bridge Lenis ↔ ScrollTrigger if Lenis booted before GSAP arrived.
+      if (window.lenis && !window.__lenisGsapSynced) {
+        window.__lenisGsapSynced = true;
+        window.lenis.on('scroll', window.ScrollTrigger.update);
+        window.gsap.ticker.add(function (time) { window.lenis.raf(time * 1000); });
+        window.gsap.ticker.lagSmoothing(0);
+        window.ScrollTrigger.refresh();
+      }
+
       document.querySelectorAll('[data-highlight-text]').forEach(function (heading) {
         var scrollStart = heading.getAttribute('data-highlight-scroll-start') || 'top 90%';
         var scrollEnd   = heading.getAttribute('data-highlight-scroll-end')   || 'center 40%';

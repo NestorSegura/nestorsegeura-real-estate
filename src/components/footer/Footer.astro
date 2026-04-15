@@ -115,6 +115,17 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
       if (!window.gsap || !window.ScrollTrigger) return;
       window.gsap.registerPlugin(window.ScrollTrigger);
 
+      // Bridge Lenis ↔ ScrollTrigger if Lenis booted before GSAP arrived.
+      // Without this, smooth-scroll wheel events don't trigger ScrollTrigger.update
+      // and parallax/highlight effects appear frozen during real scrolling.
+      if (window.lenis && !window.__lenisGsapSynced) {
+        window.__lenisGsapSynced = true;
+        window.lenis.on('scroll', window.ScrollTrigger.update);
+        window.gsap.ticker.add(function (time) { window.lenis.raf(time * 1000); });
+        window.gsap.ticker.lagSmoothing(0);
+        window.ScrollTrigger.refresh();
+      }
+
       document.querySelectorAll('[data-footer-parallax]').forEach(function (el) {
         var inner = el.querySelector('[data-footer-parallax-inner]');
         var dark = el.querySelector('[data-footer-parallax-dark]');
