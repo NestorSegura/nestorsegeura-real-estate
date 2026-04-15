@@ -26,19 +26,25 @@ const imageSrcset = imageSrc
 <section id="guide" class="guide-editorial">
   <div class="guide-editorial__inner">
     {headline && (
-      <h2 data-highlight-text class="guide-editorial__heading">
+      <h2 class="guide-editorial__heading">
         {headline}
       </h2>
     )}
 
     {paragraphs.length > 0 && (
-      <div class="guide-editorial__body">
-        {paragraphs.map((p) => (
-          <p data-highlight-text class="guide-editorial__paragraph">
+      <p data-highlight-text class="guide-editorial__paragraph">
+        {paragraphs.map((p, i) => (
+          <>
             {p}
-          </p>
+            {i < paragraphs.length - 1 && (
+              <>
+                <br />
+                <br />
+              </>
+            )}
+          </>
         ))}
-      </div>
+      </p>
     )}
 
     {imageSrc && (
@@ -89,13 +95,9 @@ const imageSrcset = imageSrc
     color: rgba(19, 19, 19, 0.55);
   }
 
-  /* The big editorial statement — the focal point of the section. */
-  .guide-editorial__body {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
+  /* The big editorial statement — the focal point of the section.
+     Single <p> with <br><br> between original paragraph chunks so the
+     SplitText effect treats the whole block as one continuous animation. */
   .guide-editorial__paragraph {
     font-family: 'Clash Display', system-ui, sans-serif;
     font-size: clamp(1.875rem, 4.5vw, 4rem);
@@ -109,7 +111,6 @@ const imageSrcset = imageSrc
 
   @media (max-width: 760px) {
     .guide-editorial__inner { gap: 3rem; }
-    .guide-editorial__body { gap: 1.75rem; }
     .guide-editorial__paragraph {
       font-size: clamp(1.625rem, 7vw, 2.5rem);
       line-height: 1.1;
