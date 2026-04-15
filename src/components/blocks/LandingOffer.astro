@@ -371,7 +371,7 @@ const h = headline ?? t.defaultHeadline
 
 .strategy__header {
   max-width: 56rem;
-  margin-bottom: clamp(4rem, 14vh, 10rem);
+  margin-bottom: clamp(2rem, 6vh, 4rem);
 }
 
 .strategy__eyebrow {
@@ -453,9 +453,10 @@ const h = headline ?? t.defaultHeadline
   }
 }
 
-/* Invisible trigger strips drive which pillar is active */
+/* Invisible trigger strips drive which pillar is active.
+   Shorter than 100vh = tighter total scroll range, less empty space. */
 .strategy__step {
-  height: 100vh;
+  height: 60vh;
   pointer-events: none;
 }
 
@@ -562,7 +563,7 @@ const h = headline ?? t.defaultHeadline
 
 /* ── CTA ─────────────────────────────────────────────────────────── */
 .strategy__cta {
-  margin-top: clamp(4rem, 12vh, 8rem);
+  margin-top: clamp(2rem, 6vh, 4rem);
   text-align: center;
 }
 
