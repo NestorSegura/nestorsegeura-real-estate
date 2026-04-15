@@ -6,7 +6,6 @@ interface Props {
   headline?: string
   ctaLabel?: string
   ctaHref?: string
-  // Legacy props (from Sanity) accepted but not rendered in new design
   comparison?: unknown
   services?: unknown
   [key: string]: unknown
@@ -16,103 +15,103 @@ const { locale, headline, ctaLabel, ctaHref } = Astro.props
 
 const copy = {
   de: {
-    eyebrow: 'Die Strategie in 4 Säulen',
+    eyebrow: 'Die Strategie',
     defaultHeadline: 'Warum diese Methode bei Google UND bei ChatGPT funktioniert',
     pillars: [
       {
         number: '01',
         title: 'Entitäts-Konsistenz',
         lead: 'Google matcht keine Keywords mehr — Google matcht Entitäten.',
-        body: 'Dein Google Business Profil, deine Website und deine Online-Präsenz müssen exakt dieselbe Geschichte erzählen. Bei den meisten Maklern klafft eine Lücke zwischen dem, was im GBP steht, und dem, was die Website zeigt. Jede Lücke kostet Vertrauen — bei Google und bei den KI-Modellen (ChatGPT, Perplexity, Gemini bewerten lokale Unternehmen nach demselben Muster).',
+        body: 'Dein Google Business Profil, deine Website und deine Online-Präsenz müssen exakt dieselbe Geschichte erzählen. Jede Lücke zwischen dem, was im GBP steht, und dem, was die Website zeigt, kostet Vertrauen — bei Google und bei den KI-Modellen (ChatGPT, Perplexity, Gemini bewerten lokale Unternehmen nach demselben Muster).',
         illo: 'entity',
       },
       {
         number: '02',
         title: 'Die Kernstruktur',
         lead: 'Eine Seite pro Leistung. Eine Seite pro Stadtteil. Keine Ausnahmen.',
-        body: 'Homepage zielt auf Primär-Kategorie + Stadt (z. B. „Immobilienmakler Hamburg"). Jede Dienstleistung bekommt eine eigene Seite. Jeder Stadtteil, in dem du verkaufen willst, bekommt eine eigene Seite. Die interne Verlinkung spiegelt die GBP-Hierarchie exakt. So baut Google Vertrauen auf, dass dein Unternehmen real und lokal ist.',
+        body: 'Homepage zielt auf Primär-Kategorie und Stadt. Jede Dienstleistung bekommt eine eigene Seite, jeder Stadtteil ebenso. Die interne Verlinkung spiegelt die GBP-Hierarchie exakt. So baut Google Vertrauen auf, dass dein Unternehmen lokal und real ist.',
         illo: 'structure',
       },
       {
         number: '03',
         title: 'Lokale Inhalts-Tiefe',
         lead: 'Generische Inhalte ranken nicht lokal. Punkt.',
-        body: 'Ein Makler in Hamburg muss über Altona vs. Eimsbüttel Preisdynamiken sprechen, über Altbau vs. Neubauten, über das Käuferprofil im konkreten Viertel. Ein Makler in München über Schwabing vs. Giesing. Inhalte, die lokale Begriffe, Marktbedingungen und Immobilientypen referenzieren — das ist der einzige Weg, lokal sichtbar zu werden.',
+        body: 'Ein Makler in Hamburg muss über Altona und Eimsbüttel Preisdynamiken sprechen, über Altbau und Neubauten, über das Käuferprofil im konkreten Viertel. Inhalte, die lokale Begriffe, Marktbedingungen und Immobilientypen referenzieren — das ist der einzige Weg, lokal sichtbar zu werden.',
         illo: 'local',
       },
       {
         number: '04',
         title: 'KI-Sichtbarkeit',
-        lead: 'Einmal bauen, überall sichtbar.',
-        body: 'Die gleiche Struktur, die bei Google rankt, macht dich für KI-Modelle auffindbar. Wenn jemand ChatGPT fragt „Bester Immobilienmakler in Hamburg-Altona", erscheinen die Makler mit konsistenten Entitäts-Signalen über Web + GBP + lokale Inhalte. Das ist die Zukunft der lokalen Suche — und sie hat schon begonnen.',
+        lead: 'Einmal bauen. Überall sichtbar.',
+        body: 'Die Struktur, die bei Google rankt, macht dich für KI-Modelle auffindbar. Wenn jemand ChatGPT fragt „Bester Immobilienmakler in Hamburg-Altona", erscheinen die Makler mit konsistenten Entitäts-Signalen über Web, GBP und lokale Inhalte. Die Zukunft der lokalen Suche — und sie hat schon begonnen.',
         illo: 'ai',
       },
     ],
   },
   en: {
-    eyebrow: 'The strategy in 4 pillars',
+    eyebrow: 'The strategy',
     defaultHeadline: 'Why this method works on Google AND on ChatGPT',
     pillars: [
       {
         number: '01',
         title: 'Entity Consistency',
         lead: 'Google no longer matches keywords — it matches entities.',
-        body: 'Your Google Business Profile, your website, and your online presence must tell the exact same story. Most agents have gaps between what their profile says and what their website shows. Every gap costs trust — with Google, and with the AI models (ChatGPT, Perplexity, Gemini all evaluate local businesses the same way).',
+        body: 'Your Google Business Profile, your website, and your online presence must tell the exact same story. Every gap between what your profile says and what your website shows costs trust — with Google, and with the AI models (ChatGPT, Perplexity, Gemini all evaluate local businesses the same way).',
         illo: 'entity',
       },
       {
         number: '02',
         title: 'The Core Structure',
         lead: 'One page per service. One page per area. No exceptions.',
-        body: 'Homepage targets primary category + city ("Real estate agent Hamburg"). Each service gets its own page. Each location you want to rank in gets its own page. Internal linking mirrors the GBP hierarchy exactly. This is how Google gains confidence that your business is legitimate and local.',
+        body: 'Homepage targets primary category and city. Each service gets its own page, each location likewise. Internal linking mirrors the GBP hierarchy exactly. This is how Google gains confidence that your business is legitimate and local.',
         illo: 'structure',
       },
       {
         number: '03',
         title: 'Local Content Depth',
         lead: 'Generic content does not rank locally. Full stop.',
-        body: 'An agent in Hamburg should talk about Altona vs. Eimsbüttel price dynamics, Altbau vs. new-build specifics, the local buyer profile. An agent in Munich about Schwabing vs. Giesing. Content that references specific neighborhoods, market conditions, and property types is the only way to become visible locally.',
+        body: 'An agent in Hamburg should talk about Altona and Eimsbüttel price dynamics, Altbau and new-build specifics, the local buyer profile. Content that references specific neighborhoods, market conditions, and property types is the only way to become visible locally.',
         illo: 'local',
       },
       {
         number: '04',
         title: 'AI Visibility',
-        lead: 'Build once, visible everywhere.',
-        body: 'The same structure that ranks on Google makes you visible to AI models. When someone asks ChatGPT "best real estate agent in Hamburg Altona", the agents with consistent entity signals across web + GBP + local content appear. This is the future of local search — and it has already started.',
+        lead: 'Build once. Visible everywhere.',
+        body: 'The structure that ranks on Google makes you visible to AI models. When someone asks ChatGPT "best real estate agent in Hamburg Altona", the agents with consistent entity signals across web, GBP, and local content appear. This is the future of local search — and it has already started.',
         illo: 'ai',
       },
     ],
   },
   es: {
-    eyebrow: 'La estrategia en 4 pilares',
+    eyebrow: 'La estrategia',
     defaultHeadline: 'Por qué este método funciona en Google Y en ChatGPT',
     pillars: [
       {
         number: '01',
         title: 'Consistencia de Entidad',
         lead: 'Google ya no empareja palabras clave — empareja entidades.',
-        body: 'Tu perfil de Google Business, tu web y tu presencia online deben contar exactamente la misma historia. La mayoría de agentes tiene huecos entre lo que dice su perfil y lo que muestra su web. Cada hueco cuesta confianza — con Google, y con los modelos de IA (ChatGPT, Perplexity, Gemini evalúan los negocios locales igual).',
+        body: 'Tu perfil de Google Business, tu web y tu presencia online deben contar exactamente la misma historia. Cada hueco entre lo que dice tu perfil y lo que muestra tu web cuesta confianza — con Google, y con los modelos de IA (ChatGPT, Perplexity, Gemini evalúan los negocios locales igual).',
         illo: 'entity',
       },
       {
         number: '02',
         title: 'La Estructura Base',
         lead: 'Una página por servicio. Una página por zona. Sin excepciones.',
-        body: 'La home apunta a categoría principal + ciudad ("Agente inmobiliario Madrid"). Cada servicio tiene su propia página. Cada zona donde quieres posicionar tiene su propia página. El enlazado interno refleja exactamente la jerarquía del GBP. Así Google gana confianza de que tu negocio es real y local.',
+        body: 'La home apunta a categoría principal y ciudad. Cada servicio tiene su propia página, cada zona también. El enlazado interno refleja exactamente la jerarquía del GBP. Así Google gana confianza de que tu negocio es real y local.',
         illo: 'structure',
       },
       {
         number: '03',
         title: 'Profundidad Local del Contenido',
         lead: 'El contenido genérico no posiciona localmente. Punto.',
-        body: 'Un agente en Madrid debe hablar de la dinámica de precios Salamanca vs. Chamberí, de pisos antiguos vs. obra nueva, del perfil del comprador del barrio. Un agente en Barcelona del Eixample vs. Gràcia. Contenido que referencia barrios concretos, condiciones de mercado y tipos de vivienda es la única vía para ganar visibilidad local.',
+        body: 'Un agente en Madrid debe hablar de Salamanca y Chamberí, de pisos antiguos y obra nueva, del perfil del comprador del barrio. Contenido que referencia barrios concretos, condiciones de mercado y tipos de vivienda — la única vía para ganar visibilidad local.',
         illo: 'local',
       },
       {
         number: '04',
         title: 'Visibilidad en IA',
-        lead: 'Constrúyelo una vez, visible en todos lados.',
-        body: 'La misma estructura que posiciona en Google te hace visible para los modelos de IA. Cuando alguien pregunta a ChatGPT "mejor agente inmobiliario en Madrid Salamanca", aparecen los agentes con señales de entidad consistentes en web + GBP + contenido local. Este es el futuro de la búsqueda local — y ya ha empezado.',
+        lead: 'Constrúyelo una vez. Visible en todos lados.',
+        body: 'La estructura que posiciona en Google te hace visible para los modelos de IA. Cuando alguien pregunta a ChatGPT "mejor agente inmobiliario en Madrid Salamanca", aparecen los agentes con señales de entidad consistentes en web, GBP y contenido local.',
         illo: 'ai',
       },
     ],
@@ -131,193 +130,205 @@ const h = headline ?? t.defaultHeadline
     </header>
 
     <div class="strategy__grid">
-      <!-- LEFT: scrolling pillars -->
+      <!-- LEFT: pillars with fade-and-pin scroll -->
       <ol class="strategy__pillars" data-strategy-pillars>
         {t.pillars.map((pillar, i) => (
           <li class="pillar" data-pillar-index={i} data-pillar-illo={pillar.illo}>
-            <span class="pillar__number">{pillar.number}</span>
-            <h3 class="pillar__title">{pillar.title}</h3>
-            <p class="pillar__lead">{pillar.lead}</p>
-            <p class="pillar__body">{pillar.body}</p>
+            <div class="pillar__inner">
+              <span class="pillar__number">{pillar.number}</span>
+              <h3 class="pillar__title">{pillar.title}</h3>
+              <p class="pillar__lead">{pillar.lead}</p>
+              <p class="pillar__body">{pillar.body}</p>
+            </div>
           </li>
         ))}
       </ol>
 
-      <!-- RIGHT: sticky illustration stage -->
+      <!-- RIGHT: sticky illustration stage — no card background -->
       <aside class="strategy__stage" aria-hidden="true">
         <div class="strategy__sticky">
-          <!-- Entity Consistency -->
-          <svg class="illo" data-illo="entity" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <filter id="softshadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
-                <feOffset dx="0" dy="4" result="offsetblur" />
-                <feComponentTransfer><feFuncA type="linear" slope="0.15" /></feComponentTransfer>
-                <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
-              </filter>
-            </defs>
 
-            <!-- Connection lines -->
-            <path d="M120 130 L280 130 M120 270 L280 270 M120 130 L200 260 M280 130 L200 260 M120 270 L280 270" stroke="currentColor" stroke-width="2" stroke-dasharray="4 6" opacity="0.35" />
-            <path d="M120 130 L280 130" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="3" />
-            <path d="M120 130 L200 260" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="3" />
-            <path d="M280 130 L200 260" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="3" />
+          <!-- 01 Entity Consistency — 3 cards sharing one identity -->
+          <svg class="illo" data-illo="entity" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Spine: single accent line -->
+            <line x1="240" y1="110" x2="240" y2="370" stroke="var(--accent)" stroke-width="2" />
 
-            <!-- GBP node -->
-            <g filter="url(#softshadow)">
-              <rect x="60" y="100" width="120" height="60" rx="10" fill="white" stroke="currentColor" stroke-width="1.5" />
-              <text x="120" y="125" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="currentColor" opacity="0.55">GOOGLE BUSINESS</text>
-              <text x="120" y="145" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="14" font-weight="600" fill="currentColor">Immobilienmakler</text>
+            <!-- GBP card (dark) -->
+            <g>
+              <rect x="90" y="80" width="300" height="70" rx="8" fill="#1d1d1f" />
+              <text x="110" y="108" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.55)" letter-spacing="0.08em">GOOGLE BUSINESS PROFILE</text>
+              <text x="110" y="132" font-family="Clash Display, sans-serif" font-size="18" font-weight="600" fill="white" letter-spacing="-0.01em">Immobilienmakler · Hamburg</text>
             </g>
 
-            <!-- Website node -->
-            <g filter="url(#softshadow)">
-              <rect x="220" y="100" width="120" height="60" rx="10" fill="white" stroke="currentColor" stroke-width="1.5" />
-              <text x="280" y="125" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="currentColor" opacity="0.55">WEBSITE</text>
-              <text x="280" y="145" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="14" font-weight="600" fill="currentColor">Immobilienmakler</text>
+            <!-- Website card (light) -->
+            <g>
+              <rect x="90" y="210" width="300" height="70" rx="8" fill="white" stroke="rgba(0,0,0,0.08)" />
+              <text x="110" y="238" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="rgba(0,0,0,0.48)" letter-spacing="0.08em">WEBSITE</text>
+              <text x="110" y="262" font-family="Clash Display, sans-serif" font-size="18" font-weight="600" fill="#1d1d1f" letter-spacing="-0.01em">Immobilienmakler · Hamburg</text>
             </g>
 
-            <!-- AI/Directory node -->
-            <g filter="url(#softshadow)">
-              <rect x="140" y="240" width="120" height="60" rx="10" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <text x="200" y="265" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="white" opacity="0.7">AI &amp; DIRECTORIES</text>
-              <text x="200" y="285" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="14" font-weight="600" fill="white">Immobilienmakler</text>
+            <!-- AI card (accent) -->
+            <g>
+              <rect x="90" y="340" width="300" height="70" rx="8" fill="var(--accent)" />
+              <text x="110" y="368" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.7)" letter-spacing="0.08em">AI &amp; DIRECTORIES</text>
+              <text x="110" y="392" font-family="Clash Display, sans-serif" font-size="18" font-weight="600" fill="white" letter-spacing="-0.01em">Immobilienmakler · Hamburg</text>
             </g>
 
-            <!-- Check badge -->
-            <circle cx="200" cy="200" r="22" fill="white" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="2" />
-            <path d="M190 200 l6 6 l12 -12" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <!-- Connector nodes -->
+            <circle cx="240" cy="115" r="5" fill="var(--accent)" />
+            <circle cx="240" cy="245" r="5" fill="var(--accent)" />
+            <circle cx="240" cy="375" r="5" fill="var(--accent)" />
           </svg>
 
-          <!-- Core Structure -->
-          <svg class="illo" data-illo="structure" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Root: homepage -->
+          <!-- 02 Core Structure — site tree as typography -->
+          <svg class="illo" data-illo="structure" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Level 1: homepage -->
             <g>
-              <rect x="150" y="40" width="100" height="40" rx="6" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <text x="200" y="65" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="13" font-weight="600" fill="white">Home</text>
+              <rect x="170" y="50" width="140" height="46" rx="8" fill="#1d1d1f" />
+              <text x="240" y="79" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="16" font-weight="600" fill="white" letter-spacing="-0.01em">Home</text>
             </g>
 
-            <!-- Level 2: categories -->
-            <path d="M200 80 L80 140 M200 80 L200 140 M200 80 L320 140" stroke="currentColor" stroke-width="1.5" opacity="0.4" />
+            <!-- Connector -->
+            <line x1="240" y1="96" x2="240" y2="140" stroke="var(--accent)" stroke-width="2" />
+            <line x1="100" y1="140" x2="380" y2="140" stroke="var(--accent)" stroke-width="2" />
+            <line x1="100" y1="140" x2="100" y2="170" stroke="var(--accent)" stroke-width="2" />
+            <line x1="240" y1="140" x2="240" y2="170" stroke="var(--accent)" stroke-width="2" />
+            <line x1="380" y1="140" x2="380" y2="170" stroke="var(--accent)" stroke-width="2" />
 
+            <!-- Level 2: services -->
             <g>
-              <rect x="30" y="140" width="100" height="36" rx="6" fill="white" stroke="currentColor" stroke-width="1.2" />
-              <text x="80" y="163" text-anchor="middle" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="currentColor">Verkauf</text>
+              <rect x="40" y="170" width="120" height="40" rx="6" fill="white" stroke="rgba(0,0,0,0.08)" />
+              <text x="100" y="195" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="14" font-weight="600" fill="#1d1d1f" letter-spacing="-0.01em">Verkauf</text>
             </g>
             <g>
-              <rect x="150" y="140" width="100" height="36" rx="6" fill="white" stroke="currentColor" stroke-width="1.2" />
-              <text x="200" y="163" text-anchor="middle" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="currentColor">Vermietung</text>
+              <rect x="180" y="170" width="120" height="40" rx="6" fill="white" stroke="rgba(0,0,0,0.08)" />
+              <text x="240" y="195" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="14" font-weight="600" fill="#1d1d1f" letter-spacing="-0.01em">Vermietung</text>
             </g>
             <g>
-              <rect x="270" y="140" width="100" height="36" rx="6" fill="white" stroke="currentColor" stroke-width="1.2" />
-              <text x="320" y="163" text-anchor="middle" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="currentColor">Bewertung</text>
-            </g>
-
-            <!-- Level 3: locations -->
-            <path d="M80 176 L60 240 M80 176 L100 240 M200 176 L180 240 M200 176 L220 240 M320 176 L300 240 M320 176 L340 240" stroke="currentColor" stroke-width="1.2" opacity="0.35" />
-
-            <g>
-              <rect x="20" y="240" width="80" height="30" rx="5" fill="white" stroke="currentColor" stroke-width="1" />
-              <text x="60" y="260" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" fill="currentColor">Altona</text>
-            </g>
-            <g>
-              <rect x="120" y="240" width="80" height="30" rx="5" fill="white" stroke="currentColor" stroke-width="1" />
-              <text x="160" y="260" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" fill="currentColor">Eimsbüttel</text>
-            </g>
-            <g>
-              <rect x="220" y="240" width="80" height="30" rx="5" fill="white" stroke="currentColor" stroke-width="1" />
-              <text x="260" y="260" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" fill="currentColor">Altona</text>
-            </g>
-            <g>
-              <rect x="320" y="240" width="70" height="30" rx="5" fill="white" stroke="currentColor" stroke-width="1" />
-              <text x="355" y="260" text-anchor="middle" font-family="Chivo, sans-serif" font-size="10" fill="currentColor">HH-Mitte</text>
+              <rect x="320" y="170" width="120" height="40" rx="6" fill="white" stroke="rgba(0,0,0,0.08)" />
+              <text x="380" y="195" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="14" font-weight="600" fill="#1d1d1f" letter-spacing="-0.01em">Bewertung</text>
             </g>
 
-            <!-- Tag showing the pattern -->
-            <g transform="translate(120,320)">
-              <rect width="160" height="40" rx="20" fill="var(--brand-purple, oklch(0.58 0.20 290))" opacity="0.12" />
-              <text x="80" y="25" text-anchor="middle" font-family="Chivo, sans-serif" font-size="12" font-weight="600" fill="var(--brand-purple, oklch(0.58 0.20 290))">Service × Stadtteil</text>
+            <!-- Connectors to level 3 -->
+            <line x1="100" y1="210" x2="100" y2="240" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="70" y1="240" x2="130" y2="240" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="70" y1="240" x2="70" y2="265" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="130" y1="240" x2="130" y2="265" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+
+            <line x1="240" y1="210" x2="240" y2="240" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="210" y1="240" x2="270" y2="240" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="210" y1="240" x2="210" y2="265" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="270" y1="240" x2="270" y2="265" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+
+            <line x1="380" y1="210" x2="380" y2="240" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="350" y1="240" x2="410" y2="240" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="350" y1="240" x2="350" y2="265" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+            <line x1="410" y1="240" x2="410" y2="265" stroke="var(--accent)" stroke-width="2" opacity="0.4" />
+
+            <!-- Level 3: neighborhoods -->
+            <g>
+              <rect x="30" y="265" width="80" height="32" rx="5" fill="#f5f5f7" />
+              <text x="70" y="286" text-anchor="middle" font-family="Chivo, sans-serif" font-size="12" font-weight="600" fill="#1d1d1f">Altona</text>
             </g>
+            <g>
+              <rect x="90" y="265" width="80" height="32" rx="5" fill="#f5f5f7" />
+              <text x="130" y="286" text-anchor="middle" font-family="Chivo, sans-serif" font-size="12" font-weight="600" fill="#1d1d1f">Eimsbüttel</text>
+            </g>
+            <g>
+              <rect x="170" y="265" width="80" height="32" rx="5" fill="#f5f5f7" />
+              <text x="210" y="286" text-anchor="middle" font-family="Chivo, sans-serif" font-size="12" font-weight="600" fill="#1d1d1f">Altona</text>
+            </g>
+            <g>
+              <rect x="230" y="265" width="80" height="32" rx="5" fill="#f5f5f7" />
+              <text x="270" y="286" text-anchor="middle" font-family="Chivo, sans-serif" font-size="12" font-weight="600" fill="#1d1d1f">HafenCity</text>
+            </g>
+            <g>
+              <rect x="305" y="265" width="90" height="32" rx="5" fill="#f5f5f7" />
+              <text x="350" y="286" text-anchor="middle" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="#1d1d1f">Eppendorf</text>
+            </g>
+            <g>
+              <rect x="370" y="265" width="80" height="32" rx="5" fill="#f5f5f7" />
+              <text x="410" y="286" text-anchor="middle" font-family="Chivo, sans-serif" font-size="12" font-weight="600" fill="#1d1d1f">Winterhude</text>
+            </g>
+
+            <!-- Pattern label -->
+            <text x="240" y="370" text-anchor="middle" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="rgba(0,0,0,0.48)" letter-spacing="0.1em">SERVICE × STADTTEIL</text>
           </svg>
 
-          <!-- Local Content Depth -->
-          <svg class="illo" data-illo="local" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Map/city outline -->
-            <path d="M60 80 Q100 60 160 70 Q240 80 300 60 Q340 70 360 120 Q355 180 330 220 Q340 280 300 330 Q240 340 180 320 Q120 330 80 300 Q50 240 60 180 Z" fill="white" stroke="currentColor" stroke-width="1.5" opacity="0.6" />
-
-            <!-- River -->
-            <path d="M70 150 Q150 170 220 140 Q290 120 350 160" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="3" opacity="0.25" fill="none" />
-
-            <!-- Neighborhood pins -->
+          <!-- 03 Local Content Depth — typography as the illustration -->
+          <svg class="illo" data-illo="local" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Altona block -->
             <g>
-              <circle cx="120" cy="130" r="10" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <circle cx="120" cy="130" r="4" fill="white" />
-              <text x="135" y="124" font-family="Clash Display, sans-serif" font-size="13" font-weight="600" fill="currentColor">Altona</text>
-              <text x="135" y="140" font-family="Chivo, sans-serif" font-size="10" fill="currentColor" opacity="0.6">€5.800/m² · Altbau</text>
+              <text x="40" y="110" font-family="Clash Display, sans-serif" font-size="54" font-weight="600" fill="#1d1d1f" letter-spacing="-0.03em">Altona</text>
+              <text x="40" y="136" font-family="Chivo, sans-serif" font-size="14" font-weight="500" fill="rgba(0,0,0,0.48)">€5.800/m² · Altbau · 39% Familien</text>
             </g>
 
+            <!-- Divider -->
+            <line x1="40" y1="170" x2="440" y2="170" stroke="rgba(0,0,0,0.08)" stroke-width="1" />
+
+            <!-- Eimsbüttel block -->
             <g>
-              <circle cx="220" cy="210" r="10" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <circle cx="220" cy="210" r="4" fill="white" />
-              <text x="235" y="204" font-family="Clash Display, sans-serif" font-size="13" font-weight="600" fill="currentColor">Eimsbüttel</text>
-              <text x="235" y="220" font-family="Chivo, sans-serif" font-size="10" fill="currentColor" opacity="0.6">€6.200/m² · gemischt</text>
+              <text x="40" y="225" font-family="Clash Display, sans-serif" font-size="54" font-weight="600" fill="var(--accent)" letter-spacing="-0.03em">Eimsbüttel</text>
+              <text x="40" y="251" font-family="Chivo, sans-serif" font-size="14" font-weight="500" fill="rgba(0,0,0,0.48)">€6.200/m² · gemischt · Young Professionals</text>
             </g>
 
+            <line x1="40" y1="285" x2="440" y2="285" stroke="rgba(0,0,0,0.08)" stroke-width="1" />
+
+            <!-- HafenCity block -->
             <g>
-              <circle cx="150" cy="270" r="10" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <circle cx="150" cy="270" r="4" fill="white" />
-              <text x="165" y="264" font-family="Clash Display, sans-serif" font-size="13" font-weight="600" fill="currentColor">HafenCity</text>
-              <text x="165" y="280" font-family="Chivo, sans-serif" font-size="10" fill="currentColor" opacity="0.6">€9.500/m² · Neubau</text>
+              <text x="40" y="340" font-family="Clash Display, sans-serif" font-size="54" font-weight="600" fill="#1d1d1f" letter-spacing="-0.03em">HafenCity</text>
+              <text x="40" y="366" font-family="Chivo, sans-serif" font-size="14" font-weight="500" fill="rgba(0,0,0,0.48)">€9.500/m² · Neubau · Kapitalanlage</text>
             </g>
 
-            <g>
-              <circle cx="300" cy="280" r="10" fill="currentColor" opacity="0.35" />
-              <text x="260" y="310" font-family="Chivo, sans-serif" font-size="10" fill="currentColor" opacity="0.5">+ weitere</text>
-            </g>
+            <line x1="40" y1="400" x2="440" y2="400" stroke="rgba(0,0,0,0.08)" stroke-width="1" />
+
+            <!-- Footer tag -->
+            <text x="40" y="435" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="rgba(0,0,0,0.48)" letter-spacing="0.1em">+ 12 WEITERE STADTTEILE</text>
           </svg>
 
-          <!-- AI Visibility -->
-          <svg class="illo" data-illo="ai" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Prompt bubble -->
+          <!-- 04 AI Visibility — query and results, minimal -->
+          <svg class="illo" data-illo="ai" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Query pill -->
             <g>
-              <rect x="60" y="40" width="280" height="60" rx="14" fill="white" stroke="currentColor" stroke-width="1.5" />
-              <text x="80" y="65" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="currentColor" opacity="0.5">PROMPT</text>
-              <text x="80" y="85" font-family="Clash Display, sans-serif" font-size="13" font-weight="500" fill="currentColor">"Bester Immobilienmakler in Hamburg Altona?"</text>
+              <rect x="20" y="50" width="440" height="68" rx="34" fill="#1d1d1f" />
+              <text x="45" y="82" font-family="Chivo, sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.48)" letter-spacing="0.1em">PROMPT</text>
+              <text x="45" y="104" font-family="Clash Display, sans-serif" font-size="16" font-weight="500" fill="white" letter-spacing="-0.01em">„Bester Makler in Hamburg-Altona?"</text>
             </g>
 
-            <!-- Fan-out arrows -->
-            <path d="M200 100 Q140 150 100 210 M200 100 Q200 150 200 210 M200 100 Q260 150 300 210" stroke="var(--brand-purple, oklch(0.58 0.20 290))" stroke-width="2" stroke-dasharray="4 4" fill="none" />
+            <!-- Fan-out -->
+            <line x1="240" y1="118" x2="240" y2="170" stroke="var(--accent)" stroke-width="2" />
+            <line x1="120" y1="170" x2="360" y2="170" stroke="var(--accent)" stroke-width="2" />
+            <line x1="120" y1="170" x2="120" y2="200" stroke="var(--accent)" stroke-width="2" />
+            <line x1="240" y1="170" x2="240" y2="200" stroke="var(--accent)" stroke-width="2" />
+            <line x1="360" y1="170" x2="360" y2="200" stroke="var(--accent)" stroke-width="2" />
 
-            <!-- ChatGPT bubble -->
+            <!-- 3 result cards -->
             <g>
-              <rect x="40" y="210" width="130" height="70" rx="10" fill="white" stroke="currentColor" stroke-width="1.2" />
-              <text x="55" y="232" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="currentColor" opacity="0.5">CHATGPT</text>
-              <text x="55" y="252" font-family="Clash Display, sans-serif" font-size="12" font-weight="600" fill="currentColor">Nestor S.</text>
-              <text x="55" y="268" font-family="Chivo, sans-serif" font-size="10" fill="currentColor" opacity="0.6">nestorsegura.com</text>
+              <rect x="40" y="200" width="160" height="90" rx="8" fill="white" stroke="rgba(0,0,0,0.08)" />
+              <text x="60" y="224" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="rgba(0,0,0,0.48)" letter-spacing="0.08em">CHATGPT</text>
+              <text x="60" y="254" font-family="Clash Display, sans-serif" font-size="17" font-weight="600" fill="#1d1d1f" letter-spacing="-0.01em">Nestor S.</text>
+              <text x="60" y="276" font-family="Chivo, sans-serif" font-size="11" fill="var(--accent)">nestorsegura.com</text>
             </g>
 
-            <!-- Google bubble -->
             <g>
-              <rect x="135" y="210" width="130" height="70" rx="10" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <text x="150" y="232" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="white" opacity="0.7">GOOGLE</text>
-              <text x="150" y="252" font-family="Clash Display, sans-serif" font-size="12" font-weight="600" fill="white">Nestor S.</text>
-              <text x="150" y="268" font-family="Chivo, sans-serif" font-size="10" fill="white" opacity="0.75">nestorsegura.com</text>
+              <rect x="160" y="200" width="160" height="90" rx="8" fill="var(--accent)" />
+              <text x="180" y="224" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.7)" letter-spacing="0.08em">GOOGLE</text>
+              <text x="180" y="254" font-family="Clash Display, sans-serif" font-size="17" font-weight="600" fill="white" letter-spacing="-0.01em">Nestor S.</text>
+              <text x="180" y="276" font-family="Chivo, sans-serif" font-size="11" fill="rgba(255,255,255,0.85)">nestorsegura.com</text>
             </g>
 
-            <!-- Perplexity bubble -->
             <g>
-              <rect x="230" y="210" width="130" height="70" rx="10" fill="white" stroke="currentColor" stroke-width="1.2" />
-              <text x="245" y="232" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="currentColor" opacity="0.5">PERPLEXITY</text>
-              <text x="245" y="252" font-family="Clash Display, sans-serif" font-size="12" font-weight="600" fill="currentColor">Nestor S.</text>
-              <text x="245" y="268" font-family="Chivo, sans-serif" font-size="10" fill="currentColor" opacity="0.6">nestorsegura.com</text>
+              <rect x="280" y="200" width="160" height="90" rx="8" fill="white" stroke="rgba(0,0,0,0.08)" />
+              <text x="300" y="224" font-family="Chivo, sans-serif" font-size="10" font-weight="600" fill="rgba(0,0,0,0.48)" letter-spacing="0.08em">PERPLEXITY</text>
+              <text x="300" y="254" font-family="Clash Display, sans-serif" font-size="17" font-weight="600" fill="#1d1d1f" letter-spacing="-0.01em">Nestor S.</text>
+              <text x="300" y="276" font-family="Chivo, sans-serif" font-size="11" fill="var(--accent)">nestorsegura.com</text>
             </g>
 
-            <!-- Check badge -->
-            <g transform="translate(170,310)">
-              <rect width="60" height="60" rx="30" fill="var(--brand-purple, oklch(0.58 0.20 290))" />
-              <path d="M20 30 l8 8 l16 -16" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-            </g>
+            <!-- Caption -->
+            <text x="240" y="370" text-anchor="middle" font-family="Clash Display, sans-serif" font-size="24" font-weight="600" fill="#1d1d1f" letter-spacing="-0.02em">Überall dieselbe Antwort.</text>
+            <text x="240" y="400" text-anchor="middle" font-family="Chivo, sans-serif" font-size="14" font-weight="400" fill="rgba(0,0,0,0.48)">Weil die Entität konsistent ist.</text>
           </svg>
+
         </div>
       </aside>
     </div>
@@ -326,6 +337,7 @@ const h = headline ?? t.defaultHeadline
       <div class="strategy__cta">
         <a href={ctaHref} class="strategy__cta-btn">
           {ctaLabel}
+          <span class="strategy__cta-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     )}
@@ -334,12 +346,14 @@ const h = headline ?? t.defaultHeadline
 
 <style is:global>
 .strategy {
-  --brand-purple: oklch(0.58 0.20 290);
-  --brand-dark: #131313;
+  --accent: oklch(0.58 0.20 290);
+  --ink: #1d1d1f;
+  --surface: #f5f5f7;
 
-  background-color: #fafaf9;
-  padding-top: clamp(4rem, 10vh, 8rem);
-  padding-bottom: clamp(4rem, 10vh, 8rem);
+  background-color: var(--surface);
+  color: var(--ink);
+  padding-top: clamp(5rem, 12vh, 10rem);
+  padding-bottom: clamp(5rem, 12vh, 10rem);
 }
 
 .strategy__inner {
@@ -349,8 +363,8 @@ const h = headline ?? t.defaultHeadline
 }
 
 .strategy__header {
-  max-width: 48rem;
-  margin-bottom: clamp(3rem, 8vh, 6rem);
+  max-width: 56rem;
+  margin-bottom: clamp(4rem, 14vh, 10rem);
 }
 
 .strategy__eyebrow {
@@ -358,88 +372,100 @@ const h = headline ?? t.defaultHeadline
   font-family: 'Chivo', sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--brand-purple);
-  margin-bottom: 1rem;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
 }
 
 .strategy__headline {
   font-family: 'Clash Display', sans-serif;
-  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 600;
-  line-height: 1.05;
+  line-height: 1.07;
   letter-spacing: -0.02em;
-  color: var(--brand-dark);
+  color: var(--ink);
   margin: 0;
+  max-width: 20ch;
 }
 
 .strategy__grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
-  align-items: start;
 }
 
 @media (min-width: 900px) {
   .strategy__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 5rem;
+    gap: 6rem;
+    align-items: start;
   }
 }
 
+/* ── Pillars (left column) ───────────────────────────────────────── */
 .strategy__pillars {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(4rem, 12vh, 9rem);
 }
 
 .pillar {
-  position: relative;
-  padding-left: 0;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  opacity: 0.18;
+  transition: opacity 0.5s ease;
+}
+
+.pillar.is-active {
+  opacity: 1;
+}
+
+.pillar__inner {
+  max-width: 34rem;
 }
 
 .pillar__number {
   display: block;
-  font-family: 'Clash Display', sans-serif;
-  font-size: 0.875rem;
+  font-family: 'Chivo', sans-serif;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--brand-purple);
-  margin-bottom: 0.75rem;
-  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.12em;
 }
 
 .pillar__title {
   font-family: 'Clash Display', sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
   font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.015em;
-  color: var(--brand-dark);
-  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 1rem 0;
 }
 
 .pillar__lead {
   font-family: 'Clash Display', sans-serif;
-  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
   font-weight: 500;
-  line-height: 1.4;
-  color: var(--brand-purple);
-  margin: 0 0 1rem 0;
+  line-height: 1.19;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  margin: 0 0 1.5rem 0;
 }
 
 .pillar__body {
   font-family: 'Chivo', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #3a3a3a;
+  font-size: 1.0625rem;
+  line-height: 1.47;
+  letter-spacing: -0.012em;
+  color: rgba(0, 0, 0, 0.8);
   margin: 0;
-  max-width: 32rem;
 }
 
+/* ── Stage (right column) — sticky, center-pinned, no backdrop ──── */
 .strategy__stage {
   display: none;
 }
@@ -447,26 +473,22 @@ const h = headline ?? t.defaultHeadline
 @media (min-width: 900px) {
   .strategy__stage {
     display: block;
-    color: var(--brand-dark);
     align-self: stretch;
     height: 100%;
+    position: relative;
   }
 }
 
 .strategy__sticky {
   position: sticky;
-  top: 6.5rem;
+  top: 50%;
+  transform: translateY(-50%);
   aspect-ratio: 1 / 1;
   width: 100%;
-  max-width: 28rem;
+  max-width: 30rem;
   margin: 0 auto;
-  background: white;
-  border-radius: 1.5rem;
-  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
   display: grid;
   place-items: center;
-  padding: 1.5rem;
 }
 
 .illo {
@@ -474,9 +496,9 @@ const h = headline ?? t.defaultHeadline
   width: 100%;
   height: 100%;
   opacity: 0;
-  transform: scale(0.96);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-  color: var(--brand-dark);
+  transform: scale(0.97);
+  transition: opacity 0.5s ease, transform 0.6s ease;
+  color: var(--ink);
 }
 
 .illo.is-active {
@@ -484,42 +506,48 @@ const h = headline ?? t.defaultHeadline
   transform: scale(1);
 }
 
-/* Mobile: show all illos inline with their pillars */
+/* Mobile (<900px): keep pillars inline at full opacity, skip illos */
 @media (max-width: 899px) {
-  .pillar::after {
-    content: '';
-    display: block;
-    margin-top: 2rem;
-    aspect-ratio: 4 / 3;
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+  .pillar {
+    min-height: 0;
+    opacity: 1;
+    padding: 3rem 0;
   }
 }
 
+/* ── CTA ─────────────────────────────────────────────────────────── */
 .strategy__cta {
-  margin-top: clamp(3rem, 10vh, 6rem);
+  margin-top: clamp(4rem, 12vh, 8rem);
   text-align: center;
 }
 
 .strategy__cta-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--brand-purple);
+  gap: 0.625rem;
+  background: var(--ink);
   color: white;
-  font-family: 'Clash Display', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 1rem 1.75rem;
-  border-radius: 999px;
+  font-family: 'Chivo', sans-serif;
+  font-weight: 500;
+  font-size: 1.0625rem;
+  letter-spacing: -0.012em;
+  padding: 1rem 2rem;
+  border-radius: 980px;
   text-decoration: none;
-  transition: transform 0.18s ease, background-color 0.18s ease;
+  transition: background-color 0.2s ease, transform 0.18s ease;
 }
 
 .strategy__cta-btn:hover {
-  background: oklch(0.50 0.22 290);
+  background: var(--accent);
   transform: translateY(-1px);
+}
+
+.strategy__cta-arrow {
+  transition: transform 0.2s ease;
+}
+
+.strategy__cta-btn:hover .strategy__cta-arrow {
+  transform: translateX(3px);
 }
 </style>
 
@@ -529,25 +557,27 @@ const h = headline ?? t.defaultHeadline
     var illos = document.querySelectorAll('.illo[data-illo]');
     if (!pillars.length || !illos.length) return;
 
-    function setActive(name) {
+    function activate(name, activePillar) {
       illos.forEach(function (el) {
-        if (el.getAttribute('data-illo') === name) el.classList.add('is-active');
-        else el.classList.remove('is-active');
+        el.classList.toggle('is-active', el.getAttribute('data-illo') === name);
+      });
+      pillars.forEach(function (p) {
+        p.classList.toggle('is-active', p === activePillar);
       });
     }
 
-    // Initial state: first illustration active
-    setActive(pillars[0].getAttribute('data-pillar-illo'));
+    // Seed first
+    activate(pillars[0].getAttribute('data-pillar-illo'), pillars[0]);
 
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            setActive(entry.target.getAttribute('data-pillar-illo'));
+            activate(entry.target.getAttribute('data-pillar-illo'), entry.target);
           }
         });
       },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+      { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
     );
 
     pillars.forEach(function (p) { io.observe(p); });
