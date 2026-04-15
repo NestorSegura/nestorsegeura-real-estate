@@ -43,16 +43,16 @@ if (headline && highlightedText && headline.includes(highlightedText)) {
 }
 ---
 
-<section id="hero" class={`${sectionClass} py-24 lg:py-32 px-6`}>
-  <div class="max-w-4xl mx-auto text-center">
+<section id="hero" class={`${sectionClass} py-[6em] lg:py-[8em] px-[1.5em]`}>
+  <div class="max-w-[56em] mx-auto text-center">
     {badge && (
-      <span class="inline-block mb-6 px-4 py-1.5 rounded-full text-sm font-semibold bg-primary-700/30 text-primary-300 border border-primary-700/40 tracking-wide uppercase">
+      <span class="inline-block mb-[1.5em] px-[1em] py-[0.625em] rounded-full text-[0.875em] font-semibold bg-primary-700/30 text-primary-300 border border-primary-700/40 tracking-wide uppercase">
         {badge}
       </span>
     )}
 
     {headline && (
-      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6">
+      <h1 class="text-[3em] md:text-[3.75em] lg:text-[4.5em] font-bold tracking-tight leading-tight mb-[1.5em]">
         {headlineHighlight ? (
           <>
             {headlineBefore}<span class="text-primary-400">{headlineHighlight}</span>{headlineAfter}
@@ -62,12 +62,12 @@ if (headline && highlightedText && headline.includes(highlightedText)) {
     )}
 
     {subheadline && (
-      <p class={`text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed ${isDark ? 'text-white/80' : 'text-gray-600'}`}>
+      <p class={`text-[1.25em] md:text-[1.5em] max-w-[42em] mx-auto mb-[2.5em] leading-relaxed ${isDark ? 'text-white/80' : 'text-gray-600'}`}>
         {subheadline}
       </p>
     )}
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+    <div class="flex flex-col sm:flex-row gap-[1em] justify-center items-center">
       {ctaHref && ctaLabel && (
         <Button
           href={ctaHref}
@@ -79,7 +79,7 @@ if (headline && highlightedText && headline.includes(highlightedText)) {
       )}
 
       {ctaSecondaryText && (
-        <p class={`text-base ${isDark ? 'text-primary-300' : 'text-gray-500'}`}>
+        <p class={`text-[1em] ${isDark ? 'text-primary-300' : 'text-gray-500'}`}>
           {ctaSecondaryText}
         </p>
       )}

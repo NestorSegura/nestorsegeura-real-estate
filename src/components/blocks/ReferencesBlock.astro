@@ -18,27 +18,27 @@ interface Props {
 const { title, references = [] } = Astro.props
 ---
 
-<section id="references" class="bg-gray-50 py-16 md:py-24 px-6">
-  <div class="max-w-6xl mx-auto">
+<section id="references" class="bg-gray-50 py-[4em] md:py-[6em] px-[1.5em]">
+  <div class="max-w-[72em] mx-auto">
     {title && (
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+      <h2 class="text-[1.875em] md:text-[2.25em] font-bold text-gray-900 mb-[3em] text-center">
         {title}
       </h2>
     )}
 
     {references.length > 0 && (
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[1.5em]">
         {references.map((ref) => {
           const card = (
-            <div class="flex flex-col gap-3 p-7 rounded-2xl bg-white border border-gray-200 h-full">
+            <div class="flex flex-col gap-[0.75em] p-[1.75em] rounded-2xl bg-white border border-gray-200 h-full">
               {ref.name && (
-                <h3 class="text-lg font-bold text-gray-900">{ref.name}</h3>
+                <h3 class="text-[1.125em] font-bold text-gray-900">{ref.name}</h3>
               )}
               {ref.description && (
-                <p class="text-sm text-gray-600 leading-relaxed">{ref.description}</p>
+                <p class="text-[0.875em] text-gray-600 leading-relaxed">{ref.description}</p>
               )}
               {ref.url && (
-                <span class="mt-auto text-xs font-medium text-primary-600 hover:text-primary-800 transition-colors">
+                <span class="mt-auto text-[0.75em] font-medium text-primary-600 hover:text-primary-800 transition-colors">
                   Website ansehen →
                 </span>
               )}

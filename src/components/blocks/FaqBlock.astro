@@ -17,19 +17,19 @@ interface Props {
 const { title, faqs = [] } = Astro.props
 ---
 
-<section id="faq" class="bg-gray-50 py-16 md:py-24 px-6">
-  <div class="max-w-3xl mx-auto">
+<section id="faq" class="bg-gray-50 py-[4em] md:py-[6em] px-[1.5em]">
+  <div class="max-w-[48em] mx-auto">
     {title && (
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+      <h2 class="text-[1.875em] md:text-[2.25em] font-bold text-gray-900 mb-[3em]">
         {title}
       </h2>
     )}
 
     {faqs.length > 0 && (
-      <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-[0.75em]">
         {faqs.map((faq) => (
           <details class="faq-item bg-white border border-gray-200 rounded-xl overflow-hidden">
-            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer font-semibold text-base text-gray-900 select-none list-none">
+            <summary class="flex items-center justify-between gap-[1em] px-[1.5em] py-[1.25em] cursor-pointer font-semibold text-[1em] text-gray-900 select-none list-none">
               <span>{faq.question}</span>
               <span class="faq-chevron shrink-0 w-6 h-6 flex items-center justify-center text-primary-600" aria-hidden="true">
                 <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
@@ -37,7 +37,7 @@ const { title, faqs = [] } = Astro.props
                 </svg>
               </span>
             </summary>
-            <p class="px-6 pb-5 pt-1 text-base text-gray-600 leading-relaxed">
+            <p class="px-[1.5em] pb-[1.25em] pt-[0.25em] text-[1em] text-gray-600 leading-relaxed">
               {faq.answer}
             </p>
           </details>

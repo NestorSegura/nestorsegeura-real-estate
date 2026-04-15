@@ -31,21 +31,21 @@ const descClass = isDark ? 'text-primary-200' : 'text-gray-600'
 const featureClass = isDark ? 'text-primary-200' : 'text-gray-700'
 ---
 
-<section id="services" class={`${sectionClass} py-16 md:py-24 px-6`}>
-  <div class="max-w-6xl mx-auto">
+<section id="services" class={`${sectionClass} py-[4em] md:py-[6em] px-[1.5em]`}>
+  <div class="max-w-[72em] mx-auto">
     {title && (
-      <h2 class="text-3xl md:text-4xl font-bold mb-12">
+      <h2 class="text-[1.875em] md:text-[2.25em] font-bold mb-[3em]">
         {title}
       </h2>
     )}
 
     {services.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2em]">
         {services.map((service) => (
-          <div class={`flex flex-col gap-5 p-8 rounded-2xl border ${cardClass}`}>
+          <div class={`flex flex-col gap-[1.25em] p-[2em] rounded-2xl border ${cardClass}`}>
             {service.number && (
               <span
-                class="text-5xl font-black leading-none tabular-nums select-none text-primary-300"
+                class="text-[3em] font-black leading-none tabular-nums select-none text-primary-300"
                 aria-hidden="true"
               >
                 {service.number}
@@ -53,18 +53,18 @@ const featureClass = isDark ? 'text-primary-200' : 'text-gray-700'
             )}
 
             {service.name && (
-              <h3 class="text-xl font-bold">{service.name}</h3>
+              <h3 class="text-[1.25em] font-bold">{service.name}</h3>
             )}
 
             {service.description && (
-              <p class={`text-base leading-relaxed ${descClass}`}>{service.description}</p>
+              <p class={`text-[1em] leading-relaxed ${descClass}`}>{service.description}</p>
             )}
 
             {service.features && service.features.length > 0 && (
-              <ul class="flex flex-col gap-2 mt-auto">
+              <ul class="flex flex-col gap-[0.5em] mt-auto">
                 {service.features.map((feat) => (
-                  <li class={`flex items-start gap-2 text-sm ${featureClass}`}>
-                    <span class="text-primary-400 shrink-0 mt-0.5" aria-hidden="true">✓</span>
+                  <li class={`flex items-start gap-[0.5em] text-[0.875em] ${featureClass}`}>
+                    <span class="text-primary-400 shrink-0 mt-[0.125em]" aria-hidden="true">✓</span>
                     <span>{feat}</span>
                   </li>
                 ))}

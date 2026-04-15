@@ -26,26 +26,26 @@ const cardClass = isDark
 const descClass = isDark ? 'text-primary-200' : 'text-gray-600'
 ---
 
-<section id="features" class={`${sectionClass} py-16 md:py-24 px-6`}>
-  <div class="max-w-6xl mx-auto">
+<section id="features" class={`${sectionClass} py-[4em] md:py-[6em] px-[1.5em]`}>
+  <div class="max-w-[72em] mx-auto">
     {title && (
-      <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+      <h2 class="text-[1.875em] md:text-[2.25em] font-bold mb-[3em] text-center">
         {title}
       </h2>
     )}
 
     {features.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-[2em]">
         {features.map((feature) => (
-          <div class={`flex flex-col gap-4 p-8 rounded-2xl border ${cardClass}`}>
+          <div class={`flex flex-col gap-[1em] p-[2em] rounded-2xl border ${cardClass}`}>
             {feature.icon && (
-              <span class="text-3xl leading-none" aria-hidden="true">{feature.icon}</span>
+              <span class="text-[1.875em] leading-none" aria-hidden="true">{feature.icon}</span>
             )}
             {feature.title && (
-              <h3 class="text-xl font-bold">{feature.title}</h3>
+              <h3 class="text-[1.25em] font-bold">{feature.title}</h3>
             )}
             {feature.description && (
-              <p class={`text-base leading-relaxed ${descClass}`}>{feature.description}</p>
+              <p class={`text-[1em] leading-relaxed ${descClass}`}>{feature.description}</p>
             )}
           </div>
         ))}

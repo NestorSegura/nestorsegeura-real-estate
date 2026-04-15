@@ -25,15 +25,15 @@ const cardColorClass = ['is--lilac', 'is--green', 'is--dark', 'is--teal']
 ---
 
 <section id="problem" class="bg-white">
-  <div class="max-w-6xl mx-auto px-6 pt-16 md:pt-24">
+  <div class="max-w-[72em] mx-auto px-[1.5em] pt-[4em] md:pt-[6em]">
     {headline && (
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <h2 class="text-[1.875em] md:text-[2.25em] font-bold text-gray-900 mb-[1em]">
         {headline}
       </h2>
     )}
 
     {intro && (
-      <p class="text-lg text-gray-600 max-w-2xl mb-8 leading-relaxed">
+      <p class="text-[1.125em] text-gray-600 max-w-[42em] mb-[2em] leading-relaxed">
         {intro}
       </p>
     )}
@@ -58,10 +58,10 @@ const cardColorClass = ['is--lilac', 'is--green', 'is--dark', 'is--teal']
               {problem.number ?? ''}
             </span>
             {problem.title && (
-              <h3 class="text-xl font-bold text-gray-900 mt-4 mb-2">{problem.title}</h3>
+              <h3 class="text-[1.25em] font-bold text-gray-900 mt-[1em] mb-[0.5em]">{problem.title}</h3>
             )}
             {problem.description && (
-              <p class="text-base text-gray-600 leading-relaxed">{problem.description}</p>
+              <p class="text-[1em] text-gray-600 leading-relaxed">{problem.description}</p>
             )}
           </div>
         </div>
@@ -71,8 +71,8 @@ const cardColorClass = ['is--lilac', 'is--green', 'is--dark', 'is--teal']
   )}
 
   {closing && (
-    <div class="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
-      <p class="mt-8 text-lg font-medium text-primary-700 text-center">
+    <div class="max-w-[72em] mx-auto px-[1.5em] pb-[4em] md:pb-[6em]">
+      <p class="mt-[2em] text-[1.125em] font-medium text-primary-700 text-center">
         {closing}
       </p>
     </div>
