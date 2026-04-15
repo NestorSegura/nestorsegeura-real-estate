@@ -18,66 +18,146 @@ const {
 const t = useTranslations(locale);
 const year = new Date().getFullYear();
 
-const navLinks = [
+const pagesLinks = [
+  { href: locale === 'de' ? '/' : `/${locale}/`, label: t('nav.home') },
   { href: localizeRoute('blog', locale), label: t('nav.blog') },
   { href: localizeRoute('analyse', locale), label: locale === 'en' ? 'Analyze' : locale === 'es' ? 'Analizar' : 'Analyse' },
   { href: `${locale === 'de' ? '' : '/' + locale}/#kontakt`, label: t('nav.contact') },
 ];
 
+// Short labels for footer column (avoid long words like "Datenschutzerklärung")
+const legalShort = {
+  de: { impressum: 'Impressum', datenschutz: 'Datenschutz', agb: 'AGB' },
+  en: { impressum: 'Imprint', datenschutz: 'Privacy', agb: 'Terms' },
+  es: { impressum: 'Aviso', datenschutz: 'Privacidad', agb: 'Términos' },
+} as const;
+
 const legalLinks = [
-  { href: localizeRoute('impressum', locale), label: t('legal.impressumTitle') },
-  { href: localizeRoute('datenschutz', locale), label: t('legal.datenschutzTitle') },
-  { href: localizeRoute('agb', locale), label: t('legal.agbTitle') },
+  { href: localizeRoute('impressum', locale), label: legalShort[locale].impressum },
+  { href: localizeRoute('datenschutz', locale), label: legalShort[locale].datenschutz },
+  { href: localizeRoute('agb', locale), label: legalShort[locale].agb },
 ];
+
+const eyebrowPages = locale === 'en' ? 'Pages' : locale === 'es' ? 'Páginas' : 'Seiten';
+const eyebrowLegal = locale === 'en' ? 'Legal' : locale === 'es' ? 'Legal' : 'Rechtliches';
+const eyebrowContact = locale === 'en' ? 'Contact' : locale === 'es' ? 'Contacto' : 'Kontakt';
+const eyebrowTagline = t('footer.tagline');
 
 const copyright = t('footer.copyright').replace('{year}', String(year));
 ---
-<footer class="site-footer" aria-labelledby="footer-heading">
-  <h2 id="footer-heading" class="visually-hidden">Footer</h2>
-  <div class="site-footer__inner">
-    <div class="site-footer__brand">
-      <a href={locale === 'de' ? '/' : `/${locale}/`} class="site-footer__logo" aria-label="Nestor Segura">
-        <span class="site-footer__logo-text">Nestor Segura</span>
-      </a>
-      <p class="site-footer__tagline">{t('footer.tagline')}</p>
-    </div>
+<div data-footer-parallax class="footer-wrap">
+  <footer data-footer-parallax-inner class="demo-footer" aria-labelledby="footer-heading">
+    <h2 id="footer-heading" class="visually-hidden">Footer</h2>
 
-    <div class="site-footer__col">
-      <h3 class="site-footer__heading">{t('footer.navHeading')}</h3>
-      <ul class="site-footer__list">
-        {navLinks.map((link) => (
-          <li><a href={link.href} class="site-footer__link">{link.label}</a></li>
-        ))}
-      </ul>
-    </div>
+    <div class="demo-footer__links-row">
+      <div class="demo-footer__col">
+        <p class="demo-eyebrow">( {eyebrowPages} )</p>
+        <div class="demo-footer__links">
+          {pagesLinks.map((link) => (
+            <a href={link.href} data-underline-link class="demo-footer__a">{link.label}</a>
+          ))}
+        </div>
+      </div>
 
-    <div class="site-footer__col">
-      <h3 class="site-footer__heading">{t('footer.legalHeading')}</h3>
-      <ul class="site-footer__list">
-        {legalLinks.map((link) => (
-          <li><a href={link.href} class="site-footer__link">{link.label}</a></li>
-        ))}
-        <li>
-          <button type="button" class="site-footer__link site-footer__link--button" data-cookie-settings-open>
+      <div class="demo-footer__col">
+        <p class="demo-eyebrow">( {eyebrowLegal} )</p>
+        <div class="demo-footer__links">
+          {legalLinks.map((link) => (
+            <a href={link.href} data-underline-link class="demo-footer__a">{link.label}</a>
+          ))}
+          <button type="button" data-cookie-settings-open data-underline-link class="demo-footer__a demo-footer__a--button">
             {t('footer.cookieSettings')}
           </button>
-        </li>
-      </ul>
+        </div>
+      </div>
+
+      <div class="demo-footer__col">
+        <p class="demo-eyebrow">( {eyebrowContact} )</p>
+        <div class="demo-footer__links">
+          <a href={`mailto:${email}`} data-underline-link class="demo-footer__a demo-footer__a--email">{email}</a>
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" data-underline-link class="demo-footer__a">LinkedIn</a>
+        </div>
+      </div>
     </div>
 
-    <div class="site-footer__col">
-      <h3 class="site-footer__heading">{t('footer.contactHeading')}</h3>
-      <ul class="site-footer__list">
-        <li><a href={`mailto:${email}`} class="site-footer__link">{t('footer.email')}</a></li>
-        <li><a href={linkedinUrl} rel="noopener noreferrer" target="_blank" class="site-footer__link">{t('footer.linkedin')}</a></li>
-      </ul>
+    <div class="demo-footer__logo-row">
+      <p class="demo-eyebrow">{eyebrowTagline}</p>
+      <div class="demo-footer__wordmark" aria-hidden="true">
+        <span>Nestor Segura</span>
+      </div>
+      <small class="demo-footer__copyright">{copyright}</small>
     </div>
-  </div>
+  </footer>
+  <div data-footer-parallax-dark class="footer-wrap__dark"></div>
+</div>
 
-  <div class="site-footer__bottom">
-    <small class="site-footer__copyright">{copyright}</small>
-  </div>
-</footer>
+<script is:inline>
+  (function () {
+    if (window.__footerParallaxInit) return;
+    window.__footerParallaxInit = true;
+
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        if (Array.from(document.scripts).some(function (s) { return s.src === src; })) {
+          resolve();
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    function init() {
+      if (!window.gsap || !window.ScrollTrigger) return;
+      window.gsap.registerPlugin(window.ScrollTrigger);
+
+      document.querySelectorAll('[data-footer-parallax]').forEach(function (el) {
+        var inner = el.querySelector('[data-footer-parallax-inner]');
+        var dark = el.querySelector('[data-footer-parallax-dark]');
+
+        var tl = window.gsap.timeline({
+          scrollTrigger: {
+            trigger: el,
+            start: 'clamp(top bottom)',
+            end: 'clamp(top top)',
+            scrub: true,
+          },
+        });
+
+        if (inner) {
+          tl.from(inner, { yPercent: -25, ease: 'linear' });
+        }
+        if (dark) {
+          tl.from(dark, { opacity: 0.5, ease: 'linear' }, '<');
+        }
+      });
+    }
+
+    function start() {
+      var gsapPromise = window.gsap
+        ? Promise.resolve()
+        : loadScript('https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js');
+      gsapPromise
+        .then(function () {
+          return window.ScrollTrigger
+            ? Promise.resolve()
+            : loadScript('https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js');
+        })
+        .then(init)
+        .catch(function () { /* swallow — footer stays static if GSAP fails */ });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
+</script>
 
 <style>
   .visually-hidden {
@@ -92,115 +172,178 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
     border: 0;
   }
 
-  .site-footer {
-    padding: 4rem 1.5rem 2rem;
-    background: #131313;
-    color: #efeeec;
+  /* Parallax wrap */
+  .footer-wrap {
+    position: relative;
+    overflow: hidden;
+    background: #efeeec;
+    color: #131313;
   }
 
-  .site-footer__inner {
-    max-width: 80rem;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr repeat(3, 1fr);
-    gap: 3rem;
+  .footer-wrap__dark {
+    opacity: 0;
+    pointer-events: none;
+    background-color: #131313;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: multiply;
   }
 
-  @media (max-width: 900px) {
-    .site-footer__inner {
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
-    }
-    .site-footer__brand {
-      grid-column: 1 / -1;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .site-footer__inner {
-      grid-template-columns: 1fr;
-    }
-    .site-footer {
-      padding: 3rem 1.25rem 1.5rem;
-    }
-  }
-
-  .site-footer__brand {
-    max-width: 22rem;
-  }
-
-  .site-footer__logo {
-    color: inherit;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .site-footer__logo-text {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 1.75rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .site-footer__tagline {
-    margin-top: 1rem;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: rgba(239, 238, 236, 0.7);
-  }
-
-  .site-footer__heading {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 0.8rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(239, 238, 236, 0.55);
-    margin: 0 0 1.25rem;
-  }
-
-  .site-footer__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  /* Footer core layout (osmo-style) */
+  .demo-footer {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    flex-flow: column;
+    justify-content: space-between;
+    gap: 7.5em;
+    min-height: 100svh;
+    padding: 2.5em;
+    letter-spacing: -0.02em;
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
   }
 
-  .site-footer__link {
+  .demo-eyebrow {
+    opacity: 0.5;
+    margin-bottom: 0;
+    font-size: 1.3125em;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .demo-footer__links-row {
+    display: flex;
+    gap: 2.5em;
+  }
+
+  .demo-footer__col {
+    display: flex;
+    flex-flow: column;
+    gap: 3em;
+    width: calc(33.3333% - 1.66667em);
+  }
+
+  .demo-footer__links {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    gap: 0.25em;
+  }
+
+  .demo-footer__a {
     color: inherit;
+    font-size: clamp(1.5rem, 3.2vw, 2.75em);
+    font-weight: 600;
+    line-height: 1.05;
     text-decoration: none;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    transition: color 0.2s ease;
+    font-family: inherit;
+    overflow-wrap: anywhere;
+    max-width: 100%;
   }
 
-  .site-footer__link:hover,
-  .site-footer__link:focus-visible {
-    color: #fff;
-    text-decoration: underline;
+  .demo-footer__a--email {
+    font-size: clamp(1rem, 1.6vw, 1.35em);
+    line-height: 1.2;
   }
 
-  .site-footer__link--button {
+  .demo-footer__a--button {
+    appearance: none;
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
-    font: inherit;
     text-align: left;
   }
 
-  .site-footer__bottom {
-    max-width: 80rem;
-    margin: 3rem auto 0;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(239, 238, 236, 0.1);
-    text-align: center;
+  .demo-footer__logo-row {
+    display: flex;
+    flex-flow: column;
+    gap: 1em;
   }
 
-  .site-footer__copyright {
+  .demo-footer__wordmark {
+    width: 100%;
+    line-height: 0.85;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    /* Fit to viewport width regardless of content length */
+    font-size: clamp(3rem, 11.5vw, 14rem);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .demo-footer__wordmark span {
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .demo-footer__copyright {
+    font-family: 'Chivo', system-ui, sans-serif;
     font-size: 0.85rem;
-    color: rgba(239, 238, 236, 0.5);
+    font-weight: 400;
+    opacity: 0.5;
+    letter-spacing: 0;
+  }
+
+  /* Osmo-style underline link */
+  [data-underline-link] {
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+  }
+
+  [data-underline-link]::before {
+    content: '';
+    position: absolute;
+    bottom: -0.0625em;
+    left: 0;
+    width: 100%;
+    height: 0.06em;
+    background-color: currentColor;
+    transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+    transform-origin: right;
+    transform: scaleX(0) rotate(0.001deg);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-underline-link]:hover::before {
+      transform-origin: left;
+      transform: scaleX(1) rotate(0.001deg);
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .demo-footer__links-row {
+      flex-flow: column;
+    }
+    .demo-footer__col {
+      width: 100%;
+    }
+    .demo-footer__logo-row {
+      gap: 1.5em;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .demo-eyebrow {
+      font-size: 1em;
+    }
+    .demo-footer {
+      gap: 5em;
+      padding: 1em;
+      min-height: 90svh;
+    }
+    .demo-footer__col {
+      gap: 1em;
+    }
+    .demo-footer__a {
+      font-size: 1.75em;
+    }
+    .demo-footer__wordmark {
+      font-size: clamp(3rem, 18vw, 8rem);
+    }
   }
 </style>
