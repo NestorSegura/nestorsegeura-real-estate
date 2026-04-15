@@ -129,24 +129,25 @@ const h = headline ?? t.defaultHeadline
       <h2 class="strategy__headline">{h}</h2>
     </header>
 
-    <div class="strategy__grid">
-      <!-- LEFT: pillars with fade-and-pin scroll -->
-      <ol class="strategy__pillars" data-strategy-pillars>
-        {t.pillars.map((pillar, i) => (
-          <li class="pillar" data-pillar-index={i} data-pillar-illo={pillar.illo}>
-            <div class="pillar__inner">
-              <span class="pillar__number">{pillar.number}</span>
-              <h3 class="pillar__title">{pillar.title}</h3>
-              <p class="pillar__lead">{pillar.lead}</p>
-              <p class="pillar__body">{pillar.body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
+    <div class="strategy__scroll">
+      <div class="strategy__pin">
+        <div class="strategy__grid">
+          <!-- LEFT: stacked pillars, crossfade -->
+          <ol class="strategy__col strategy__col--left" aria-label="Strategy pillars">
+            {t.pillars.map((pillar, i) => (
+              <li class="pillar" data-pillar-index={i}>
+                <div class="pillar__inner">
+                  <span class="pillar__number">{pillar.number}</span>
+                  <h3 class="pillar__title">{pillar.title}</h3>
+                  <p class="pillar__lead">{pillar.lead}</p>
+                  <p class="pillar__body">{pillar.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
 
-      <!-- RIGHT: sticky illustration stage — no card background -->
-      <aside class="strategy__stage" aria-hidden="true">
-        <div class="strategy__sticky">
+          <!-- RIGHT: stacked illustrations, crossfade (staggered) -->
+          <aside class="strategy__col strategy__col--right" aria-hidden="true">
 
           <!-- 01 Entity Consistency — 3 cards sharing one identity -->
           <svg class="illo" data-illo="entity" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -329,8 +330,14 @@ const h = headline ?? t.defaultHeadline
             <text x="240" y="400" text-anchor="middle" font-family="Chivo, sans-serif" font-size="14" font-weight="400" fill="rgba(0,0,0,0.48)">Weil die Entität konsistent ist.</text>
           </svg>
 
+          </aside>
         </div>
-      </aside>
+      </div>
+      <!-- scroll steps: drive the active pillar via IO -->
+      <div class="strategy__step" data-step="0"></div>
+      <div class="strategy__step" data-step="1"></div>
+      <div class="strategy__step" data-step="2"></div>
+      <div class="strategy__step" data-step="3"></div>
     </div>
 
     {ctaHref && ctaLabel && (
@@ -389,37 +396,83 @@ const h = headline ?? t.defaultHeadline
   max-width: 20ch;
 }
 
+/* ── Scroll choreography ─────────────────────────────────────────── */
+.strategy__scroll {
+  position: relative;
+}
+
+.strategy__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
 .strategy__grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
+  width: 100%;
+  pointer-events: auto;
 }
 
 @media (min-width: 900px) {
   .strategy__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 6rem;
-    align-items: start;
+    align-items: center;
   }
 }
 
-/* ── Pillars (left column) ───────────────────────────────────────── */
-.strategy__pillars {
+/* Columns are stacking contexts — children crossfade in place */
+.strategy__col {
+  position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.strategy__col--left {
+  min-height: 22rem;
+}
+
+.strategy__col--right {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .strategy__col--right {
+    display: block;
+    aspect-ratio: 1 / 1;
+    max-width: 30rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+}
+
+/* Invisible trigger strips drive which pillar is active */
+.strategy__step {
+  height: 100vh;
+  pointer-events: none;
+}
+
+/* ── Pillars (left) ──────────────────────────────────────────────── */
 .pillar {
-  min-height: 80vh;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  opacity: 0.18;
-  transition: opacity 0.5s ease;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  pointer-events: none;
 }
 
 .pillar.is-active {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .pillar__inner {
@@ -465,39 +518,15 @@ const h = headline ?? t.defaultHeadline
   margin: 0;
 }
 
-/* ── Stage (right column) — sticky, center-pinned, no backdrop ──── */
-.strategy__stage {
-  display: none;
-}
-
-@media (min-width: 900px) {
-  .strategy__stage {
-    display: block;
-    align-self: stretch;
-    height: 100%;
-    position: relative;
-  }
-}
-
-.strategy__sticky {
-  position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  max-width: 30rem;
-  margin: 0 auto;
-  display: grid;
-  place-items: center;
-}
-
+/* ── Illustrations (right) — staggered behind the text ───────────── */
 .illo {
-  grid-area: 1 / 1;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
   transform: scale(0.97);
-  transition: opacity 0.5s ease, transform 0.6s ease;
+  transition: opacity 0.6s ease 0.18s, transform 0.7s ease 0.18s;
   color: var(--ink);
 }
 
@@ -506,12 +535,28 @@ const h = headline ?? t.defaultHeadline
   transform: scale(1);
 }
 
-/* Mobile (<900px): keep pillars inline at full opacity, skip illos */
+/* Mobile (<900px): stack pillars inline at full opacity, no scroll pin */
 @media (max-width: 899px) {
-  .pillar {
+  .strategy__pin {
+    position: static;
+    height: auto;
+    display: block;
+  }
+
+  .strategy__col--left {
     min-height: 0;
+  }
+
+  .pillar {
+    position: relative;
+    inset: auto;
     opacity: 1;
     padding: 3rem 0;
+    pointer-events: auto;
+  }
+
+  .strategy__step {
+    display: none;
   }
 }
 
@@ -553,33 +598,31 @@ const h = headline ?? t.defaultHeadline
 
 <script is:inline>
   (function () {
-    var pillars = document.querySelectorAll('[data-pillar-index]');
-    var illos = document.querySelectorAll('.illo[data-illo]');
-    if (!pillars.length || !illos.length) return;
+    var pillars = Array.from(document.querySelectorAll('.pillar[data-pillar-index]'));
+    var illos = Array.from(document.querySelectorAll('.illo[data-illo]'));
+    var steps = Array.from(document.querySelectorAll('.strategy__step[data-step]'));
+    if (!pillars.length || !illos.length || !steps.length) return;
 
-    function activate(name, activePillar) {
-      illos.forEach(function (el) {
-        el.classList.toggle('is-active', el.getAttribute('data-illo') === name);
-      });
-      pillars.forEach(function (p) {
-        p.classList.toggle('is-active', p === activePillar);
-      });
+    function setActive(index) {
+      pillars.forEach(function (p, i) { p.classList.toggle('is-active', i === index); });
+      illos.forEach(function (s, i) { s.classList.toggle('is-active', i === index); });
     }
 
-    // Seed first
-    activate(pillars[0].getAttribute('data-pillar-illo'), pillars[0]);
+    // Seed step 0 (so first pillar is visible immediately on entry)
+    setActive(0);
 
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            activate(entry.target.getAttribute('data-pillar-illo'), entry.target);
+            var i = parseInt(entry.target.getAttribute('data-step'), 10);
+            if (!isNaN(i)) setActive(i);
           }
         });
       },
-      { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
     );
 
-    pillars.forEach(function (p) { io.observe(p); });
+    steps.forEach(function (s) { io.observe(s); });
   })();
 </script>
