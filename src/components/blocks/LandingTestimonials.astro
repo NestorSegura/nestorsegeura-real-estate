@@ -21,58 +21,43 @@ interface Props {
 const { headline, subtitle, testimonials = [] } = Astro.props
 ---
 
-<section id="testimonials" class="bg-white py-16 md:py-24 px-6">
-  <div class="max-w-6xl mx-auto">
-    {headline && (
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-3">
-        {headline}
-      </h2>
-    )}
-
-    {subtitle && (
-      <p class="text-lg text-gray-500 text-center max-w-xl mx-auto mb-12">
-        {subtitle}
-      </p>
-    )}
+<section id="testimonials" class="testimonials">
+  <div class="testimonials__inner">
+    {headline && <h2 class="testimonials__heading">{headline}</h2>}
+    {subtitle && <p class="testimonials__subtitle">{subtitle}</p>}
 
     {testimonials.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="testimonials__grid">
         {testimonials.map((t) => {
           const avatarSrc = urlFor(t.image as any)?.width(160).format('webp').url() ?? null
           const initial = (t.name ?? 'A').charAt(0).toUpperCase()
           return (
-            <figure class="flex flex-col gap-4 p-8 rounded-2xl bg-gray-50 border border-gray-100 relative">
-              {/* Opening quote mark */}
-              <span class="text-5xl font-serif leading-none select-none absolute top-4 left-6 text-primary-200 opacity-60" aria-hidden="true">
-                &ldquo;
-              </span>
+            <figure class="testimonial-card">
+              <span class="testimonial-card__mark" aria-hidden="true">&ldquo;</span>
+              <span class="testimonial-card__accent" aria-hidden="true"></span>
 
-              <blockquote class="text-base text-gray-700 leading-relaxed pt-6">
+              <blockquote class="testimonial-card__quote">
                 {t.quote}
               </blockquote>
 
-              <figcaption class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-200">
+              <figcaption class="testimonial-card__byline">
                 {avatarSrc ? (
                   <img
                     src={avatarSrc}
                     alt={t.name ?? ''}
-                    width="40"
-                    height="40"
+                    width="56"
+                    height="56"
                     loading="lazy"
-                    class="w-10 h-10 rounded-full object-cover shrink-0"
+                    class="testimonial-card__avatar testimonial-card__avatar--img"
                   />
                 ) : (
-                  <div class="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-sm font-bold shrink-0" aria-hidden="true">
+                  <div class="testimonial-card__avatar testimonial-card__avatar--initial" aria-hidden="true">
                     {initial}
                   </div>
                 )}
-                <div>
-                  {t.name && (
-                    <p class="text-sm font-semibold text-gray-900">{t.name}</p>
-                  )}
-                  {t.role && (
-                    <p class="text-xs text-gray-500">{t.role}</p>
-                  )}
+                <div class="testimonial-card__id">
+                  {t.name && <p class="testimonial-card__name">{t.name}</p>}
+                  {t.role && <p class="testimonial-card__role">{t.role}</p>}
                 </div>
               </figcaption>
             </figure>
@@ -82,3 +67,192 @@ const { headline, subtitle, testimonials = [] } = Astro.props
     )}
   </div>
 </section>
+
+<style>
+  .testimonials {
+    padding: 6rem 1.5rem;
+    background: var(--color-brand-cream, #efeeec);
+    color: var(--color-brand-dark, #131313);
+  }
+
+  .testimonials__inner {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .testimonials__heading {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin: 0 0 0.75rem;
+  }
+
+  .testimonials__subtitle {
+    font-family: 'Chivo', system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: rgba(19, 19, 19, 0.6);
+    text-align: center;
+    max-width: 36rem;
+    margin: 0 auto 4rem;
+  }
+
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .testimonials {
+      padding: 4rem 1rem;
+    }
+    .testimonials__grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  /* ── Card ─────────────────────────────────────────────────── */
+
+  .testimonial-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2.25rem 2rem 1.75rem;
+    background: #fff;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    margin: 0;
+    transition: transform 0.4s cubic-bezier(0.625, 0.05, 0, 1),
+                box-shadow 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+    box-shadow: 0 1px 0 rgba(19, 19, 19, 0.04);
+  }
+
+  /* Top accent strip — cyan, scales in from left on hover */
+  .testimonial-card__accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #2ECFE0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.625, 0.05, 0, 1);
+  }
+
+  /* Decorative quote mark — large, primary purple, anchors the card */
+  .testimonial-card__mark {
+    position: absolute;
+    top: -1.25rem;
+    right: 1.25rem;
+    font-family: 'Clash Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 8rem;
+    line-height: 1;
+    color: var(--color-primary-700, oklch(0.42 0.18 290));
+    opacity: 0.12;
+    user-select: none;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.625, 0.05, 0, 1);
+  }
+
+  .testimonial-card__quote {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: 1.1875rem;
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--color-brand-dark, #131313);
+    margin: 0;
+    letter-spacing: -0.005em;
+    /* Subtle hanging indent to feel editorial */
+    text-wrap: pretty;
+  }
+
+  /* Inline quote glyphs intentionally omitted — the giant decorative
+     mark in the top-right of each card carries the quote affordance. */
+
+  .testimonial-card__byline {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(19, 19, 19, 0.08);
+  }
+
+  .testimonial-card__avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    flex: none;
+  }
+
+  .testimonial-card__avatar--img {
+    object-fit: cover;
+  }
+
+  .testimonial-card__avatar--initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1.125rem;
+    background: linear-gradient(135deg,
+      var(--color-primary-700, oklch(0.42 0.18 290)) 0%,
+      var(--color-primary-500, oklch(0.58 0.20 290)) 100%);
+    color: #fff;
+  }
+
+  .testimonial-card__id {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .testimonial-card__name {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-brand-dark, #131313);
+  }
+
+  .testimonial-card__role {
+    font-family: 'Chivo', system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    margin: 0.125rem 0 0;
+    color: rgba(19, 19, 19, 0.55);
+    letter-spacing: 0.01em;
+  }
+
+  /* Hover — desktop only */
+  @media (hover: hover) and (pointer: fine) {
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 1px 2px rgba(19, 19, 19, 0.04),
+        0 12px 32px rgba(19, 19, 19, 0.08);
+    }
+    .testimonial-card:hover .testimonial-card__accent {
+      transform: scaleX(1);
+    }
+    .testimonial-card:hover .testimonial-card__mark {
+      opacity: 0.22;
+      transform: translate(-0.25rem, 0.25rem) rotate(-4deg);
+    }
+  }
+</style>
