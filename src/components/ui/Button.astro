@@ -46,6 +46,9 @@ const {
 const isExternal = target === '_blank';
 const resolvedRel = rel ?? (isExternal ? 'noopener noreferrer' : undefined);
 
+// Strip directional-arrow glyphs from labels — the button has its own icon.
+const cleanLabel = label.replace(/[\u2190-\u21FF]/g, '').trim();
+
 const classes = [
   'btn-icon-link',
   `btn-icon-link--${variant}`,
@@ -66,7 +69,7 @@ const classes = [
   {variant === 'filled' ? (
     <div class="btn-icon-content">
       <div class="btn-icon-content__mask">
-        <span data-button-anim-target class="btn-icon-content__text">{label}</span>
+        <span data-button-anim-target class="btn-icon-content__text">{cleanLabel}</span>
       </div>
       <div class="btn-icon-icon">
         <div data-button-anim-target class="btn-icon-icon__bg"></div>
@@ -83,7 +86,7 @@ const classes = [
   ) : (
     <>
       <div class="btn-icon-content__mask">
-        <span data-button-anim-target class="btn-icon-content__text">{label}</span>
+        <span data-button-anim-target class="btn-icon-content__text">{cleanLabel}</span>
       </div>
       <div class="btn-icon-icon">
         <div data-button-anim-target class="btn-icon-icon__bg"></div>
@@ -122,21 +125,22 @@ const classes = [
   .btn-icon-link--normal { font-size: 1rem; }
   .btn-icon-link--large  { font-size: 1.25rem; }
 
-  /* Tone variants (base bg/text pair) */
+  /* Tone variants (base bg/text pair).
+     All tones sweep to brand cyan #2ECFE0 on hover for a unified accent. */
   .btn-icon-link--tone-primary {
     --btn-bg: var(--color-primary-700, oklch(0.42 0.18 290));
     --btn-text: #fff;
-    --btn-sweep: var(--color-brand-dark, #131313);
+    --btn-sweep: #2ECFE0;
   }
   .btn-icon-link--tone-dark {
     --btn-bg: var(--color-brand-dark, #131313);
     --btn-text: #fff;
-    --btn-sweep: var(--color-primary-700, oklch(0.42 0.18 290));
+    --btn-sweep: #2ECFE0;
   }
   .btn-icon-link--tone-white {
     --btn-bg: #fff;
     --btn-text: var(--color-brand-dark, #131313);
-    --btn-sweep: var(--color-primary-700, oklch(0.42 0.18 290));
+    --btn-sweep: #2ECFE0;
   }
 
   /* ── Filled variant (pill) ─────────────────────────────────────── */
