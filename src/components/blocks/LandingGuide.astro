@@ -23,83 +23,57 @@ const imageSrcset = imageSrc
       .join(', ')
   : null
 
-// ── Validation rail copy (locale-aware) ─────────────────────────────────
-// External authoritative sources backing the "strategy over aesthetics"
-// approach. All links are evergreen, real, and verifiable.
+// ── Validation footnote (locale-aware) ─────────────────────────────────
+// Inline citation line that reads as a natural author footnote rather than
+// a card grid. Each source is a real, evergreen, authoritative link.
 
-type Copy = {
-  validationEyebrow: string
-  validationHeading: string
-  refs: { source: string; title: string; href: string }[]
+const REFS = {
+  google: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
+  nar: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
+  twg: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
+} as const
+
+interface FootnoteParts {
+  intro: string
+  google: string
+  separator1: string
+  nar: string
+  separator2: string
+  twg: string
+  outro: string
 }
 
-const copy: Record<Locale, Copy> = {
+const footnote: Record<Locale, FootnoteParts> = {
   de: {
-    validationEyebrow: 'Belege',
-    validationHeading: 'Warum dieser Ansatz funktioniert',
-    refs: [
-      {
-        source: 'Google Search Quality Guidelines',
-        title: 'Was Google als „hochwertigen Inhalt" bewertet — die Grundlage moderner SEO.',
-        href: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-      },
-      {
-        source: 'NAR Home Buyer Behavior Report',
-        title: 'Wie Käufer und Verkäufer online nach Immobilienexperten suchen.',
-        href: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-      },
-      {
-        source: 'Think with Google · Local Insights',
-        title: 'Konkrete Daten zum Verhalten lokaler Suchender — direkt von Google.',
-        href: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-      },
-    ],
+    intro: 'Dieser Ansatz stützt sich auf ',
+    google: 'Googles Qualitätskriterien für Suchergebnisse',
+    separator1: ', die ',
+    nar: 'NAR-Studien zum Käuferverhalten',
+    separator2: ' und ',
+    twg: 'Googles eigene Daten zu lokalen Suchanfragen',
+    outro: '.',
   },
   en: {
-    validationEyebrow: 'Evidence',
-    validationHeading: 'Why this approach works',
-    refs: [
-      {
-        source: 'Google Search Quality Guidelines',
-        title: 'What Google actually ranks as "high-quality content" — the foundation of modern SEO.',
-        href: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-      },
-      {
-        source: 'NAR Home Buyer Behavior Report',
-        title: 'How buyers and sellers actually search for real estate professionals online.',
-        href: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-      },
-      {
-        source: 'Think with Google · Local Insights',
-        title: 'Hard data on local-search behavior, straight from the source.',
-        href: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-      },
-    ],
+    intro: 'This approach is grounded in ',
+    google: 'Google\u2019s search quality guidelines',
+    separator1: ', ',
+    nar: 'NAR research on buyer behavior',
+    separator2: ', and ',
+    twg: 'Google\u2019s own data on local search',
+    outro: '.',
   },
   es: {
-    validationEyebrow: 'Evidencia',
-    validationHeading: 'Por qué funciona este enfoque',
-    refs: [
-      {
-        source: 'Google Search Quality Guidelines',
-        title: 'Qué considera Google realmente «contenido de calidad» — la base del SEO moderno.',
-        href: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-      },
-      {
-        source: 'NAR Home Buyer Behavior Report',
-        title: 'Cómo compradores y vendedores buscan agentes inmobiliarios online.',
-        href: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-      },
-      {
-        source: 'Think with Google · Local Insights',
-        title: 'Datos concretos sobre búsquedas locales, directamente de Google.',
-        href: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-      },
-    ],
+    intro: 'Este enfoque se apoya en ',
+    google: 'las directrices de calidad de Google',
+    separator1: ', en ',
+    nar: 'las investigaciones de NAR sobre el comportamiento del comprador',
+    separator2: ' y en ',
+    twg: 'los datos propios de Google sobre búsquedas locales',
+    outro: '.',
   },
 }
 
-const c = copy[locale] ?? copy.de
+const f = footnote[locale] ?? footnote.de
 ---
 
 <section id="guide" class="bg-white py-16 md:py-24 px-6">
@@ -133,164 +107,51 @@ const c = copy[locale] ?? copy.de
             {paragraphs.map((p) => (
               <p class="text-base md:text-lg text-gray-600 leading-relaxed">{p}</p>
             ))}
+
+            <p class="guide-footnote">
+              {f.intro}<a href={REFS.google} target="_blank" rel="noopener noreferrer" class="guide-footnote__link">{f.google}</a>{f.separator1}<a href={REFS.nar} target="_blank" rel="noopener noreferrer" class="guide-footnote__link">{f.nar}</a>{f.separator2}<a href={REFS.twg} target="_blank" rel="noopener noreferrer" class="guide-footnote__link">{f.twg}</a>{f.outro}
+            </p>
           </div>
         )}
       </div>
-    </div>
-
-    <!-- Validation rail — replaces former inline testimonials sub-block -->
-    <div class="guide-validation">
-      <div class="guide-validation__head">
-        <span class="guide-validation__eyebrow">( {c.validationEyebrow} )</span>
-        <h3 class="guide-validation__heading">{c.validationHeading}</h3>
-      </div>
-
-      <ul class="guide-validation__list">
-        {c.refs.map((ref) => (
-          <li class="guide-validation__item">
-            <a
-              href={ref.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="guide-validation__link"
-            >
-              <span class="guide-validation__accent" aria-hidden="true"></span>
-              <span class="guide-validation__source">{ref.source}</span>
-              <span class="guide-validation__desc">{ref.title}</span>
-              <svg class="guide-validation__arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-          </li>
-        ))}
-      </ul>
     </div>
   </div>
 </section>
 
 <style>
-  .guide-validation {
-    margin-top: 4rem;
-    padding-top: 3rem;
+  /* Conversational footnote — sits as a smaller, lighter paragraph below
+     the main body. Source links are inline, brand-purple, animated underline. */
+  .guide-footnote {
+    margin-top: 1rem;
+    padding-top: 1.25rem;
     border-top: 1px solid rgba(19, 19, 19, 0.08);
-  }
-
-  .guide-validation__head {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    max-width: 36rem;
-  }
-
-  .guide-validation__eyebrow {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: rgba(19, 19, 19, 0.5);
-    letter-spacing: 0;
-  }
-
-  .guide-validation__heading {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.15;
-    letter-spacing: -0.015em;
-    color: var(--color-brand-dark, #131313);
-    margin: 0;
-  }
-
-  .guide-validation__list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  @media (max-width: 900px) {
-    .guide-validation__list { grid-template-columns: 1fr; }
-  }
-
-  .guide-validation__item { margin: 0; }
-
-  .guide-validation__link {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      'source  arrow'
-      'desc    desc';
-    column-gap: 1rem;
-    row-gap: 0.625rem;
-    align-items: start;
-    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
-    background: #fff;
-    border: 1px solid rgba(19, 19, 19, 0.08);
-    border-radius: 1rem;
-    color: var(--color-brand-dark, #131313);
-    text-decoration: none;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.625, 0.05, 0, 1),
-                border-color 0.3s ease,
-                box-shadow 0.4s cubic-bezier(0.625, 0.05, 0, 1);
-    height: 100%;
-  }
-
-  .guide-validation__accent {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--color-primary-700, oklch(0.42 0.18 290));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s cubic-bezier(0.625, 0.05, 0, 1);
-  }
-
-  .guide-validation__source {
-    grid-area: source;
-    font-family: 'Clash Display', system-ui, sans-serif;
     font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.25;
+    line-height: 1.55;
+    color: rgba(19, 19, 19, 0.55);
+    font-style: normal;
   }
 
-  .guide-validation__arrow {
-    grid-area: arrow;
+  .guide-footnote__link {
     color: var(--color-primary-700, oklch(0.42 0.18 290));
-    transition: transform 0.4s cubic-bezier(0.625, 0.05, 0, 1);
-    flex: none;
-  }
-
-  .guide-validation__desc {
-    grid-area: desc;
-    font-family: 'Chivo', system-ui, sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.45;
-    color: rgba(19, 19, 19, 0.6);
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    transition: background-size 0.45s cubic-bezier(0.625, 0.05, 0, 1),
+                color 0.2s ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .guide-validation__link:hover {
-      transform: translateY(-2px);
-      border-color: rgba(19, 19, 19, 0.16);
-      box-shadow:
-        0 1px 2px rgba(19, 19, 19, 0.04),
-        0 8px 20px rgba(19, 19, 19, 0.06);
-    }
-    .guide-validation__link:hover .guide-validation__accent {
-      transform: scaleX(1);
-    }
-    .guide-validation__link:hover .guide-validation__arrow {
-      transform: translate(2px, -2px);
+    .guide-footnote__link:hover {
+      color: var(--color-brand-dark, #131313);
+      background-size: 100% 2px;
     }
   }
 
-  .guide-validation__link:focus-visible {
+  .guide-footnote__link:focus-visible {
     outline: 2px solid var(--color-primary-700, oklch(0.42 0.18 290));
     outline-offset: 2px;
+    border-radius: 2px;
   }
 </style>
