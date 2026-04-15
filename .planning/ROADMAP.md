@@ -133,20 +133,22 @@ Plans:
 - [x] 08-04-PLAN.md — SEO: @astrojs/sitemap with hreflang, robots.txt, JsonLd component, BaseLayout meta extension, per-page Person/Article/Breadcrumb JSON-LD
 
 ### Phase 9: Interactive Islands
-**Goal**: The navbar is interactive (mobile drawer, locale switcher), the /analyse page submits URLs and shows scores, and page sections animate into view as the user scrolls — all with minimal JavaScript footprint.
+**Goal**: The navbar is interactive (mobile drawer, locale switcher); the /analyse page and scroll reveals are deferred to v2.1 — user wants real usage data before shipping the analyzer UI, and scroll animations are polish, not ship-blocking.
 **Depends on**: Phase 8
-**Requirements**: INTR-01, INTR-02, INTR-03, INTR-04
+**Requirements**: INTR-01 (shipped), INTR-03 (endpoint shipped, UI deferred), INTR-02 + INTR-04 deferred to v2.1
 **Success Criteria** (what must be TRUE):
-  1. On mobile, tapping the hamburger icon opens the navigation drawer without a page reload
-  2. The locale switcher in the navbar navigates to the equivalent page in the target locale
-  3. Submitting a URL on the /analyse page returns a JSON response with scores and displays them — the React island receives locale and labels as props, not via hooks
-  4. Scrolling down the page causes sections to animate into view using Intersection Observer (no third-party animation library)
-**Plans**: 2 plans
+  1. ✓ On mobile, tapping the hamburger icon opens the navigation drawer without a page reload
+  2. ✓ The locale switcher in the navbar navigates to the equivalent page in the target locale
+  3. Deferred: /analyse form + score display (endpoint `/api/analyze` live but unconsumed)
+  4. Deferred: scroll-in animations via Intersection Observer
+**Plans**: 5 planned, 3 shipped + 2 deferred
 
 Plans:
-- [ ] 09-01: Build NavbarClient React island (client:load) with mobile drawer and locale switcher
-- [ ] 09-02: Rewrite AnalysePageClient as locale-prop-driven React island and implement /api/analyze as Cloudflare Worker function
-- [ ] 09-03: Add vanilla JS Intersection Observer scroll animation script block
+- [x] 09-01: Sanity siteSettings nav schema + getSiteSettings helper
+- [x] 09-02: Osmo MegaNav .astro component + locale switcher + strategy section rebuild
+- [x] 09-03: @astrojs/react install + /api/analyze Cloudflare Worker endpoint (mock scores)
+- [ ] 09-04 (DEFERRED to v2.1): AnalyseForm React island + localized /analyse pages
+- [ ] 09-05 (DEFERRED to v2.1): Intersection Observer scroll-reveal polish
 
 ### Phase 10: Production Deployment
 **Goal**: nestorsegura.com is served from Cloudflare Workers with the custom domain, environment variables configured in the dashboard, the Sanity deploy hook triggers a rebuild on content publish, and Auto Minify is disabled to preserve HTML integrity.
@@ -178,5 +180,5 @@ Phases execute in dependency order: 6 → 7 → 8 → 9 → 10
 | 6. Infrastructure | v2.0 | 0/2 | Not started | - |
 | 7. i18n and Content Layer | v2.0 | 2/2 | Complete | 2026-04-14 |
 | 8. Static Blocks and Blog | v2.0 | 4/4 | Complete | 2026-04-14 |
-| 9. Interactive Islands | v2.0 | 0/3 | Not started | - |
+| 9. Interactive Islands | v2.0 | 3/5 (2 deferred to v2.1) | Complete (partial) | 2026-04-15 |
 | 10. Production Deployment | v2.0 | 0/2 | Not started | - |

@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 ## Current Position
 
-Phase: 9 of 10 (Interactive Islands)
-Plan: 4 of 5 in current phase (09-02 complete — awaiting checkpoint approval)
-Status: In progress
-Last activity: 2026-04-14 — 09-02 correction: osmo CSS verbatim replacement + BaseLayout heroBleed — awaiting checkpoint:human-verify
+Phase: 9 of 10 (Interactive Islands) — COMPLETE (partial, 09-04 and 09-05 deferred to v2.1)
+Plan: 3 of 5 shipped, 2 deferred
+Status: Ready for Phase 10 (Production Deployment)
+Last activity: 2026-04-15 — 09-04/09-05 deferred per user decision; Analyse link removed from MegaNav fallback
 
-Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09-03 complete
+Progress: [##################░░] Phase 9 partial — 09-01, 09-02, 09-03 shipped; 09-04, 09-05 → v2.1
 
 ## Performance Metrics
 
@@ -79,6 +79,8 @@ Progress: [###############░░░░░] Phase 9 underway — 09-01, 09-02, 09
 - [09-03]: /api/analyze uses prerender=false — single route opted into Cloudflare Worker on-demand while rest of site stays static; build correctly excludes it from prerendered routes list
 - [09-03]: CORS Allow-Origin: * in V1 API endpoint — tighten to PUBLIC_SITE_URL env var in LEAD-V2-01 when real PageSpeed integration lands
 - [09-03]: Locale validation in /api/analyze uses ALLOWED_LOCALES as const tuple — both runtime allow-list check and TypeScript type narrowing
+- [09 defer]: 09-04 (AnalyseForm React island) and 09-05 (IO scroll reveals) deferred to v2.1 — user wants real usage data before shipping analyzer UI; scroll reveals are polish, not ship-blocking
+- [09 defer]: Analyse link removed from MegaNav fallbackNavItems — /api/analyze endpoint stays live but has no consumer; /analyse .astro pages left in place for now (routes respond but are content-light)
 - [09-02]: MegaNav implemented as .astro + <script is:inline> — NOT React island; GSAP lazy-loaded from CDN in nav inline script (guard: if !window.gsap), same CDN URL pattern as StackingCards.astro
 - [09-02]: Locale switcher hrefs pre-computed at build time via localizeRoute() in Astro frontmatter, serialized as data-href on buttons; inline script reads btn.getAttribute('data-href') — zero client-side routing logic
 - [09-02]: home route added to ROUTE_SEGMENTS with empty segments ('', '', ''); localizeRoute('home', locale) → '/', '/en/', '/es/'

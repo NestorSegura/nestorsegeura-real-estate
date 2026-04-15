@@ -101,14 +101,12 @@ const localeUrls: Record<'de' | 'en' | 'es', string> = navLocaleUrls ?? {
 
 // Fallback nav items: used when Sanity siteSettings.navItems is empty (Studio not yet populated).
 // Kontakt anchors to the #kontakt section on the current locale's homepage.
+// Analyse link deferred — /analyse UI not shipping in v2.0.
+// The /api/analyze Cloudflare Worker is live but no consumer.
 const fallbackNavItems = [
   {
     href: localizeRoute('blog', locale),
     label: locale === 'en' ? 'Blog' : locale === 'es' ? 'Blog' : 'Blog',
-  },
-  {
-    href: localizeRoute('analyse', locale),
-    label: locale === 'en' ? 'Analyze' : locale === 'es' ? 'Analizar' : 'Analyse',
   },
   {
     // Kontakt: anchor to #kontakt section on the current locale's homepage.

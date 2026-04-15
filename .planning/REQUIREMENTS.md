@@ -112,10 +112,10 @@
 
 ### Interactive (INTR)
 
-- [ ] **INTR-01**: NavbarClient as React island (client:load) with mobile drawer and locale switcher
-- [ ] **INTR-02**: AnalysePageClient rewritten without next-intl hooks (locale + labels as props)
-- [ ] **INTR-03**: /api/analyze POST endpoint as Cloudflare Worker function
-- [ ] **INTR-04**: Scroll animations as vanilla JS script block (Intersection Observer)
+- [x] **INTR-01**: Osmo mega-nav as Astro component + inline script — mobile drawer + locale switcher (CONTEXT.md override of original React-island wording)
+- [ ] **INTR-02** (DEFERRED to v2.1): AnalyseForm React island — UI deferred until real usage data available
+- [x] **INTR-03**: /api/analyze POST endpoint as Cloudflare Worker (mock scores; real PSI remains LEAD-V2-01)
+- [ ] **INTR-04** (DEFERRED to v2.1): Intersection Observer scroll reveals
 
 ### Blog (BLOG)
 
@@ -187,10 +187,10 @@
 | BLCK-17 | Phase 8 | Complete |
 | BLCK-18 | Phase 8 | Complete |
 | BLCK-19 | Phase 8 | Complete |
-| INTR-01 | Phase 9 | Pending |
-| INTR-02 | Phase 9 | Pending |
-| INTR-03 | Phase 9 | Pending |
-| INTR-04 | Phase 9 | Pending |
+| INTR-01 | Phase 9 | Complete |
+| INTR-02 | Phase 9 | Deferred → v2.1 |
+| INTR-03 | Phase 9 | Complete |
+| INTR-04 | Phase 9 | Deferred → v2.1 |
 | BLOG-04 | Phase 8 | Complete |
 | BLOG-05 | Phase 8 | Complete |
 | BLOG-06 | Phase 8 | Complete |
