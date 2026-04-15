@@ -83,16 +83,16 @@ const imageSrcset = imageSrc
     gap: 5rem;
   }
 
-  /* Headline kept as a smaller "eyebrow-like" intro so the body text wins. */
+  /* Standard site-wide h2 size — em-based for Osmo scaling system. */
   .guide-editorial__heading {
     font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-    font-weight: 600;
+    font-size: clamp(1.875em, 3vw, 2.25em);
+    font-weight: 700;
     line-height: 1.15;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     margin: 0;
-    max-width: 38rem;
-    color: rgba(19, 19, 19, 0.55);
+    max-width: 38em;
+    color: var(--color-brand-dark, #131313);
   }
 
   /* The big editorial statement — the focal point of the section.

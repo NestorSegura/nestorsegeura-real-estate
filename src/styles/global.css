@@ -4,6 +4,48 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* ──────────────────────────────────────────────────────────────────
+   Osmo Scaling System  https://osmo.supply/
+   Body font-size scales with viewport so all em-based dimensions
+   (typography, margin, padding, gap) reflow proportionally.
+   ────────────────────────────────────────────────────────────────── */
+:root {
+  --size-unit: 16;                /* body font-size in design (no px) */
+  --size-container-ideal: 1440;   /* design width (no px) */
+  --size-container-min: 992px;
+  --size-container-max: 1920px;
+  --size-container: clamp(var(--size-container-min), 100vw, var(--size-container-max));
+  --size-font: calc(var(--size-container) / (var(--size-container-ideal) / var(--size-unit)));
+}
+
+@media screen and (max-width: 991px) {
+  :root {
+    --size-container-ideal: 834;
+    --size-container-min: 768px;
+    --size-container-max: 991px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  :root {
+    --size-container-ideal: 550;
+    --size-container-min: 480px;
+    --size-container-max: 767px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  :root {
+    --size-container-ideal: 390;
+    --size-container-min: 320px;
+    --size-container-max: 479px;
+  }
+}
+
+body {
+  font-size: var(--size-font);
+}
+
 @font-face {
   font-family: 'Clash Display';
   src: url('/fonts/ClashDisplay-Variable-subset.woff2') format('woff2-variations'),

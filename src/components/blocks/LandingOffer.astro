@@ -383,11 +383,13 @@ const h = headline ?? t.defaultHeadline
   margin-bottom: 1.25rem;
 }
 
+/* Standardised to the site-wide h2 size (matches ServicesBlock / Faq / etc.).
+   Em-based so it participates in the Osmo scaling system. */
 .strategy__headline {
   font-family: 'Clash Display', sans-serif;
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
-  font-weight: 600;
-  line-height: 1.07;
+  font-size: clamp(1.875em, 3vw, 2.25em);
+  font-weight: 700;
+  line-height: 1.15;
   letter-spacing: -0.02em;
   color: var(--ink);
   margin: 0;

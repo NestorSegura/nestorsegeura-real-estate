@@ -75,14 +75,16 @@ const { title, testimonials = [] } = Astro.props
 
   .testimonials__inner { max-width: 80rem; margin: 0 auto; }
 
+  /* Section h2 — canonical site-wide size (matches text-3xl → text-4xl).
+     Em-based so it participates in the Osmo scaling system. */
   .testimonials__heading {
     font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    line-height: 1.1;
+    font-size: clamp(1.875em, 3vw, 2.25em);
+    font-weight: 700;
+    line-height: 1.15;
     letter-spacing: -0.02em;
     text-align: center;
-    margin: 0 0 4rem;
+    margin: 0 0 3em;
   }
 
   .testimonials__grid {
