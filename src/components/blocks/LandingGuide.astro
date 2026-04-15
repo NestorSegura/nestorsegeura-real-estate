@@ -23,51 +23,113 @@ const imageSrcset = imageSrc
   : null
 ---
 
-<section id="guide" class="bg-white py-16 md:py-24 px-6">
-  <div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+<section id="guide" class="guide-editorial">
+  <div class="guide-editorial__inner">
+    {headline && (
+      <h2 data-highlight-text class="guide-editorial__heading">
+        {headline}
+      </h2>
+    )}
 
-      {imageSrc && (
-        <div class="order-2 lg:order-1">
-          <img
-            src={imageSrc}
-            srcset={imageSrcset ?? undefined}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            width="640"
-            height="640"
-            loading="lazy"
-            alt={headline ?? ''}
-            class="w-full rounded-2xl object-cover shadow-lg"
-          />
-        </div>
-      )}
-
-      <div class={imageSrc ? 'order-1 lg:order-2' : 'lg:col-span-2'}>
-        {headline && (
-          <h2
-            data-highlight-text
-            class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight tracking-tight"
-          >
-            {headline}
-          </h2>
-        )}
-
-        {paragraphs.length > 0 && (
-          <div class="flex flex-col gap-4">
-            {paragraphs.map((p) => (
-              <p
-                data-highlight-text
-                class="text-base md:text-lg text-gray-600 leading-relaxed"
-              >
-                {p}
-              </p>
-            ))}
-          </div>
-        )}
+    {paragraphs.length > 0 && (
+      <div class="guide-editorial__body">
+        {paragraphs.map((p) => (
+          <p data-highlight-text class="guide-editorial__paragraph">
+            {p}
+          </p>
+        ))}
       </div>
-    </div>
+    )}
+
+    {imageSrc && (
+      <div class="guide-editorial__media">
+        <img
+          src={imageSrc}
+          srcset={imageSrcset ?? undefined}
+          sizes="(min-width: 1024px) 80vw, 100vw"
+          width="640"
+          height="640"
+          loading="lazy"
+          alt={headline ?? ''}
+          class="guide-editorial__image"
+        />
+      </div>
+    )}
   </div>
 </section>
+
+<style>
+  .guide-editorial {
+    background: #fff;
+    padding: 8rem 1.5rem;
+    color: var(--color-brand-dark, #131313);
+  }
+
+  @media (max-width: 760px) {
+    .guide-editorial { padding: 5rem 1.25rem; }
+  }
+
+  .guide-editorial__inner {
+    max-width: 88rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  /* Headline kept as a smaller "eyebrow-like" intro so the body text wins. */
+  .guide-editorial__heading {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0;
+    max-width: 38rem;
+    color: rgba(19, 19, 19, 0.55);
+  }
+
+  /* The big editorial statement — the focal point of the section. */
+  .guide-editorial__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .guide-editorial__paragraph {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: clamp(1.875rem, 4.5vw, 4rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--color-brand-dark, #131313);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 760px) {
+    .guide-editorial__inner { gap: 3rem; }
+    .guide-editorial__body { gap: 1.75rem; }
+    .guide-editorial__paragraph {
+      font-size: clamp(1.625rem, 7vw, 2.5rem);
+      line-height: 1.1;
+    }
+  }
+
+  /* Optional image — sits below as supporting media when present */
+  .guide-editorial__media {
+    margin-top: 2rem;
+  }
+
+  .guide-editorial__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 40px rgba(19, 19, 19, 0.08);
+  }
+</style>
 
 <script is:inline>
   /**
