@@ -1,21 +1,19 @@
 ---
 import type { Locale } from '../../i18n/utils'
 import { urlFor } from '../../lib/imageUrl'
-import StackingCards from './StackingCards.astro'
 
 interface Props {
   locale: Locale
   headline?: string
   paragraphs?: string[]
   image?: { asset?: { _ref: string; _id: string } } | null
-  // testimonials kept in props for backwards-compat with Sanity schema, but
-  // intentionally NOT rendered here — there's a dedicated TestimonialsBlock
-  // elsewhere on the page. This block now ends in a validation/references rail.
+  // testimonials kept in props for backwards-compat with the Sanity schema
+  // but no longer rendered — there's a dedicated TestimonialsBlock elsewhere.
   testimonials?: unknown[]
   [key: string]: unknown
 }
 
-const { locale, headline, paragraphs = [], image } = Astro.props
+const { headline, paragraphs = [], image } = Astro.props
 
 const imageSrc = urlFor(image as any)?.width(640).format('webp').url() ?? null
 const imageSrcset = imageSrc
@@ -23,141 +21,6 @@ const imageSrcset = imageSrc
       .map((w) => `${urlFor(image as any)?.width(w).format('webp').url()} ${w}w`)
       .join(', ')
   : null
-
-// ── Evidence section copy (locale-aware) ───────────────────────────────
-// Three editorial cards pairing real source insights with Nestor's specific
-// approach. Uses the same StackingCards mechanic as the strategy section.
-
-const REFS = {
-  google: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-  nar: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-  twg: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-} as const
-
-type EvidenceCard = {
-  source: string
-  href: string
-  insight: string
-  myApproach: string
-  readMore: string
-  variant: 'is--lilac' | 'is--dark' | 'is--teal' | 'is--green'
-}
-
-type EvidenceCopy = {
-  eyebrow: string
-  heading: string
-  intro: string
-  sourceLabel: string
-  approachLabel: string
-  cards: EvidenceCard[]
-}
-
-const evidence: Record<Locale, EvidenceCopy> = {
-  de: {
-    eyebrow: 'Belege',
-    heading: 'Worauf sich diese Methode konkret stützt',
-    intro: 'Drei Quellen, drei klare Belege — und genau das, was ich daraus für deine Online-Präsenz ableite.',
-    sourceLabel: 'Was die Quelle sagt',
-    approachLabel: 'Was ich daraus mache',
-    readMore: 'Quelle ansehen',
-    cards: [
-      {
-        source: 'Google · Quality Rater Guidelines',
-        href: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-        insight: 'Google bewertet Inhalte nach Nutzen für den Suchenden — nicht nach optischer Politur. Kernkriterien: Erfahrung, Expertise, Autorität, Vertrauenswürdigkeit (E-E-A-T).',
-        myApproach: 'Deshalb baue ich Seiten, die konkrete Fragen deiner Zielkunden in deiner Stadt beantworten — nicht hübsche Templates, die nichts Eigenes sagen. Jeder Inhalt belegt Erfahrung, Expertise und lokale Autorität.',
-        readMore: 'Original-Guidelines (PDF)',
-        variant: 'is--lilac',
-      },
-      {
-        source: 'NAR · Profile of Home Buyers and Sellers',
-        href: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-        insight: 'Über 95 % der Käufer beginnen ihre Recherche online — lange bevor sie einen Makler kontaktieren. Die Online-Präsenz entscheidet über die erste Auswahl.',
-        myApproach: 'Deshalb optimiere ich nicht für „eine schöne Webseite", sondern für genau den Moment, in dem jemand recherchiert: Suchsichtbarkeit, klare Positionierung, eindeutige Kontaktwege. Du wirst gefunden, bevor du angerufen wirst.',
-        readMore: 'NAR-Bericht ansehen',
-        variant: 'is--dark',
-      },
-      {
-        source: 'Think with Google · Local Insights',
-        href: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-        insight: 'Lokale „in der Nähe"-Suchanfragen wachsen seit Jahren überproportional — und führen besonders häufig zu konkreten Kontakten oder Anrufen.',
-        myApproach: 'Deshalb richte ich jeden digitalen Touchpoint — Website, Google Business Profil, Verzeichnisse — auf deine Stadt aus. Wenn jemand „Makler in [deine Stadt]" sucht, sollst du dort sein.',
-        readMore: 'Daten bei Think with Google',
-        variant: 'is--teal',
-      },
-    ],
-  },
-  en: {
-    eyebrow: 'Evidence',
-    heading: 'What this method is actually built on',
-    intro: 'Three sources, three clear data points — and exactly what I do with each for your online presence.',
-    sourceLabel: 'What the source says',
-    approachLabel: 'What I do with it',
-    readMore: 'View source',
-    cards: [
-      {
-        source: 'Google · Quality Rater Guidelines',
-        href: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-        insight: 'Google ranks content by usefulness to the searcher — not by visual polish. Core criteria: Experience, Expertise, Authority, Trust (E-E-A-T).',
-        myApproach: 'So I build pages that answer concrete questions your prospects ask in your city — not pretty templates with nothing of your own to say. Every piece signals real experience, expertise, and local authority.',
-        readMore: 'Read the official guidelines (PDF)',
-        variant: 'is--lilac',
-      },
-      {
-        source: 'NAR · Profile of Home Buyers and Sellers',
-        href: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-        insight: 'Over 95% of buyers start their research online — long before they ever contact an agent. Your digital presence decides the first cut.',
-        myApproach: 'So I don\u2019t optimize for "a beautiful website" — I optimize for that exact research moment: search visibility, clear positioning, obvious next steps. You get found before you get called.',
-        readMore: 'View the NAR report',
-        variant: 'is--dark',
-      },
-      {
-        source: 'Think with Google · Local Insights',
-        href: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-        insight: 'Local "near me" searches keep growing year over year — and convert disproportionately into calls and visits.',
-        myApproach: 'So I tune every digital surface — site, Google Business Profile, directories — to your city. When someone searches "real estate agent in [your city]", you\u2019re there.',
-        readMore: 'See the data on Think with Google',
-        variant: 'is--teal',
-      },
-    ],
-  },
-  es: {
-    eyebrow: 'Evidencia',
-    heading: 'En qué se sostiene exactamente esta metodología',
-    intro: 'Tres fuentes, tres datos claros — y exactamente qué hago con cada uno en tu presencia digital.',
-    sourceLabel: 'Lo que dice la fuente',
-    approachLabel: 'Lo que hago con eso',
-    readMore: 'Ver fuente',
-    cards: [
-      {
-        source: 'Google · Quality Rater Guidelines',
-        href: 'https://static.googleusercontent.com/media/guidelines.raterhub.com/en//searchqualityevaluatorguidelines.pdf',
-        insight: 'Google evalúa el contenido por su utilidad para quien busca — no por su acabado visual. Los criterios centrales son Experiencia, Pericia, Autoridad y Confianza (E-E-A-T).',
-        myApproach: 'Por eso construyo páginas que responden preguntas concretas que se hacen tus clientes en tu ciudad — no plantillas bonitas que no dicen nada propio. Cada bloque transmite experiencia real, pericia y autoridad local.',
-        readMore: 'Ver las guidelines oficiales (PDF)',
-        variant: 'is--lilac',
-      },
-      {
-        source: 'NAR · Profile of Home Buyers and Sellers',
-        href: 'https://www.nar.realtor/research-and-statistics/research-reports/highlights-from-the-profile-of-home-buyers-and-sellers',
-        insight: 'Más del 95 % de los compradores empieza su búsqueda online — mucho antes de contactar a un agente. La presencia digital decide la primera selección.',
-        myApproach: 'Por eso no optimizo para «tener una web bonita» — optimizo para ese momento exacto de investigación: visibilidad en búsquedas, posicionamiento claro, próximos pasos evidentes. Te encuentran antes de llamarte.',
-        readMore: 'Ver el informe de NAR',
-        variant: 'is--dark',
-      },
-      {
-        source: 'Think with Google · Local Insights',
-        href: 'https://www.thinkwithgoogle.com/marketing-strategies/search/near-me-searches/',
-        insight: 'Las búsquedas locales tipo «cerca de mí» crecen año tras año — y convierten desproporcionadamente en llamadas y visitas.',
-        myApproach: 'Por eso afino cada superficie digital — web, Google Business Profile, directorios — a tu ciudad. Cuando alguien busca «agente inmobiliario en [tu ciudad]», estás ahí.',
-        readMore: 'Ver datos en Think with Google',
-        variant: 'is--teal',
-      },
-    ],
-  },
-}
-
-const e = evidence[locale] ?? evidence.de
 ---
 
 <section id="guide" class="bg-white py-16 md:py-24 px-6">
@@ -181,7 +44,10 @@ const e = evidence[locale] ?? evidence.de
 
       <div class={imageSrc ? 'order-1 lg:order-2' : 'lg:col-span-2'}>
         {headline && (
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
+          <h2
+            data-highlight-text
+            class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight tracking-tight"
+          >
             {headline}
           </h2>
         )}
@@ -189,203 +55,105 @@ const e = evidence[locale] ?? evidence.de
         {paragraphs.length > 0 && (
           <div class="flex flex-col gap-4">
             {paragraphs.map((p) => (
-              <p class="text-base md:text-lg text-gray-600 leading-relaxed">{p}</p>
+              <p
+                data-highlight-text
+                class="text-base md:text-lg text-gray-600 leading-relaxed"
+              >
+                {p}
+              </p>
             ))}
           </div>
         )}
       </div>
     </div>
   </div>
-
-  <!-- Evidence stacking cards — pairs each source insight with my concrete approach -->
-  <div class="evidence">
-    <div class="evidence__head">
-      <span class="evidence__eyebrow">( {e.eyebrow} )</span>
-      <h3 class="evidence__heading">{e.heading}</h3>
-      <p class="evidence__intro">{e.intro}</p>
-    </div>
-  </div>
-
-  <StackingCards
-    variant="wide"
-    desktopRotate="-2, 1.5, -1"
-    desktopX="-2em, 2em, -1em"
-    desktopY="1em, 0em, 1.5em"
-  >
-    {e.cards.map((card) => (
-      <div data-stacking-card class="cards-stack__item">
-        <div data-stacking-card-target class={`cards-stack-card ${card.variant}`}>
-          <div class="evidence-card">
-            <header class="evidence-card__top">
-              <span class="evidence-card__label">{e.sourceLabel}</span>
-              <p class="evidence-card__source">{card.source}</p>
-              <p class="evidence-card__insight">"{card.insight}"</p>
-            </header>
-
-            <div class="evidence-card__divider" aria-hidden="true">
-              <span class="evidence-card__divider-line"></span>
-              <span class="evidence-card__divider-glyph">↓</span>
-              <span class="evidence-card__divider-line"></span>
-            </div>
-
-            <footer class="evidence-card__bottom">
-              <span class="evidence-card__label">{e.approachLabel}</span>
-              <p class="evidence-card__approach">{card.myApproach}</p>
-              <a
-                href={card.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="evidence-card__link"
-              >
-                <span>{card.readMore}</span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </footer>
-          </div>
-        </div>
-      </div>
-    ))}
-  </StackingCards>
 </section>
 
-<style>
-  /* Evidence section — section heading sits above the StackingCards block. */
-  .evidence {
-    max-width: 72rem;
-    margin: 4rem auto 1.5rem;
-    padding: 0 1.5rem;
-  }
+<script is:inline>
+  /**
+   * Osmo highlight-text scroll effect.
+   * Each [data-highlight-text] element splits into chars; chars tween from
+   * a low opacity to fully visible, scrubbed against ScrollTrigger.
+   *
+   * Loads GSAP + ScrollTrigger + SplitText lazily from CDN with guards so
+   * we don't duplicate scripts already loaded by Footer/StackingCards/MegaNav.
+   */
+  (function () {
+    if (window.__highlightTextInit) return;
+    window.__highlightTextInit = true;
 
-  .evidence__head {
-    max-width: 44rem;
-  }
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        if (Array.from(document.scripts).some(function (s) { return s.src === src; })) {
+          resolve();
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
 
-  .evidence__eyebrow {
-    display: block;
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: rgba(19, 19, 19, 0.5);
-    margin-bottom: 0.5rem;
-  }
+    function init() {
+      if (!window.gsap || !window.ScrollTrigger || !window.SplitText) return;
+      window.gsap.registerPlugin(window.ScrollTrigger, window.SplitText);
 
-  .evidence__heading {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--color-brand-dark, #131313);
-    margin: 0 0 1rem;
-  }
+      document.querySelectorAll('[data-highlight-text]').forEach(function (heading) {
+        var scrollStart = heading.getAttribute('data-highlight-scroll-start') || 'top 90%';
+        var scrollEnd   = heading.getAttribute('data-highlight-scroll-end')   || 'center 40%';
+        var fadedValue  = parseFloat(heading.getAttribute('data-highlight-fade'))    || 0.2;
+        var staggerVal  = parseFloat(heading.getAttribute('data-highlight-stagger')) || 0.1;
 
-  .evidence__intro {
-    font-family: 'Chivo', system-ui, sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.55;
-    color: rgba(19, 19, 19, 0.6);
-    margin: 0;
-  }
+        new window.SplitText(heading, {
+          type: 'words, chars',
+          autoSplit: true,
+          onSplit: function (self) {
+            return window.gsap.context(function () {
+              var tl = window.gsap.timeline({
+                scrollTrigger: {
+                  scrub: true,
+                  trigger: heading,
+                  start: scrollStart,
+                  end: scrollEnd,
+                },
+              });
+              tl.from(self.chars, {
+                autoAlpha: fadedValue,
+                stagger: staggerVal,
+                ease: 'linear',
+              });
+            });
+          },
+        });
+      });
+    }
 
-  /* Card content — vertical: source insight on top, divider, my approach on
-     bottom. Fits the StackingCards 2:3 portrait aspect-ratio naturally. */
-  .evidence-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    gap: 1.5rem;
-  }
+    function start() {
+      var p1 = window.gsap
+        ? Promise.resolve()
+        : loadScript('https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js');
+      p1
+        .then(function () {
+          return window.ScrollTrigger
+            ? Promise.resolve()
+            : loadScript('https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js');
+        })
+        .then(function () {
+          return window.SplitText
+            ? Promise.resolve()
+            : loadScript('https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js');
+        })
+        .then(init)
+        .catch(function () { /* graceful fallback — text stays at full opacity */ });
+    }
 
-  .evidence-card__top,
-  .evidence-card__bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 0.875rem;
-  }
-
-  .evidence-card__bottom {
-    margin-top: auto;
-  }
-
-  .evidence-card__label {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    opacity: 0.55;
-    margin: 0;
-  }
-
-  .evidence-card__source {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0;
-    opacity: 0.85;
-    letter-spacing: -0.005em;
-  }
-
-  .evidence-card__insight {
-    font-family: 'Clash Display', Georgia, serif;
-    font-size: clamp(1.125rem, 1.7vw, 1.5rem);
-    line-height: 1.35;
-    font-weight: 500;
-    margin: 0;
-    font-style: italic;
-    letter-spacing: -0.01em;
-  }
-
-  .evidence-card__approach {
-    font-family: 'Chivo', system-ui, sans-serif;
-    font-size: clamp(1rem, 1.3vw, 1.125rem);
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  /* Divider between source quote and my interpretation */
-  .evidence-card__divider {
-    display: flex;
-    align-items: center;
-    gap: 0.875rem;
-    opacity: 0.4;
-    margin: 0.25rem 0;
-  }
-
-  .evidence-card__divider-line {
-    flex: 1;
-    height: 1px;
-    background: currentColor;
-  }
-
-  .evidence-card__divider-glyph {
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1;
-  }
-
-  .evidence-card__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Clash Display', system-ui, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: inherit;
-    text-decoration: none;
-    align-self: flex-start;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid currentColor;
-    transition: gap 0.35s cubic-bezier(0.625, 0.05, 0, 1), opacity 0.2s ease;
-    opacity: 0.9;
-    margin-top: 0.5rem;
-  }
-
-  .evidence-card__link:hover {
-    gap: 0.875rem;
-    opacity: 1;
-  }
-</style>
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
+</script>
