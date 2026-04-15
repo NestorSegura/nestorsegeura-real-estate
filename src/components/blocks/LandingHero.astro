@@ -23,8 +23,16 @@ const {
 } = Astro.props
 ---
 
-<section id="hero" class="bg-primary-900 py-24 lg:py-32 px-6">
-  <div class="max-w-4xl mx-auto text-center">
+<section id="hero" class="hero-mesh bg-primary-900 py-24 lg:py-32 px-6 relative overflow-hidden">
+  <div class="hero-mesh__layer" aria-hidden="true">
+    <span class="hero-mesh__blob hero-mesh__blob--a"></span>
+    <span class="hero-mesh__blob hero-mesh__blob--b"></span>
+    <span class="hero-mesh__blob hero-mesh__blob--c"></span>
+    <span class="hero-mesh__blob hero-mesh__blob--d"></span>
+  </div>
+  <div class="hero-mesh__grain" aria-hidden="true"></div>
+
+  <div class="max-w-4xl mx-auto text-center relative z-10">
     {headline && (
       <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight mb-6">
         {headline}
@@ -48,3 +56,110 @@ const {
     </div>
   </div>
 </section>
+
+<style>
+  /* Hero mesh gradient — subtle drifting blobs over primary-900 base.
+     All layers are pointer-events:none and absolutely positioned so they
+     never affect content layout. Pure CSS @keyframes — no JS. */
+
+  .hero-mesh {
+    isolation: isolate;
+  }
+
+  .hero-mesh__layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .hero-mesh__blob {
+    position: absolute;
+    border-radius: 50%;
+    /* Heavy blur turns each disc into a soft glow */
+    filter: blur(90px);
+    will-change: transform;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+  }
+
+  /* Blob A — primary-500 purple, top-left, slow CCW drift */
+  .hero-mesh__blob--a {
+    width: 38rem;
+    height: 38rem;
+    top: -8rem;
+    left: -6rem;
+    background: oklch(0.58 0.20 290);
+    animation: heroBlobA 22s ease-in-out infinite;
+  }
+
+  /* Blob B — cyan #2ECFE0, mid-right, vertical drift */
+  .hero-mesh__blob--b {
+    width: 30rem;
+    height: 30rem;
+    top: 10%;
+    right: -6rem;
+    background: #2ECFE0;
+    opacity: 0.32;
+    animation: heroBlobB 28s ease-in-out infinite;
+  }
+
+  /* Blob C — primary-700 deep purple, bottom-center, gentle pulse */
+  .hero-mesh__blob--c {
+    width: 42rem;
+    height: 42rem;
+    bottom: -14rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: oklch(0.42 0.18 290);
+    animation: heroBlobC 25s ease-in-out infinite;
+  }
+
+  /* Blob D — small cyan accent, top-right, fast drift for sparkle */
+  .hero-mesh__blob--d {
+    width: 18rem;
+    height: 18rem;
+    top: 25%;
+    left: 30%;
+    background: #2ECFE0;
+    opacity: 0.18;
+    animation: heroBlobD 18s ease-in-out infinite;
+  }
+
+  /* Faint film grain — SVG noise data URI baked in.
+     Creates a subtle texture so flat blobs don't feel CGI. */
+  .hero-mesh__grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @keyframes heroBlobA {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(4rem, 6rem) scale(1.1); }
+  }
+  @keyframes heroBlobB {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-3rem, 4rem) scale(0.9); }
+  }
+  @keyframes heroBlobC {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50%      { transform: translateX(-50%) scale(1.15); }
+  }
+  @keyframes heroBlobD {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(-5rem, 3rem); }
+  }
+
+  /* Respect reduced-motion users — freeze blobs in place */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-mesh__blob {
+      animation: none;
+    }
+  }
+</style>
