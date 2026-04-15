@@ -22,6 +22,21 @@ export const ROUTE_SEGMENTS: Record<string, Record<Locale, string>> = {
     en: 'analyze',
     es: 'analizar',
   },
+  impressum: {
+    de: 'impressum',
+    en: 'imprint',
+    es: 'aviso-legal',
+  },
+  datenschutz: {
+    de: 'datenschutz',
+    en: 'privacy-policy',
+    es: 'privacidad',
+  },
+  agb: {
+    de: 'agb',
+    en: 'terms',
+    es: 'terminos',
+  },
 };
 
 /**

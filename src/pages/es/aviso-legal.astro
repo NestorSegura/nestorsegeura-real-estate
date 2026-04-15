@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalStub from '../../components/legal/LegalStub.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const locale = 'es' as const;
+const t = useTranslations(locale);
+---
+<BaseLayout title={t('legal.impressumTitle')} locale={locale}>
+  <main>
+    <LegalStub locale={locale} titleKey="legal.impressumTitle" />
+  </main>
+</BaseLayout>

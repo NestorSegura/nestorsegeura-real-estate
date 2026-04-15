@@ -125,9 +125,14 @@
     "submit": "Nachricht senden"
   },
   "footer": {
-    "rights": "Alle Rechte vorbehalten.",
-    "privacy": "Datenschutz",
-    "imprint": "Impressum"
+    "tagline": "Professionelle Websites für Immobilienmakler in Deutschland.",
+    "navHeading": "Navigation",
+    "legalHeading": "Rechtliches",
+    "contactHeading": "Kontakt",
+    "email": "E-Mail schreiben",
+    "linkedin": "LinkedIn",
+    "cookieSettings": "Cookie-Einstellungen",
+    "copyright": "© {year} Nestor Segura. Alle Rechte vorbehalten."
   },
   "analysis": {
     "title": "Kostenlose Website-Analyse",
@@ -148,5 +153,28 @@
       "title": "Inhalt"
     },
     "empty": "Noch keine Artikel."
+  },
+  "cookieBanner": {
+    "title": "Wir respektieren Ihre Privatsphäre",
+    "intro": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Sie entscheiden, welche Kategorien Sie zulassen möchten.",
+    "essentialLabel": "Notwendig",
+    "essentialDescription": "Erforderlich für den grundlegenden Betrieb der Website. Können nicht deaktiviert werden.",
+    "essentialRequired": "Immer aktiv",
+    "analyticsLabel": "Analyse",
+    "analyticsDescription": "Helfen uns zu verstehen, wie Besucher die Website nutzen, damit wir sie verbessern können.",
+    "marketingLabel": "Marketing",
+    "marketingDescription": "Ermöglichen personalisierte Inhalte und Werbung auf Basis Ihrer Interessen.",
+    "acceptAll": "Alle akzeptieren",
+    "rejectAll": "Alle ablehnen",
+    "showSettings": "Einstellungen",
+    "saveSelection": "Auswahl speichern",
+    "privacyLinkLabel": "Datenschutzerklärung"
+  },
+  "legal": {
+    "impressumTitle": "Impressum",
+    "datenschutzTitle": "Datenschutzerklärung",
+    "agbTitle": "Allgemeine Geschäftsbedingungen",
+    "placeholderNotice": "Dieser Text wird noch ausgearbeitet. Für Rückfragen wenden Sie sich bitte direkt an uns.",
+    "placeholderBody": "Diese Seite ist ein Platzhalter und wird in Kürze mit dem endgültigen rechtlichen Text gefüllt."
   }
 }

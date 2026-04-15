@@ -125,9 +125,14 @@
     "submit": "Send message"
   },
   "footer": {
-    "rights": "All rights reserved.",
-    "privacy": "Privacy Policy",
-    "imprint": "Imprint"
+    "tagline": "Professional websites for real estate agents in Germany.",
+    "navHeading": "Navigation",
+    "legalHeading": "Legal",
+    "contactHeading": "Contact",
+    "email": "Send email",
+    "linkedin": "LinkedIn",
+    "cookieSettings": "Cookie settings",
+    "copyright": "© {year} Nestor Segura. All rights reserved."
   },
   "analysis": {
     "title": "Free website analysis",
@@ -148,5 +153,28 @@
       "title": "Contents"
     },
     "empty": "No posts yet."
+  },
+  "cookieBanner": {
+    "title": "We respect your privacy",
+    "intro": "This website uses cookies to provide the best experience. You choose which categories to allow.",
+    "essentialLabel": "Essential",
+    "essentialDescription": "Required for the basic operation of the site. Cannot be disabled.",
+    "essentialRequired": "Always active",
+    "analyticsLabel": "Analytics",
+    "analyticsDescription": "Help us understand how visitors use the site so we can improve it.",
+    "marketingLabel": "Marketing",
+    "marketingDescription": "Enable personalised content and advertising based on your interests.",
+    "acceptAll": "Accept all",
+    "rejectAll": "Reject all",
+    "showSettings": "Settings",
+    "saveSelection": "Save selection",
+    "privacyLinkLabel": "Privacy policy"
+  },
+  "legal": {
+    "impressumTitle": "Imprint",
+    "datenschutzTitle": "Privacy Policy",
+    "agbTitle": "Terms & Conditions",
+    "placeholderNotice": "This text is still being drafted. For questions please contact us directly.",
+    "placeholderBody": "This page is a placeholder and will shortly be filled with the final legal text."
   }
 }
