@@ -198,7 +198,8 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
     justify-content: space-between;
     gap: 7.5em;
     min-height: 100svh;
-    padding: 2.5em;
+    /* Extra top padding clears the floating sticky nav (≈6.5em desktop) */
+    padding: 9em 2.5em 2.5em;
     letter-spacing: -0.02em;
     font-family: 'Clash Display', system-ui, sans-serif;
     font-weight: 600;
@@ -333,7 +334,8 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
     }
     .demo-footer {
       gap: 5em;
-      padding: 1em;
+      /* Mobile nav is ~4em tall, add clearance */
+      padding: 6em 1em 1em;
       min-height: 90svh;
     }
     .demo-footer__col {
