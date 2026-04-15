@@ -84,47 +84,46 @@ const {
     mix-blend-mode: screen;
   }
 
-  /* Blob A — primary-500 purple, top-left, slow CCW drift */
+  /* Blob A — primary-500 purple, top-left, sweeping diagonal drift */
   .hero-mesh__blob--a {
     width: 38rem;
     height: 38rem;
     top: -8rem;
     left: -6rem;
     background: oklch(0.58 0.20 290);
-    animation: heroBlobA 22s ease-in-out infinite;
+    animation: heroBlobA 14s ease-in-out infinite;
   }
 
-  /* Blob B — cyan #2ECFE0, mid-right, vertical drift */
+  /* Blob B — cyan #2ECFE0, right side, traverses vertically */
   .hero-mesh__blob--b {
     width: 30rem;
     height: 30rem;
     top: 10%;
     right: -6rem;
     background: #2ECFE0;
-    opacity: 0.32;
-    animation: heroBlobB 28s ease-in-out infinite;
+    opacity: 0.4;
+    animation: heroBlobB 16s ease-in-out infinite;
   }
 
-  /* Blob C — primary-700 deep purple, bottom-center, gentle pulse */
+  /* Blob C — primary-700 deep purple, bottom-center, breathes wider */
   .hero-mesh__blob--c {
     width: 42rem;
     height: 42rem;
     bottom: -14rem;
     left: 50%;
-    transform: translateX(-50%);
     background: oklch(0.42 0.18 290);
-    animation: heroBlobC 25s ease-in-out infinite;
+    animation: heroBlobC 18s ease-in-out infinite;
   }
 
-  /* Blob D — small cyan accent, top-right, fast drift for sparkle */
+  /* Blob D — small cyan accent, fast travel across hero */
   .hero-mesh__blob--d {
     width: 18rem;
     height: 18rem;
     top: 25%;
     left: 30%;
     background: #2ECFE0;
-    opacity: 0.18;
-    animation: heroBlobD 18s ease-in-out infinite;
+    opacity: 0.28;
+    animation: heroBlobD 11s ease-in-out infinite;
   }
 
   /* Faint film grain — SVG noise data URI baked in.
@@ -139,21 +138,31 @@ const {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
+  /* Larger travel distances + 3-stop loops so motion is perceptible
+     even through 90px blur. Triangular path > simple back-and-forth */
   @keyframes heroBlobA {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50%      { transform: translate(4rem, 6rem) scale(1.1); }
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(14rem, 4rem) scale(1.2); }
+    66%  { transform: translate(8rem, 18rem) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
   }
   @keyframes heroBlobB {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50%      { transform: translate(-3rem, 4rem) scale(0.9); }
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(-12rem, 10rem) scale(0.85); }
+    66%  { transform: translate(-6rem, -8rem) scale(1.15); }
+    100% { transform: translate(0, 0) scale(1); }
   }
   @keyframes heroBlobC {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50%      { transform: translateX(-50%) scale(1.15); }
+    0%   { transform: translateX(-50%) scale(1); }
+    50%  { transform: translateX(-30%) scale(1.25); }
+    100% { transform: translateX(-50%) scale(1); }
   }
   @keyframes heroBlobD {
-    0%, 100% { transform: translate(0, 0); }
-    50%      { transform: translate(-5rem, 3rem); }
+    0%   { transform: translate(0, 0) scale(1); }
+    25%  { transform: translate(20rem, 8rem) scale(1.3); }
+    50%  { transform: translate(35rem, -4rem) scale(0.8); }
+    75%  { transform: translate(15rem, -12rem) scale(1.1); }
+    100% { transform: translate(0, 0) scale(1); }
   }
 
   /* Respect reduced-motion users — freeze blobs in place */
