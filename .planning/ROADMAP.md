@@ -162,8 +162,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: Create Cloudflare Pages/Workers project, configure custom domain, set env vars in dashboard
-- [ ] 10-02: Wire Sanity webhook to Cloudflare deploy hook, disable Auto Minify, verify end-to-end
+- [ ] 10-01-PLAN.md — Create Workers Builds project with Git integration, custom apex domain, www→apex redirect, build-time env vars + SANITY_API_READ_TOKEN secret, .nvmrc pin to Node 22
+- [ ] 10-02-PLAN.md — Wire CF Deploy Hook to Sanity webhook (all mutations), audit CF HTML-rewriting features (Auto Minify verified absent per 2024-08-05 removal), write scripts/smoke-test.sh, run launch gate (smoke + Lighthouse ≥90 + manual walkthrough)
 
 ## Progress
 

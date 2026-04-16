@@ -110,6 +110,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-14T22:46:00Z
-Stopped at: 09-02 revision complete (commit 35d6066) — MegaNav DOM rebuilt to match osmo spec verbatim — awaiting checkpoint:human-verify
+Last session: 2026-04-15T??:??Z
+Stopped at: 10-01 Task 2 checkpoint:human-action — paused for nameserver propagation (rzone.de → Cloudflare). .nvmrc committed (7b200f8). Workers Builds project `realestatestrategy-eu` exists on CF account 8eab820261a3bbed9cad2fff4447f677, zone 813e9516a06e7041d6a016dcf5e79cc4 (status=pending). Rocket Loader off, always_use_https on, all HTML-minify off — INFR-08 evidence captured via API. Once zone flips active: delete stale A/AAAA (81.169.145.66), attach Custom Domain to Worker, create www→apex 301 Redirect Rule. Build vars + SANITY_API_READ_TOKEN secret still pending user dashboard action (no public Workers Builds config API).
 Resume file: None

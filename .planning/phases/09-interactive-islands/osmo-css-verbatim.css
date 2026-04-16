@@ -1,0 +1,310 @@
+/* OSMO MEGA-NAV CSS — VERBATIM (paste into MegaNav.astro <style is:global>).
+   Only color swaps allowed:
+     #6840ff  → oklch(0.58 0.20 290)
+     Haffer Mono, Arial, sans-serif → "Chivo", Arial, sans-serif
+   Keep everything else UNCHANGED: selectors, layout, spacing, breakpoints.
+   DO NOT add backdrop-filter, border-radius overrides, dark backgrounds, etc.
+   The design IS osmo's white pill. User wants osmo fidelity.
+*/
+
+[data-menu-wrap] {
+  --nav-height: 4em;
+}
+
+.mega-nav {
+  z-index: 100;
+  position: fixed;
+  top: 1.25em;
+  left: 1.25em;
+  right: 1.25em;
+}
+
+.mega-nav__bar {
+  z-index: 3;
+  background-color: #fff;
+  border-bottom: 1px solid #0000001a;
+  border-radius: .25em;
+  width: 100%;
+  max-width: 80em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.mega-nav__container {
+  height: var(--nav-height);
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 1.5em;
+  display: flex;
+}
+
+.mega-nav__bar-start {
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.mega-nav__bar-logo {
+  flex: none;
+  width: 5.75em;
+  margin-right: 3em;
+  display: flex;
+}
+
+.mega-nav__bar-list {
+  grid-column-gap: .75em;
+  grid-row-gap: .75em;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+}
+
+.mega-nav__bar-list.is--actions {
+  margin-left: auto;
+}
+
+.mega-nav__bar-link {
+  color: #201d1d;
+  background-color: #0000;
+  border-radius: .25em;
+  justify-content: flex-start;
+  align-items: center;
+  padding: .375em .625em;
+  text-decoration: none;
+  display: flex;
+}
+
+.mega-nav__bar-link-label {
+  font-size: .9375em;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.mega-nav__bar-link-icon {
+  width: 1.25em;
+}
+
+.mega-nav__bar-end {
+  grid-column-gap: .75em;
+  grid-row-gap: .75em;
+  justify-content: flex-end;
+  align-items: center;
+  display: none;
+}
+
+.mega-nav__bar-cta {
+  color: #f2f2f2;
+  background-color: oklch(0.58 0.20 290);
+  border-radius: .25em;
+  justify-content: center;
+  align-items: center;
+  padding: .375em .625em;
+  text-decoration: none;
+  display: flex;
+}
+
+.mega-nav__bar-cta.is--secondary {
+  color: oklch(0.58 0.20 290);
+  background-color: #0000;
+  border: 1px solid oklch(0.58 0.20 290);
+}
+
+.mega-nav__bar-inner {
+  grid-column-gap: .75em;
+  grid-row-gap: .75em;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+}
+
+.mega-nav__bar-inner.is--actions {
+  margin-left: auto;
+}
+
+.mega-nav__burger {
+  grid-column-gap: .2em;
+  grid-row-gap: .2em;
+  background-color: #e4e0f5;
+  border-radius: .25em;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0;
+  display: flex;
+  border: 0;
+  cursor: pointer;
+}
+
+.mega-nav__burger-line {
+  z-index: 1;
+  background-color: oklch(0.58 0.20 290);
+  border-radius: .125em;
+  flex: none;
+  width: 1.25em;
+  height: .125em;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+
+.mega-nav__back {
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: -.625em;
+}
+
+.mega-nav__backdrop {
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  background-color: #00000040;
+  position: fixed;
+  inset: 0%;
+}
+
+.mega-nav__dropdown-wrapper {
+  z-index: 2;
+  pointer-events: none;
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: calc(100% - .25em);
+  left: 0;
+  right: 0;
+}
+
+.mega-nav__dropdown-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.mega-nav__dropdown-bg {
+  will-change: transform;
+  background-color: #fff;
+  border-bottom-right-radius: .25em;
+  border-bottom-left-radius: .25em;
+  position: absolute;
+  inset: 0;
+}
+
+@media screen and (max-width: 991px) {
+  .mega-nav {
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .mega-nav__bar-start {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mega-nav__bar-list {
+    grid-column-gap: 0em;
+    grid-row-gap: 0em;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .mega-nav__bar-list.is--actions {
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .mega-nav__bar-link {
+    border-bottom: 1px solid #0000001a;
+    border-radius: 0;
+    width: 100%;
+    padding: .75em 0;
+    font-size: 1.25em;
+  }
+
+  .mega-nav__bar-link.is--back {
+    border-bottom-style: none;
+    font-size: 1em;
+  }
+
+  .mega-nav__bar-link-label {
+    font-size: 1.25em;
+  }
+
+  .mega-nav__bar-link-icon {
+    width: 1.5em;
+  }
+
+  .mega-nav__bar-end {
+    display: flex;
+  }
+
+  .mega-nav__bar-cta {
+    padding: 1em .75em 1em 1em;
+  }
+
+  .mega-nav__bar-inner {
+    opacity: 0;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    top: var(--nav-height);
+    visibility: hidden;
+    background-color: #fff;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em 1.5em;
+    position: fixed;
+    overflow: auto;
+  }
+
+  .mega-nav__backdrop {
+    display: none;
+  }
+
+  .mega-nav__dropdown-wrapper {
+    z-index: 4;
+    bottom: 0;
+    top: var(--nav-height);
+    position: fixed;
+  }
+
+  .mega-nav__dropdown-container {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .mega-nav__dropdown-bg {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .mega-nav__bar-link-label {
+    font-size: 1em;
+  }
+
+  .mega-nav__bar-link-icon {
+    width: 1.375em;
+  }
+}
