@@ -8,6 +8,7 @@ import JsonLd from '../components/seo/JsonLd.astro';
 import MegaNav from '../components/nav/MegaNav.astro';
 import Footer from '../components/footer/Footer.astro';
 import CookieBanner from '../components/cookie/CookieBanner.astro';
+import { getBookingUrl } from '../lib/booking';
 
 const SITE_URL =
   (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://realestatestrategy.eu';
@@ -91,7 +92,7 @@ const ctaLabel =
   settings?.ctaLabel?.['de'] ??
   (locale === 'en' ? 'Book appointment' : locale === 'es' ? 'Reservar cita' : 'Termin buchen');
 
-const ctaHref = settings?.ctaHref ?? '#';
+const ctaHref = getBookingUrl(locale);
 
 // Locale URLs: use page-specific map if provided, otherwise default to homepages.
 // Defined before fallbackNavItems so the Kontakt anchor can reference the homepage root.

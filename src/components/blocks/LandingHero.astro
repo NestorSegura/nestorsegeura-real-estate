@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/utils'
 import Button from '../ui/Button.astro'
+import { getBookingUrl } from '../../lib/booking'
 
 interface Props {
   locale: Locale
@@ -14,13 +15,15 @@ interface Props {
 }
 
 const {
+  locale,
   headline,
   subtitle,
   ctaLabel,
-  ctaHref,
   ctaSecondaryLabel,
   ctaSecondaryHref,
 } = Astro.props
+
+const ctaHref = getBookingUrl(locale)
 ---
 
 <section id="hero" class="hero-mesh bg-primary-900 pt-[6em] pb-[3em] md:py-[6em] lg:py-[8em] px-[1.5em] relative overflow-hidden">

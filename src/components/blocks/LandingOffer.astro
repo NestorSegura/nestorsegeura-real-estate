@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/utils'
 import Button from '../ui/Button.astro'
+import { getBookingUrl } from '../../lib/booking'
 
 interface Props {
   locale: Locale
@@ -12,7 +13,9 @@ interface Props {
   [key: string]: unknown
 }
 
-const { locale, headline, ctaLabel, ctaHref } = Astro.props
+const { locale, headline, ctaLabel } = Astro.props
+
+const ctaHref = getBookingUrl(locale)
 
 const copy = {
   de: {

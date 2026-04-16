@@ -2,6 +2,7 @@
 import type { Locale } from '../../i18n/utils'
 import Button from '../ui/Button.astro'
 import SectionHeader from '../ui/SectionHeader.astro'
+import { getBookingUrl } from '../../lib/booking'
 
 interface Props {
   locale: Locale
@@ -13,7 +14,9 @@ interface Props {
   [key: string]: unknown
 }
 
-const { headline, copy, ctaLabel, ctaHref, scarcityText } = Astro.props
+const { locale, headline, copy, ctaLabel, scarcityText } = Astro.props
+
+const ctaHref = getBookingUrl(locale)
 ---
 
 <section id="cta-final" class="bg-primary-900 py-[4em] md:py-[6em] px-[1.5em] text-center">
