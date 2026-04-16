@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LegalStub from '../../components/legal/LegalStub.astro';
+import LegalContent from '../../components/legal/LegalContent.astro';
 import { useTranslations } from '../../i18n/utils';
 
 const locale = 'es' as const;
@@ -8,6 +8,98 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.impressumTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.impressumTitle" />
+    <LegalContent title="Aviso legal">
+      <p>
+        <em>Esta es la información legal obligatoria conforme al § 5 de la
+        Ley Alemana de Servicios Digitales (DDG). La actividad está establecida
+        en Alemania; rige el derecho alemán con independencia del idioma de esta página.</em>
+      </p>
+
+      <h2>Datos conforme al § 5 DDG</h2>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn<br />
+        Alemania
+      </address>
+
+      <h2>Contacto</h2>
+      <p>
+        Correo electrónico: <a href="mailto:contact@nestorsegura.com">contact@nestorsegura.com</a>
+      </p>
+
+      <h2>Número de identificación fiscal (IVA)</h2>
+      <p>
+        Número de identificación a efectos del IVA conforme al § 27 a de la Ley Alemana
+        del IVA (UStG):<br />
+        DE352032325
+      </p>
+
+      <h2>Responsable de los contenidos según el § 18 (2) MStV</h2>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn
+      </address>
+
+      <h2>Resolución de litigios en línea (UE)</h2>
+      <p>
+        La Comisión Europea pone a disposición una plataforma para la resolución de litigios
+        en línea (ODR):
+        <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.
+        Mi dirección de correo electrónico figura arriba.
+      </p>
+
+      <h2>Resolución de litigios con consumidores</h2>
+      <p>
+        No estoy dispuesto ni obligado a participar en procedimientos de resolución de
+        litigios ante una junta arbitral de consumo.
+      </p>
+
+      <h2>Responsabilidad sobre los contenidos</h2>
+      <p>
+        Como prestador de servicios, soy responsable de mis propios contenidos en estas páginas
+        conforme al § 7 (1) DDG y las leyes generales aplicables. Conforme a los §§ 8 a 10 DDG,
+        no estoy obligado a supervisar la información transmitida o almacenada por terceros, ni
+        a investigar circunstancias que indiquen una actividad ilícita.
+      </p>
+      <p>
+        Las obligaciones de retirar o bloquear el uso de información conforme a las leyes generales
+        no se ven afectadas. La responsabilidad sólo es posible a partir del momento en que se
+        tiene conocimiento de una infracción concreta. En caso de notificación de tales infracciones,
+        retiraré los contenidos de inmediato.
+      </p>
+
+      <h2>Responsabilidad sobre los enlaces</h2>
+      <p>
+        Mi sitio web contiene enlaces a páginas externas de terceros sobre cuyo contenido no
+        tengo influencia. Por ello no puedo asumir ninguna responsabilidad por dichos contenidos
+        ajenos. El proveedor u operador de las páginas enlazadas es siempre el responsable de
+        sus contenidos. Las páginas enlazadas fueron revisadas en el momento del enlace y no
+        se apreciaron contenidos ilegales.
+      </p>
+      <p>
+        No es razonable mantener un control permanente de las páginas enlazadas sin indicios
+        concretos de infracción. En caso de notificación de infracciones, retiraré los enlaces
+        de inmediato.
+      </p>
+
+      <h2>Derechos de autor</h2>
+      <p>
+        Los contenidos y obras creados por el operador en estas páginas están sujetos a la ley
+        alemana de derechos de autor. La reproducción, edición, distribución y cualquier tipo
+        de explotación fuera de los límites de los derechos de autor requieren la autorización
+        escrita del autor o creador correspondiente. Las descargas y copias de este sitio sólo
+        están permitidas para uso privado y no comercial.
+      </p>
+      <p>
+        En la medida en que los contenidos de este sitio no hayan sido creados por el operador,
+        se respetan los derechos de autor de terceros. Si aun así detecta una infracción de derechos
+        de autor, le ruego me lo comunique. En caso de notificación de infracciones, retiraré
+        dichos contenidos de inmediato.
+      </p>
+
+      <p class="legal-meta">Última actualización: abril de 2026</p>
+    </LegalContent>
   </main>
 </BaseLayout>

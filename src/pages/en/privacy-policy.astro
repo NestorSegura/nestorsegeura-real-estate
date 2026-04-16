@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LegalStub from '../../components/legal/LegalStub.astro';
+import LegalContent from '../../components/legal/LegalContent.astro';
 import { useTranslations } from '../../i18n/utils';
 
 const locale = 'en' as const;
@@ -8,6 +8,206 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.datenschutzTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.datenschutzTitle" />
+    <LegalContent title="Privacy policy">
+      <p><strong>Last updated:</strong> April 2026</p>
+      <p>
+        <em>This translation is provided for convenience. The German version on
+        /datenschutz is the legally binding text.</em>
+      </p>
+
+      <h2>§ 1 Controller</h2>
+      <p>Controller within the meaning of the General Data Protection Regulation (GDPR):</p>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn<br />
+        Germany<br /><br />
+        Email: <a href="mailto:contact@nestorsegura.com">contact@nestorsegura.com</a>
+      </address>
+
+      <h2>§ 2 General information on data processing</h2>
+      <p>
+        I take the protection of your personal data seriously. Personal data is treated
+        confidentially and in accordance with the applicable data protection laws and this
+        privacy policy.
+      </p>
+      <p>
+        Data is collected only to the extent technically necessary. The data collected is
+        not sold and — except as described in this policy — is not shared with third parties.
+      </p>
+
+      <h2>§ 3 Hosting and technical provision</h2>
+      <p>
+        This website is hosted by Cloudflare (Cloudflare, Inc., 101 Townsend St, San Francisco,
+        CA 94107, USA, and Cloudflare Germany GmbH, Rosental 7, c/o Mindspace, 80331 Munich).
+        Content is delivered via the global Cloudflare network, with European edge locations
+        preferred where possible.
+      </p>
+      <p>
+        When you visit this site, technically necessary data is automatically processed in
+        server log files:
+      </p>
+      <ul>
+        <li>IP address of the requesting device (typically anonymised)</li>
+        <li>Date and time of the request</li>
+        <li>Name and URL of the file requested</li>
+        <li>Referrer URL</li>
+        <li>Browser used and, where applicable, the operating system</li>
+      </ul>
+      <p>
+        Legal basis is Art. 6 (1) (f) GDPR (legitimate interest in error-free delivery and
+        security of the website). Cloudflare is certified under the EU-US Data Privacy Framework.
+      </p>
+
+      <h2>§ 4 SSL/TLS encryption</h2>
+      <p>
+        This website uses SSL/TLS encryption to protect confidential content. You can recognise
+        an encrypted connection by the “https://" prefix in the address bar and the lock icon
+        in your browser bar.
+      </p>
+
+      <h2>§ 5 Cookies and similar technologies</h2>
+      <h3>Strictly necessary cookies</h3>
+      <p>
+        Strictly necessary cookies and similar technologies (e.g. local storage to remember your
+        cookie consent) are used to ensure proper operation of the website. Legal basis is
+        Art. 6 (1) (f) GDPR and § 25 (2) no. 2 of the German TDDDG.
+      </p>
+
+      <h3>Analytics and marketing cookies</h3>
+      <p>
+        Cookies and tracking technologies for analytics and marketing (see §§ 6 and 7) are only
+        set after your explicit consent via the cookie banner. Legal basis is Art. 6 (1) (a) GDPR
+        and § 25 (1) TDDDG. You can withdraw your consent at any time via the “Cookie settings"
+        button in the footer.
+      </p>
+
+      <h2>§ 6 Google Analytics 4</h2>
+      <p>
+        With your consent, this website uses Google Analytics 4, provided by Google Ireland
+        Limited, Gordon House, Barrow Street, Dublin 4, Ireland (“Google"). Google Analytics
+        uses cookies and similar technologies to evaluate the use of the website. The information
+        generated is generally transmitted to a Google server in the USA and stored there.
+      </p>
+      <h3>IP anonymisation</h3>
+      <p>
+        Google Analytics is used with the “IP anonymisation" feature enabled. Your IP address
+        is shortened within the EU or the EEA before being transmitted to the USA.
+      </p>
+      <h3>Legal basis</h3>
+      <p>
+        Use is based on your consent in accordance with Art. 6 (1) (a) GDPR and § 25 (1) TDDDG.
+        You can withdraw your consent at any time via the cookie banner. Google is certified under
+        the EU-US Data Privacy Framework.
+      </p>
+      <h3>Opt-out</h3>
+      <p>
+        You can additionally prevent collection by Google Analytics by installing the browser
+        add-on for deactivating Google Analytics:
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">https://tools.google.com/dlpage/gaoptout</a>.
+      </p>
+
+      <h2>§ 7 Meta Pixel (Facebook Pixel)</h2>
+      <p>
+        With your consent, this website uses the Meta Pixel (also “Facebook Pixel") provided by
+        Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland. The pixel allows
+        the behaviour of users to be tracked after they have viewed or clicked on a Facebook or
+        Instagram advertisement. This enables conversion tracking of Meta ads and the building of
+        target groups for future ads (Custom Audiences).
+      </p>
+      <p>
+        In doing so, personal data (in particular IP address, browser information and actions on
+        the website) is transferred to Meta in the USA. Meta is certified under the EU-US Data
+        Privacy Framework.
+      </p>
+      <p>
+        Legal basis is your consent in accordance with Art. 6 (1) (a) GDPR and § 25 (1) TDDDG.
+        You can withdraw your consent at any time via the cookie banner. Further information is
+        available in Meta's privacy policy:
+        <a href="https://www.facebook.com/about/privacy/" target="_blank" rel="noopener noreferrer">https://www.facebook.com/about/privacy/</a>.
+      </p>
+
+      <h2>§ 8 Appointment booking via TidyCal</h2>
+      <p>
+        For online appointment booking I use the TidyCal service (TidyCal, operated by SureSwift
+        Capital, 800 Nicollet Mall, Suite 2675, Minneapolis, MN 55402, USA). When you book a
+        slot via the TidyCal button, you are redirected to a TidyCal page or a TidyCal widget is
+        embedded.
+      </p>
+      <p>Data processed typically includes:</p>
+      <ul>
+        <li>First and last name</li>
+        <li>Email address</li>
+        <li>Phone number, where applicable</li>
+        <li>Any additional information you voluntarily provide</li>
+        <li>The time slot you select</li>
+      </ul>
+      <p>
+        Legal bases are Art. 6 (1) (b) GDPR (pre-contractual measures) and Art. 6 (1) (f) GDPR
+        (legitimate interest in efficient scheduling).
+      </p>
+
+      <h2>§ 9 Content management via Sanity</h2>
+      <p>
+        The content of this website is maintained in the headless CMS Sanity (Sanity.io,
+        c/o Sanity Inc., 301 Howard Street, Suite 600, San Francisco, CA 94105, USA) and is
+        compiled into static HTML files at build time. When the site is requested, no connection
+        to Sanity is normally made; Sanity processes only the data I edit as the operator in the
+        backend.
+      </p>
+
+      <h2>§ 10 Fonts</h2>
+      <p>
+        This website uses self-hosted fonts only (“Clash Display" and “Chivo"). No connection
+        to external font servers (e.g. Google Fonts) is established. Your IP address is not
+        transmitted to any third-party font provider.
+      </p>
+
+      <h2>§ 11 Contact via email</h2>
+      <p>
+        If you contact me by email, the data you provide (your email address, possibly your
+        name and phone number, and your message) is stored for the purpose of processing your
+        enquiry and for any follow-up questions.
+      </p>
+      <p>
+        Legal bases are Art. 6 (1) (b) GDPR (pre-contractual measures) and Art. 6 (1) (f) GDPR
+        (legitimate interest in handling your enquiry). The data is deleted as soon as it is no
+        longer required for the purpose for which it was collected and no statutory retention
+        obligations exist.
+      </p>
+
+      <h2>§ 12 Your rights as a data subject</h2>
+      <p>You have the following rights with regard to your personal data:</p>
+      <ul>
+        <li><strong>Right of access</strong> (Art. 15 GDPR)</li>
+        <li><strong>Right to rectification</strong> (Art. 16 GDPR)</li>
+        <li><strong>Right to erasure</strong> (Art. 17 GDPR)</li>
+        <li><strong>Right to restriction of processing</strong> (Art. 18 GDPR)</li>
+        <li><strong>Right to data portability</strong> (Art. 20 GDPR)</li>
+        <li><strong>Right to object</strong> (Art. 21 GDPR)</li>
+        <li><strong>Right to withdraw consent</strong> (Art. 7 (3) GDPR), with effect for the future</li>
+      </ul>
+      <p>To exercise your rights, please contact me using the details given in § 1.</p>
+
+      <h2>§ 13 Right to lodge a complaint with a supervisory authority</h2>
+      <p>
+        Without prejudice to any other administrative or judicial remedy, you have the right to
+        lodge a complaint with a supervisory authority if you believe that the processing of
+        your personal data infringes the GDPR. The supervisory authority responsible for me is:
+      </p>
+      <address>
+        Independent State Centre for Data Protection Schleswig-Holstein (ULD)<br />
+        Holstenstraße 98<br />
+        24103 Kiel, Germany<br />
+        <a href="https://www.datenschutzzentrum.de" target="_blank" rel="noopener noreferrer">www.datenschutzzentrum.de</a>
+      </address>
+
+      <h2>§ 14 Changes to this privacy policy</h2>
+      <p>
+        I reserve the right to amend this privacy policy so that it always meets current legal
+        requirements or reflects changes in my services. The version currently published on this
+        website applies.
+      </p>
+    </LegalContent>
   </main>
 </BaseLayout>

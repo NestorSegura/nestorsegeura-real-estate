@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LegalStub from '../../components/legal/LegalStub.astro';
+import LegalContent from '../../components/legal/LegalContent.astro';
 import { useTranslations } from '../../i18n/utils';
 
 const locale = 'es' as const;
@@ -8,6 +8,183 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.agbTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.agbTitle" />
+    <LegalContent title="Términos y condiciones generales">
+      <p><strong>Última actualización:</strong> abril de 2026</p>
+      <p>
+        <em>Esta traducción se ofrece a título informativo. La versión en alemán
+        publicada en /agb es la jurídicamente vinculante.</em>
+      </p>
+
+      <h2>§ 1 Ámbito de aplicación</h2>
+      <p>
+        Las presentes condiciones generales («Condiciones») se aplican a todos los contratos
+        celebrados entre Nestor Segura, Heidmühlenweg 54, 25336 Elmshorn (el «Contratista») y
+        sus clientes (el «Cliente») relativos a servicios de diseño y desarrollo web, optimización
+        para motores de búsqueda (SEO), estrategia de contenidos y consultoría en marketing digital.
+      </p>
+      <p>
+        Las condiciones generales del Cliente que difieran, se opongan o complementen las presentes
+        sólo formarán parte del contrato si y en la medida en que el Contratista haya consentido
+        expresamente y por escrito su validez.
+      </p>
+
+      <h2>§ 2 Objeto y alcance de los servicios</h2>
+      <p>
+        El Contratista presta servicios de diseño y desarrollo web (en particular con Astro, Sanity
+        y Cloudflare Workers), optimización para motores de búsqueda, estrategia de contenidos y
+        consultoría estratégica. El alcance concreto de los servicios resulta de la oferta o
+        contrato individual.
+      </p>
+      <p>
+        Las modificaciones del alcance acordado requieren acuerdo escrito (la forma de texto es
+        suficiente). Los servicios encargados adicionalmente se facturan por separado.
+      </p>
+      <p>
+        El Contratista podrá contratar a subcontratistas cualificados. Sigue siendo responsable
+        de la correcta prestación del servicio.
+      </p>
+
+      <h2>§ 3 Oferta y celebración del contrato</h2>
+      <p>
+        Las ofertas del Contratista no son vinculantes salvo que se indiquen expresamente como
+        vinculantes. El contrato se perfecciona mediante la confirmación del pedido por escrito
+        del Contratista o por el inicio efectivo de la prestación.
+      </p>
+      <p>
+        El Cliente garantiza que la información que facilita es completa y correcta.
+      </p>
+
+      <h2>§ 4 Deberes de cooperación del Cliente</h2>
+      <p>
+        El Cliente facilitará al Contratista, a tiempo y de forma íntegra, toda la información,
+        materiales y accesos necesarios para la prestación del servicio — en particular textos,
+        imágenes, logotipos, directrices de marca y credenciales de acceso a sistemas.
+      </p>
+      <p>
+        Los retrasos atribuibles a una cooperación incompleta o tardía del Cliente no son
+        imputables al Contratista. El esfuerzo adicional derivado podrá facturarse aparte.
+      </p>
+
+      <h2>§ 5 Remuneración y condiciones de pago</h2>
+      <p>
+        La remuneración se rige por la oferta individual correspondiente. Todos los precios se
+        expresan en euros más el IVA legal aplicable.
+      </p>
+      <p>
+        Salvo pacto en contrario en el contrato individual, para los proyectos rige la siguiente
+        forma de pago: el 50 % de la remuneración total es exigible a la formalización del encargo
+        y el 50 % restante a la finalización del proyecto.
+      </p>
+      <p>
+        Las facturas vencen sin descuento dentro de los 14 días siguientes a la fecha de la factura.
+        Los servicios continuados (p. ej. SEO o mantenimiento mensuales) se facturan mensualmente
+        por adelantado.
+      </p>
+
+      <h2>§ 6 Aceptación</h2>
+      <p>
+        En la medida en que se deban entregables sujetos a aceptación, el Cliente debe revisarlos
+        y aceptarlos por escrito dentro de los 14 días posteriores a su entrega. La aceptación
+        no podrá denegarse por defectos menores. Se entiende otorgada la aceptación si el Cliente
+        no formula reclamación escrita dentro del plazo indicado o si utiliza productivamente el
+        entregable.
+      </p>
+
+      <h2>§ 7 Derechos de uso y propiedad intelectual</h2>
+      <p>
+        Tras el pago íntegro de la remuneración acordada, el Cliente obtiene el derecho no
+        exclusivo, ilimitado en el tiempo y en el territorio, a utilizar las obras creadas en el
+        marco del encargo para la finalidad pactada en el contrato.
+      </p>
+      <p>
+        El Contratista podrá utilizar los trabajos creados para el Cliente como referencia (en
+        particular en su porfolio y en redes sociales), salvo que el Cliente se oponga expresamente
+        por escrito.
+      </p>
+      <p>
+        Los archivos fuente, borradores y resultados intermedios no liberados quedan en propiedad
+        del Contratista. Las licencias de terceros (p. ej. fotografías de stock, tipografías,
+        herramientas SaaS) deben adquirirse separadamente por el Cliente o se facturan por su coste.
+      </p>
+
+      <h2>§ 8 Garantía y responsabilidad</h2>
+      <p>
+        El Contratista presta sus servicios con la diligencia de un comerciante ordenado, pero no
+        garantiza un determinado resultado económico (en particular, posiciones concretas en
+        buscadores, tasas de conversión ni cifras de facturación).
+      </p>
+      <p>
+        En caso de defectos, el Cliente deberá conceder al Contratista la oportunidad de subsanarlos.
+        Si la subsanación falla en dos ocasiones, el Cliente podrá reducir la remuneración o resolver
+        el contrato.
+      </p>
+      <p>
+        La responsabilidad del Contratista se limita al dolo y a la culpa grave. En caso de
+        negligencia leve, el Contratista sólo responde por incumplimiento de obligaciones
+        contractuales esenciales (obligaciones cardinales); en tal caso, la responsabilidad se
+        limita al daño previsible y típico del contrato al momento de su celebración y, como
+        máximo, al importe neto del contrato.
+      </p>
+      <p>
+        Las anteriores limitaciones de responsabilidad no se aplican a daños derivados de la lesión
+        de la vida, del cuerpo o de la salud, ni a las reclamaciones derivadas de la Ley alemana
+        de responsabilidad por productos.
+      </p>
+
+      <h2>§ 9 Confidencialidad y protección de datos</h2>
+      <p>
+        Ambas partes se comprometen a tratar como confidencial toda la información confidencial
+        de la otra parte obtenida en el marco de la colaboración. Esta obligación subsiste tras
+        la extinción de la relación contractual.
+      </p>
+      <p>
+        En la medida en que el Contratista trate datos personales por cuenta del Cliente en la
+        ejecución del contrato, las partes celebrarán un contrato separado de encargo del
+        tratamiento conforme al art. 28 RGPD.
+      </p>
+
+      <h2>§ 10 Duración y terminación</h2>
+      <p>
+        Los contratos por proyecto finalizan con la aceptación del entregable contractualmente
+        debido y el pago íntegro. Los servicios continuados pueden ser terminados por cualquiera
+        de las partes con un preaviso de 30 días al fin de mes en forma de texto, salvo pacto
+        distinto en el contrato individual.
+      </p>
+      <p>
+        El derecho a la resolución extraordinaria por causa justa queda intacto para ambas partes.
+        En caso de terminación anticipada de un contrato por proyecto por parte del Cliente sin
+        causa justa, el Contratista mantiene su derecho a la remuneración por los trabajos
+        realizados hasta ese momento.
+      </p>
+
+      <h2>§ 11 Fuerza mayor</h2>
+      <p>
+        Ninguna de las partes responde por el incumplimiento de sus obligaciones contractuales
+        cuando éste se deba a circunstancias ajenas a su control (fuerza mayor). Se incluyen, en
+        particular, catástrofes naturales, pandemias, órdenes de autoridades, huelgas y ciberataques
+        de gran escala o fallos de infraestructura externa. La parte afectada deberá informar a
+        la otra sin demora.
+      </p>
+
+      <h2>§ 12 Disposiciones finales</h2>
+      <p>
+        Se aplica el derecho de la República Federal de Alemania, con exclusión de la Convención
+        de las Naciones Unidas sobre los Contratos de Compraventa Internacional de Mercaderías.
+      </p>
+      <p>
+        Si el Cliente es comerciante, persona jurídica de derecho público o patrimonio especial
+        de derecho público, el fuero exclusivo para todos los litigios derivados del presente
+        contrato es el domicilio del Contratista (Elmshorn, Alemania).
+      </p>
+      <p>
+        Si alguna de las disposiciones de las presentes Condiciones fuese o llegase a ser inválida,
+        la validez de las demás disposiciones permanecerá inalterada. La disposición inválida será
+        sustituida por aquella que más se acerque a lo económicamente pretendido.
+      </p>
+      <p>
+        Las modificaciones o adiciones al presente contrato requieren forma de texto. Esto también
+        se aplica a la supresión de la propia cláusula de forma de texto.
+      </p>
+    </LegalContent>
   </main>
 </BaseLayout>

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LegalStub from '../../components/legal/LegalStub.astro';
+import LegalContent from '../../components/legal/LegalContent.astro';
 import { useTranslations } from '../../i18n/utils';
 
 const locale = 'es' as const;
@@ -8,6 +8,207 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.datenschutzTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.datenschutzTitle" />
+    <LegalContent title="Política de privacidad">
+      <p><strong>Última actualización:</strong> abril de 2026</p>
+      <p>
+        <em>Esta traducción se ofrece a título informativo. La versión en alemán
+        publicada en /datenschutz es la jurídicamente vinculante.</em>
+      </p>
+
+      <h2>§ 1 Responsable del tratamiento</h2>
+      <p>Responsable en el sentido del Reglamento General de Protección de Datos (RGPD):</p>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn<br />
+        Alemania<br /><br />
+        Correo electrónico: <a href="mailto:contact@nestorsegura.com">contact@nestorsegura.com</a>
+      </address>
+
+      <h2>§ 2 Información general sobre el tratamiento</h2>
+      <p>
+        Tomo en serio la protección de sus datos personales. Los datos personales se tratan de
+        forma confidencial y conforme a la normativa de protección de datos aplicable y a la
+        presente política.
+      </p>
+      <p>
+        Los datos se recogen únicamente en la medida técnicamente necesaria. Los datos recogidos
+        no se venden ni — salvo en los supuestos descritos en esta política — se ceden a terceros.
+      </p>
+
+      <h2>§ 3 Alojamiento y prestación técnica</h2>
+      <p>
+        Este sitio se aloja en Cloudflare (Cloudflare, Inc., 101 Townsend St, San Francisco,
+        CA 94107, EE. UU., y Cloudflare Germany GmbH, Rosental 7, c/o Mindspace, 80331 Múnich).
+        Los contenidos se sirven a través de la red global de Cloudflare, dando preferencia a los
+        nodos europeos cuando es posible.
+      </p>
+      <p>
+        Al visitar este sitio, se procesan automáticamente datos técnicamente necesarios en
+        archivos de registro del servidor:
+      </p>
+      <ul>
+        <li>Dirección IP del dispositivo solicitante (normalmente anonimizada)</li>
+        <li>Fecha y hora de la solicitud</li>
+        <li>Nombre y URL del archivo solicitado</li>
+        <li>URL de referencia</li>
+        <li>Navegador utilizado y, en su caso, el sistema operativo</li>
+      </ul>
+      <p>
+        Base jurídica: art. 6 (1) (f) RGPD (interés legítimo en la entrega correcta y la seguridad
+        del sitio). Cloudflare está certificado bajo el EU-US Data Privacy Framework.
+      </p>
+
+      <h2>§ 4 Cifrado SSL/TLS</h2>
+      <p>
+        Este sitio utiliza cifrado SSL/TLS para proteger contenidos confidenciales. Puede reconocer
+        una conexión cifrada por el prefijo «https://» en la barra de direcciones y el icono del
+        candado en el navegador.
+      </p>
+
+      <h2>§ 5 Cookies y tecnologías similares</h2>
+      <h3>Cookies estrictamente necesarias</h3>
+      <p>
+        Las cookies estrictamente necesarias y tecnologías similares (p. ej. almacenamiento local
+        para recordar su consentimiento de cookies) se utilizan para garantizar el funcionamiento
+        del sitio. Base jurídica: art. 6 (1) (f) RGPD y § 25 (2) núm. 2 de la TDDDG alemana.
+      </p>
+
+      <h3>Cookies de análisis y marketing</h3>
+      <p>
+        Las cookies y tecnologías de seguimiento para análisis y marketing (véanse §§ 6 y 7) sólo
+        se establecen previo consentimiento expreso a través del banner de cookies. Base jurídica:
+        art. 6 (1) (a) RGPD y § 25 (1) TDDDG. Puede revocar su consentimiento en cualquier momento
+        mediante el botón «Ajustes de cookies» del pie de página.
+      </p>
+
+      <h2>§ 6 Google Analytics 4</h2>
+      <p>
+        Con su consentimiento, este sitio utiliza Google Analytics 4, prestado por Google Ireland
+        Limited, Gordon House, Barrow Street, Dublín 4, Irlanda («Google»). Google Analytics
+        utiliza cookies y tecnologías similares para evaluar el uso del sitio. La información
+        generada se transmite generalmente a un servidor de Google en EE. UU. y se almacena allí.
+      </p>
+      <h3>Anonimización de IP</h3>
+      <p>
+        Google Analytics se utiliza con la función «anonimización de IP» activada. Su dirección
+        IP se acorta dentro de la UE o del EEE antes de ser transmitida a EE. UU.
+      </p>
+      <h3>Base jurídica</h3>
+      <p>
+        El uso se basa en su consentimiento conforme al art. 6 (1) (a) RGPD y § 25 (1) TDDDG.
+        Puede revocar su consentimiento en cualquier momento a través del banner de cookies.
+        Google está certificado bajo el EU-US Data Privacy Framework.
+      </p>
+      <h3>Opt-out</h3>
+      <p>
+        Adicionalmente puede impedir la recogida de datos por Google Analytics instalando el
+        complemento del navegador para desactivar Google Analytics:
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">https://tools.google.com/dlpage/gaoptout</a>.
+      </p>
+
+      <h2>§ 7 Meta Pixel (Facebook Pixel)</h2>
+      <p>
+        Con su consentimiento, este sitio utiliza el Meta Pixel (también «Facebook Pixel») de
+        Meta Platforms Ireland Limited, Merrion Road, Dublín 4, D04 X2K5, Irlanda. El pixel
+        permite hacer un seguimiento del comportamiento de los usuarios después de que hayan
+        visto o hecho clic en un anuncio de Facebook o Instagram. Esto permite la medición de
+        conversiones de los anuncios de Meta y la creación de audiencias para futuros anuncios
+        (Custom Audiences).
+      </p>
+      <p>
+        En este proceso se transfieren datos personales (en particular dirección IP, información
+        del navegador y acciones realizadas en el sitio) a Meta en EE. UU. Meta está certificado
+        bajo el EU-US Data Privacy Framework.
+      </p>
+      <p>
+        Base jurídica: su consentimiento conforme al art. 6 (1) (a) RGPD y § 25 (1) TDDDG.
+        Puede revocar su consentimiento en cualquier momento a través del banner de cookies.
+        Más información en la política de privacidad de Meta:
+        <a href="https://www.facebook.com/about/privacy/" target="_blank" rel="noopener noreferrer">https://www.facebook.com/about/privacy/</a>.
+      </p>
+
+      <h2>§ 8 Reserva de citas con TidyCal</h2>
+      <p>
+        Para la reserva de citas en línea utilizo el servicio TidyCal (TidyCal, gestionado por
+        SureSwift Capital, 800 Nicollet Mall, Suite 2675, Minneapolis, MN 55402, EE. UU.).
+        Cuando reserva una cita a través del botón de TidyCal, se le redirige a una página de
+        TidyCal o se incrusta un widget de TidyCal.
+      </p>
+      <p>Los datos tratados normalmente incluyen:</p>
+      <ul>
+        <li>Nombre y apellidos</li>
+        <li>Dirección de correo electrónico</li>
+        <li>Número de teléfono, en su caso</li>
+        <li>Información adicional que aporte voluntariamente</li>
+        <li>El horario que seleccione</li>
+      </ul>
+      <p>
+        Bases jurídicas: art. 6 (1) (b) RGPD (medidas precontractuales) y art. 6 (1) (f) RGPD
+        (interés legítimo en una planificación eficiente).
+      </p>
+
+      <h2>§ 9 Gestión de contenidos con Sanity</h2>
+      <p>
+        Los contenidos de este sitio se gestionan en el CMS sin cabeza Sanity (Sanity.io,
+        c/o Sanity Inc., 301 Howard Street, Suite 600, San Francisco, CA 94105, EE. UU.) y se
+        compilan en archivos HTML estáticos en tiempo de build. Cuando se solicita el sitio,
+        normalmente no se establece conexión con Sanity; Sanity sólo procesa los datos que yo,
+        como operador, edito en el backend.
+      </p>
+
+      <h2>§ 10 Tipografías</h2>
+      <p>
+        Este sitio utiliza únicamente tipografías alojadas localmente («Clash Display» y «Chivo»).
+        No se establecen conexiones a servidores externos de tipografías (p. ej. Google Fonts).
+        Su dirección IP no se transmite a ningún proveedor externo de tipografías.
+      </p>
+
+      <h2>§ 11 Contacto por correo electrónico</h2>
+      <p>
+        Si me contacta por correo electrónico, los datos facilitados (su dirección de correo,
+        en su caso su nombre y teléfono, y su mensaje) se almacenan para tramitar su consulta y
+        para posibles preguntas posteriores.
+      </p>
+      <p>
+        Bases jurídicas: art. 6 (1) (b) RGPD (medidas precontractuales) y art. 6 (1) (f) RGPD
+        (interés legítimo en atender su consulta). Los datos se eliminan en cuanto dejan de ser
+        necesarios para la finalidad para la que se recogieron y no existan obligaciones legales
+        de conservación.
+      </p>
+
+      <h2>§ 12 Sus derechos como interesado</h2>
+      <p>En relación con sus datos personales, le asisten los siguientes derechos:</p>
+      <ul>
+        <li><strong>Derecho de acceso</strong> (art. 15 RGPD)</li>
+        <li><strong>Derecho de rectificación</strong> (art. 16 RGPD)</li>
+        <li><strong>Derecho de supresión</strong> (art. 17 RGPD)</li>
+        <li><strong>Derecho a la limitación del tratamiento</strong> (art. 18 RGPD)</li>
+        <li><strong>Derecho a la portabilidad de los datos</strong> (art. 20 RGPD)</li>
+        <li><strong>Derecho de oposición</strong> (art. 21 RGPD)</li>
+        <li><strong>Derecho a retirar el consentimiento</strong> (art. 7 (3) RGPD), con efectos para el futuro</li>
+      </ul>
+      <p>Para ejercer sus derechos, póngase en contacto a través de los datos del § 1.</p>
+
+      <h2>§ 13 Derecho a presentar reclamación ante una autoridad de control</h2>
+      <p>
+        Sin perjuicio de cualquier otro recurso administrativo o judicial, tiene derecho a
+        presentar una reclamación ante una autoridad de control si considera que el tratamiento
+        de sus datos personales infringe el RGPD. La autoridad competente en mi caso es:
+      </p>
+      <address>
+        Centro Estatal Independiente para la Protección de Datos de Schleswig-Holstein (ULD)<br />
+        Holstenstraße 98<br />
+        24103 Kiel, Alemania<br />
+        <a href="https://www.datenschutzzentrum.de" target="_blank" rel="noopener noreferrer">www.datenschutzzentrum.de</a>
+      </address>
+
+      <h2>§ 14 Modificación de esta política</h2>
+      <p>
+        Me reservo el derecho a modificar esta política para que cumpla en todo momento los
+        requisitos legales vigentes o refleje cambios en mis servicios. La versión publicada
+        actualmente en este sitio es la aplicable.
+      </p>
+    </LegalContent>
   </main>
 </BaseLayout>

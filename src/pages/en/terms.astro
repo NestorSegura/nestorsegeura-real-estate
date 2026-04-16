@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LegalStub from '../../components/legal/LegalStub.astro';
+import LegalContent from '../../components/legal/LegalContent.astro';
 import { useTranslations } from '../../i18n/utils';
 
 const locale = 'en' as const;
@@ -8,6 +8,176 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.agbTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.agbTitle" />
+    <LegalContent title="Terms and conditions">
+      <p><strong>Last updated:</strong> April 2026</p>
+      <p>
+        <em>This translation is provided for convenience. The German version on
+        /agb is the legally binding text.</em>
+      </p>
+
+      <h2>§ 1 Scope</h2>
+      <p>
+        These general terms and conditions (“Terms") apply to all contracts between
+        Nestor Segura, Heidmühlenweg 54, 25336 Elmshorn (the “Contractor") and his clients
+        (the “Client") covering services in web design, web development, search engine
+        optimisation (SEO), content strategy and digital-marketing consulting.
+      </p>
+      <p>
+        Deviating, conflicting or supplementary terms and conditions of the Client become part
+        of the contract only if and to the extent that the Contractor has expressly agreed to
+        their validity in writing.
+      </p>
+
+      <h2>§ 2 Subject matter and scope of services</h2>
+      <p>
+        The Contractor provides services in web design and web development (in particular using
+        Astro, Sanity and Cloudflare Workers), search engine optimisation, content strategy and
+        strategic consulting. The specific scope of services is set out in the individual offer
+        or project contract.
+      </p>
+      <p>
+        Changes to the agreed scope of services require a written agreement (text form is
+        sufficient). Additionally commissioned services are billed separately.
+      </p>
+      <p>
+        The Contractor is entitled to engage qualified subcontractors. He remains responsible
+        for the proper performance of the service.
+      </p>
+
+      <h2>§ 3 Offer and conclusion of contract</h2>
+      <p>
+        Offers from the Contractor are non-binding unless expressly marked as binding. The
+        contract is concluded by written order confirmation from the Contractor or by actual
+        commencement of the service.
+      </p>
+      <p>
+        The Client warrants that the information provided by him is complete and accurate.
+      </p>
+
+      <h2>§ 4 Client's duties to cooperate</h2>
+      <p>
+        The Client provides the Contractor in good time and in full with all the information,
+        materials and access required to perform the service — in particular texts, images,
+        logos, brand guidelines and access credentials to systems.
+      </p>
+      <p>
+        Delays caused by incomplete or late cooperation by the Client are not borne by the
+        Contractor. Additional effort resulting therefrom may be charged separately.
+      </p>
+
+      <h2>§ 5 Remuneration and payment terms</h2>
+      <p>
+        Remuneration is based on the respective individual offer. All prices are in euros plus
+        the applicable statutory value-added tax.
+      </p>
+      <p>
+        Unless otherwise agreed in the individual contract, the following payment schedule applies
+        to project contracts: 50% of the total fee is due upon order placement and the remaining
+        50% upon project completion.
+      </p>
+      <p>
+        Invoices are due for payment without deduction within 14 days of the invoice date.
+        Ongoing services (e.g. monthly SEO or maintenance) are invoiced monthly in advance.
+      </p>
+
+      <h2>§ 6 Acceptance</h2>
+      <p>
+        Where work products are owed that are subject to acceptance, the Client must review
+        and accept them in writing within 14 days of delivery. Acceptance may not be refused for
+        minor defects. Acceptance is deemed to have been granted if the Client does not raise
+        any written defect notice within the period stated, or if the Client uses the work
+        productively.
+      </p>
+
+      <h2>§ 7 Rights of use and intellectual property</h2>
+      <p>
+        Upon full payment of the agreed fee, the Client receives a non-exclusive right, unlimited
+        in time and territory, to use the works created under the contract for the purpose agreed
+        in the contract.
+      </p>
+      <p>
+        The Contractor is entitled to use work created for the Client as a reference (in particular
+        in the portfolio and on social media), unless the Client expressly objects in writing.
+      </p>
+      <p>
+        Source files, drafts and unreleased intermediate results remain with the Contractor.
+        Third-party licences (e.g. stock photos, fonts, SaaS tools) are to be acquired separately
+        by the Client or are charged on a cost basis.
+      </p>
+
+      <h2>§ 8 Warranty and liability</h2>
+      <p>
+        The Contractor performs his services with the diligence of a prudent businessman, but does
+        not owe any specific commercial outcome (in particular no specific rankings, conversion
+        rates or revenue figures).
+      </p>
+      <p>
+        In the event of defects, the Client must give the Contractor an opportunity to remedy them.
+        If two attempts at remediation fail, the Client may reduce the fee or withdraw from the
+        contract.
+      </p>
+      <p>
+        The Contractor's liability is limited to intent and gross negligence. In the case of slight
+        negligence, the Contractor is only liable for breach of essential contractual obligations
+        (cardinal obligations); in this case liability is limited in amount to the foreseeable
+        damage typical of the contract at the time of conclusion of the contract, but at most
+        to the net contract value.
+      </p>
+      <p>
+        The above limitations of liability do not apply to damage arising from injury to life,
+        body or health, or to claims under the German Product Liability Act.
+      </p>
+
+      <h2>§ 9 Confidentiality and data protection</h2>
+      <p>
+        Both parties undertake to treat all confidential information of the other party obtained
+        in the course of the cooperation as confidential. This obligation continues beyond the
+        end of the contractual relationship.
+      </p>
+      <p>
+        Insofar as the Contractor processes personal data on behalf of the Client in the course
+        of performing the contract, the parties shall conclude a separate data processing
+        agreement in accordance with Art. 28 GDPR.
+      </p>
+
+      <h2>§ 10 Term and termination</h2>
+      <p>
+        Project contracts end upon acceptance of the contractually owed service and full payment.
+        Ongoing services may be terminated by either party in text form with 30 days' notice to
+        the end of the month, unless otherwise agreed in the individual contract.
+      </p>
+      <p>
+        The right to extraordinary termination for good cause remains unaffected for both parties.
+        In the event of premature termination of a project contract by the Client without good
+        cause, the Contractor's claim to remuneration for the work performed up to that point
+        remains in place.
+      </p>
+
+      <h2>§ 11 Force majeure</h2>
+      <p>
+        Neither party is liable for non-performance of its contractual obligations if such
+        non-performance is due to circumstances beyond its control (force majeure). This includes,
+        in particular, natural disasters, pandemics, official orders, strikes and large-scale
+        cyberattacks or failures of external infrastructure. The affected party must inform the
+        other party without undue delay.
+      </p>
+
+      <h2>§ 12 Final provisions</h2>
+      <p>The law of the Federal Republic of Germany applies, excluding the UN Convention on Contracts for the International Sale of Goods.</p>
+      <p>
+        If the Client is a merchant, a legal entity under public law or a special fund under public
+        law, the exclusive place of jurisdiction for all disputes arising from this contract is
+        the Contractor's place of business (Elmshorn, Germany).
+      </p>
+      <p>
+        Should individual provisions of these Terms be or become invalid, the validity of the
+        remaining provisions shall remain unaffected. The invalid provision shall be replaced by
+        a provision that comes closest to what was economically intended.
+      </p>
+      <p>
+        Amendments or additions to this contract require text form. This also applies to any
+        cancellation of this text-form clause itself.
+      </p>
+    </LegalContent>
   </main>
 </BaseLayout>

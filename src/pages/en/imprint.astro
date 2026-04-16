@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import LegalStub from '../../components/legal/LegalStub.astro';
+import LegalContent from '../../components/legal/LegalContent.astro';
 import { useTranslations } from '../../i18n/utils';
 
 const locale = 'en' as const;
@@ -8,6 +8,94 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.impressumTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.impressumTitle" />
+    <LegalContent title="Imprint">
+      <p>
+        <em>This is the legal disclosure required under § 5 of the German
+        Digital Services Act (DDG). The business is established in Germany;
+        German law applies regardless of the language of this page.</em>
+      </p>
+
+      <h2>Information pursuant to § 5 DDG</h2>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn<br />
+        Germany
+      </address>
+
+      <h2>Contact</h2>
+      <p>
+        Email: <a href="mailto:contact@nestorsegura.com">contact@nestorsegura.com</a>
+      </p>
+
+      <h2>VAT identification number</h2>
+      <p>
+        VAT ID pursuant to § 27 a German Value-Added Tax Act (UStG):<br />
+        DE352032325
+      </p>
+
+      <h2>Person responsible for content under § 18 (2) MStV</h2>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn
+      </address>
+
+      <h2>EU online dispute resolution</h2>
+      <p>
+        The European Commission provides a platform for online dispute resolution (ODR):
+        <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.
+        My email address can be found above.
+      </p>
+
+      <h2>Consumer dispute resolution</h2>
+      <p>
+        I am neither willing nor obliged to participate in dispute resolution proceedings
+        before a consumer arbitration board.
+      </p>
+
+      <h2>Liability for content</h2>
+      <p>
+        As a service provider, I am responsible for my own content on these pages
+        in accordance with § 7 (1) DDG and the general laws. Pursuant to §§ 8 to 10 DDG,
+        however, I am not obliged to monitor transmitted or stored third-party information
+        or to investigate circumstances that indicate illegal activity.
+      </p>
+      <p>
+        Obligations to remove or block the use of information under the general laws remain
+        unaffected. Liability in this respect is, however, only possible from the point in
+        time at which a concrete infringement of the law becomes known. Upon notification
+        of any such infringement, I will remove the content immediately.
+      </p>
+
+      <h2>Liability for links</h2>
+      <p>
+        My website contains links to external third-party websites over whose content I have
+        no influence. I therefore cannot accept any responsibility for this third-party content.
+        The respective provider or operator of the linked pages is always responsible for their
+        content. The linked pages were checked for possible legal violations at the time of
+        linking; no illegal content was apparent at that point.
+      </p>
+      <p>
+        A permanent monitoring of the content of the linked pages, however, is not reasonable
+        without concrete evidence of an infringement. Upon notification of any infringement,
+        I will remove such links immediately.
+      </p>
+
+      <h2>Copyright</h2>
+      <p>
+        The content and works on these pages created by the operator are subject to German
+        copyright law. Duplication, processing, distribution and any kind of exploitation outside
+        the limits of copyright law require the written consent of the respective author or creator.
+        Downloads and copies of this site are only permitted for private, non-commercial use.
+      </p>
+      <p>
+        Insofar as the content on this site was not created by the operator, the copyrights of
+        third parties are observed. Should you nevertheless become aware of a copyright infringement,
+        please notify me. Upon notification of any infringement, I will remove such content immediately.
+      </p>
+
+      <p class="legal-meta">Last updated: April 2026</p>
+    </LegalContent>
   </main>
 </BaseLayout>
