@@ -44,8 +44,7 @@ const localeLabels: Record<'de' | 'en' | 'es', string> = {
 
         <!-- Logo -->
         <a data-menu-logo href={localeUrls[locale]} class="mega-nav__bar-logo w-inline-block" aria-label="Homepage">
-          <span class="mega-nav__bar-logo-text">NS</span>
-          <span class="mega-nav__bar-logo-label">Real Estate Strategy</span>
+          <img src="/logo-compact.svg" alt="Nestor Segura" class="mega-nav__bar-logo-img" width="594" height="470" />
         </a>
 
         <!-- Nav list: primary links + actions (osmo: data-nav-list data-mobile-nav) -->
@@ -456,24 +455,17 @@ const localeLabels: Record<'de' | 'en' | 'es', string> = {
   align-items: center;
 }
 
-/* ── Logo text: "NS" wordmark + "Real Estate Strategy" label ──── */
-.mega-nav__bar-logo-text {
-  font-family: "Clash Display", sans-serif;
-  font-weight: 700;
-  font-size: 1.25em;
-  color: oklch(0.58 0.20 290);
-  letter-spacing: -0.02em;
-  line-height: 1;
+/* ── Logo image (logo-compact.svg, 594×470) ─────────────────────── */
+.mega-nav__bar-logo-img {
+  display: block;
+  height: 2em;
+  width: auto;
 }
 
-.mega-nav__bar-logo-label {
-  font-family: "Chivo", Arial, sans-serif;
-  font-size: 0.6875em;
-  font-weight: 400;
-  color: #201d1d;
-  opacity: 0.5;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+@media (max-width: 991px) {
+  .mega-nav__bar-logo-img {
+    height: 1.75em;
+  }
 }
 
 /* ── Locale switcher — osmo has no equivalent ─────────────────── */
