@@ -155,13 +155,13 @@
     "empty": "No posts yet."
   },
   "cookieBanner": {
-    "title": "We respect your privacy",
+    "title": "I respect your privacy",
     "intro": "This website uses cookies to provide the best experience. You choose which categories to allow.",
     "essentialLabel": "Essential",
     "essentialDescription": "Required for the basic operation of the site. Cannot be disabled.",
     "essentialRequired": "Always active",
     "analyticsLabel": "Analytics",
-    "analyticsDescription": "Help us understand how visitors use the site so we can improve it.",
+    "analyticsDescription": "Helps me understand how visitors use the site so I can improve it.",
     "marketingLabel": "Marketing",
     "marketingDescription": "Enable personalised content and advertising based on your interests.",
     "acceptAll": "Accept all",

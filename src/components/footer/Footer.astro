@@ -123,7 +123,6 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
         window.lenis.on('scroll', window.ScrollTrigger.update);
         window.gsap.ticker.add(function (time) { window.lenis.raf(time * 1000); });
         window.gsap.ticker.lagSmoothing(0);
-        window.ScrollTrigger.refresh();
       }
 
       document.querySelectorAll('[data-footer-parallax]').forEach(function (el) {
@@ -146,6 +145,11 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
           tl.from(dark, { opacity: 0.5, ease: 'linear' }, '<');
         }
       });
+
+      // Refresh after all other components (StackingCards, LandingGuide) have
+      // registered/killed their own triggers — without this, the footer trigger
+      // can be created but immediately orphaned by another component's refresh.
+      window.ScrollTrigger.refresh();
     }
 
     function start() {
@@ -162,10 +166,12 @@ const copyright = t('footer.copyright').replace('{year}', String(year));
         .catch(function () { /* swallow — footer stays static if GSAP fails */ });
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', start);
-    } else {
+    // Defer to window.load so all sibling components (StackingCards, LandingGuide,
+    // Lenis sync) finish their own init/teardown before we register our trigger.
+    if (document.readyState === 'complete') {
       start();
+    } else {
+      window.addEventListener('load', start);
     }
   })();
 </script>

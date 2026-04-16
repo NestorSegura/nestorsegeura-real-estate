@@ -155,13 +155,13 @@
     "empty": "Noch keine Artikel."
   },
   "cookieBanner": {
-    "title": "Wir respektieren Ihre Privatsphäre",
+    "title": "Ich respektiere Ihre Privatsphäre",
     "intro": "Diese Website verwendet Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Sie entscheiden, welche Kategorien Sie zulassen möchten.",
     "essentialLabel": "Notwendig",
     "essentialDescription": "Erforderlich für den grundlegenden Betrieb der Website. Können nicht deaktiviert werden.",
     "essentialRequired": "Immer aktiv",
     "analyticsLabel": "Analyse",
-    "analyticsDescription": "Helfen uns zu verstehen, wie Besucher die Website nutzen, damit wir sie verbessern können.",
+    "analyticsDescription": "Hilft mir zu verstehen, wie Besucher die Website nutzen, damit ich sie verbessern kann.",
     "marketingLabel": "Marketing",
     "marketingDescription": "Ermöglichen personalisierte Inhalte und Werbung auf Basis Ihrer Interessen.",
     "acceptAll": "Alle akzeptieren",
