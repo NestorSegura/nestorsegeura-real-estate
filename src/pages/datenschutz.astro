@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LegalStub from '../components/legal/LegalStub.astro';
+import LegalContent from '../components/legal/LegalContent.astro';
 import { useTranslations } from '../i18n/utils';
 
 const locale = 'de' as const;
@@ -8,6 +8,209 @@ const t = useTranslations(locale);
 ---
 <BaseLayout title={t('legal.datenschutzTitle')} locale={locale}>
   <main>
-    <LegalStub locale={locale} titleKey="legal.datenschutzTitle" />
+    <LegalContent title="Datenschutzerklärung">
+      <p><strong>Stand:</strong> April 2026</p>
+
+      <h2>§ 1 Verantwortlicher</h2>
+      <p>Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO):</p>
+      <address>
+        Nestor Segura<br />
+        Heidmühlenweg 54<br />
+        25336 Elmshorn<br />
+        Deutschland<br /><br />
+        E-Mail: <a href="mailto:contact@nestorsegura.com">contact@nestorsegura.com</a>
+      </address>
+
+      <h2>§ 2 Allgemeines zur Datenverarbeitung</h2>
+      <p>
+        Ich nehme den Schutz Ihrer persönlichen Daten ernst. Personenbezogene Daten werden vertraulich
+        und gemäß der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung behandelt.
+      </p>
+      <p>
+        Die Datenerhebung erfolgt nur in dem technisch notwendigen Umfang. Die erhobenen Daten werden
+        nicht verkauft und – mit den in dieser Erklärung beschriebenen Ausnahmen – nicht an Dritte
+        weitergegeben.
+      </p>
+
+      <h2>§ 3 Hosting und technische Bereitstellung</h2>
+      <p>
+        Diese Website wird bei Cloudflare gehostet (Cloudflare, Inc., 101 Townsend St, San Francisco,
+        CA 94107, USA, sowie Cloudflare Germany GmbH, Rosental 7, c/o Mindspace, 80331 München).
+        Inhalte werden über das globale Cloudflare-Netzwerk ausgeliefert; bevorzugt erfolgt die
+        Auslieferung über europäische Edge-Standorte.
+      </p>
+      <p>
+        Beim Aufruf dieser Website werden technisch notwendige Daten automatisch in Server-Log-Dateien
+        verarbeitet:
+      </p>
+      <ul>
+        <li>IP-Adresse des anfragenden Geräts (in der Regel anonymisiert)</li>
+        <li>Datum und Uhrzeit des Zugriffs</li>
+        <li>Name und URL der abgerufenen Datei</li>
+        <li>Referrer-URL</li>
+        <li>Verwendeter Browser und ggf. das Betriebssystem</li>
+      </ul>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer fehlerfreien
+        Auslieferung und Sicherheit der Website). Cloudflare ist unter dem EU-US Data Privacy Framework
+        zertifiziert.
+      </p>
+
+      <h2>§ 4 SSL-/TLS-Verschlüsselung</h2>
+      <p>
+        Diese Website nutzt SSL-/TLS-Verschlüsselung zum Schutz vertraulicher Inhalte. Eine
+        verschlüsselte Verbindung erkennen Sie an der Adresszeile „https://" und am Schloss-Symbol
+        in Ihrer Browserzeile.
+      </p>
+
+      <h2>§ 5 Cookies und vergleichbare Technologien</h2>
+      <h3>Technisch notwendige Cookies</h3>
+      <p>
+        Technisch erforderliche Cookies und vergleichbare Technologien (z. B. Local Storage zur
+        Speicherung Ihrer Cookie-Einwilligung) werden eingesetzt, um den ordnungsgemäßen Betrieb der
+        Website zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO sowie § 25 Abs. 2
+        Nr. 2 TDDDG.
+      </p>
+
+      <h3>Analyse- und Marketing-Cookies</h3>
+      <p>
+        Cookies und Tracking-Technologien für Analyse und Marketing (siehe §§ 6 und 7) werden
+        ausschließlich nach Ihrer ausdrücklichen Einwilligung über das Cookie-Banner gesetzt.
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO sowie § 25 Abs. 1 TDDDG. Sie können Ihre
+        Einwilligung jederzeit über die Schaltfläche „Cookie-Einstellungen" im Footer widerrufen.
+      </p>
+
+      <h2>§ 6 Google Analytics 4</h2>
+      <p>
+        Diese Website nutzt – nach Ihrer Einwilligung – Google Analytics 4 der Google Ireland Limited,
+        Gordon House, Barrow Street, Dublin 4, Irland („Google"). Google Analytics verwendet Cookies
+        und ähnliche Technologien, um die Nutzung der Website auszuwerten. Die so erzeugten
+        Informationen werden in der Regel an einen Server von Google in den USA übertragen und dort
+        gespeichert.
+      </p>
+      <h3>IP-Anonymisierung</h3>
+      <p>
+        Google Analytics wird mit der Funktion „IP-Anonymisierung" eingesetzt. Ihre IP-Adresse wird
+        innerhalb der EU bzw. des EWR vor der Übertragung in die USA gekürzt.
+      </p>
+      <h3>Rechtsgrundlage</h3>
+      <p>
+        Die Nutzung erfolgt auf Grundlage Ihrer Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und
+        § 25 Abs. 1 TDDDG. Sie können Ihre Einwilligung jederzeit über das Cookie-Banner widerrufen.
+        Google ist unter dem EU-US Data Privacy Framework zertifiziert.
+      </p>
+      <h3>Opt-Out</h3>
+      <p>
+        Sie können die Erfassung durch Google Analytics zusätzlich verhindern, indem Sie das
+        Browser-Add-on zum Deaktivieren von Google Analytics installieren:
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">https://tools.google.com/dlpage/gaoptout</a>.
+      </p>
+
+      <h2>§ 7 Meta Pixel (Facebook Pixel)</h2>
+      <p>
+        Nach Ihrer Einwilligung wird auf dieser Website das Meta Pixel (auch „Facebook Pixel") der
+        Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland eingesetzt.
+        Mit Hilfe des Pixels kann das Verhalten von Nutzerinnen und Nutzern nachverfolgt werden,
+        nachdem sie eine Facebook- oder Instagram-Werbeanzeige gesehen oder geklickt haben. Dies
+        ermöglicht die Erfolgsmessung („Conversion-Tracking") von Meta-Werbeanzeigen sowie die
+        Bildung von Zielgruppen für künftige Anzeigen („Custom Audiences").
+      </p>
+      <p>
+        Hierbei werden personenbezogene Daten (insbesondere IP-Adresse, Browser-Informationen und
+        Aktionen auf der Website) an Meta in die USA übertragen. Meta ist unter dem EU-US Data Privacy
+        Framework zertifiziert.
+      </p>
+      <p>
+        Rechtsgrundlage ist Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG.
+        Sie können Ihre Einwilligung jederzeit über das Cookie-Banner widerrufen. Weitere
+        Informationen finden Sie in der Datenschutzerklärung von Meta:
+        <a href="https://www.facebook.com/about/privacy/" target="_blank" rel="noopener noreferrer">https://www.facebook.com/about/privacy/</a>.
+      </p>
+
+      <h2>§ 8 Terminbuchung über TidyCal</h2>
+      <p>
+        Für die Online-Terminbuchung nutze ich den Dienst TidyCal (TidyCal, betrieben von SureSwift
+        Capital, 800 Nicollet Mall, Suite 2675, Minneapolis, MN 55402, USA). Wenn Sie über die
+        TidyCal-Schaltfläche einen Termin buchen, werden Sie auf eine TidyCal-Seite weitergeleitet
+        bzw. ein TidyCal-Widget eingebunden.
+      </p>
+      <p>Verarbeitete Daten umfassen typischerweise:</p>
+      <ul>
+        <li>Vor- und Nachname</li>
+        <li>E-Mail-Adresse</li>
+        <li>ggf. Telefonnummer</li>
+        <li>von Ihnen freiwillig angegebene Zusatzinformationen</li>
+        <li>der von Ihnen gewählte Termin</li>
+      </ul>
+      <p>
+        Rechtsgrundlagen sind Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung / Durchführung
+        vorvertraglicher Maßnahmen) und Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer
+        effizienten Terminplanung).
+      </p>
+
+      <h2>§ 9 Inhaltsverwaltung über Sanity</h2>
+      <p>
+        Die Inhalte dieser Website werden im Headless-CMS Sanity (Sanity.io, c/o Sanity Inc.,
+        301 Howard Street, Suite 600, San Francisco, CA 94105, USA) gepflegt und zum Zeitpunkt des
+        Builds in statische HTML-Dateien überführt. Beim Aufruf der Website findet daher in der Regel
+        keine Verbindung zu Sanity statt; Sanity verarbeitet ausschließlich Daten, die ich als
+        Betreiber im Backend bearbeite.
+      </p>
+
+      <h2>§ 10 Schriftarten</h2>
+      <p>
+        Diese Website verwendet ausschließlich lokal gehostete Schriftarten („Clash Display" und
+        „Chivo"). Es werden keine Verbindungen zu externen Schriftarten-Servern (z. B. Google Fonts)
+        aufgebaut. Eine Übertragung Ihrer IP-Adresse an Drittanbieter im Zuge des Schriftartenladens
+        findet nicht statt.
+      </p>
+
+      <h2>§ 11 Kontaktaufnahme per E-Mail</h2>
+      <p>
+        Wenn Sie mich per E-Mail kontaktieren, werden die übermittelten Daten (Ihre E-Mail-Adresse,
+        ggf. Ihr Name und Ihre Telefonnummer sowie Ihre Nachricht) zum Zwecke der Bearbeitung Ihrer
+        Anfrage und für mögliche Anschlussfragen gespeichert.
+      </p>
+      <p>
+        Rechtsgrundlagen sind Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) und Art. 6 Abs. 1 lit. f
+        DSGVO (berechtigtes Interesse an der Bearbeitung Ihrer Anfrage). Die Daten werden gelöscht,
+        sobald sie für die Erreichung des Zwecks ihrer Erhebung nicht mehr erforderlich sind und keine
+        gesetzlichen Aufbewahrungspflichten bestehen.
+      </p>
+
+      <h2>§ 12 Ihre Rechte als betroffene Person</h2>
+      <p>Ihnen stehen hinsichtlich Ihrer personenbezogenen Daten folgende Rechte zu:</p>
+      <ul>
+        <li><strong>Recht auf Auskunft</strong> (Art. 15 DSGVO)</li>
+        <li><strong>Recht auf Berichtigung</strong> (Art. 16 DSGVO)</li>
+        <li><strong>Recht auf Löschung</strong> (Art. 17 DSGVO)</li>
+        <li><strong>Recht auf Einschränkung der Verarbeitung</strong> (Art. 18 DSGVO)</li>
+        <li><strong>Recht auf Datenübertragbarkeit</strong> (Art. 20 DSGVO)</li>
+        <li><strong>Widerspruchsrecht</strong> (Art. 21 DSGVO)</li>
+        <li><strong>Recht auf Widerruf erteilter Einwilligungen</strong> (Art. 7 Abs. 3 DSGVO) mit Wirkung für die Zukunft</li>
+      </ul>
+      <p>Zur Ausübung Ihrer Rechte wenden Sie sich bitte an die in § 1 genannten Kontaktdaten.</p>
+
+      <h2>§ 13 Beschwerderecht bei einer Aufsichtsbehörde</h2>
+      <p>
+        Unbeschadet eines anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs steht
+        Ihnen das Recht auf Beschwerde bei einer Aufsichtsbehörde zu, wenn Sie der Ansicht sind, dass
+        die Verarbeitung Ihrer personenbezogenen Daten gegen die DSGVO verstößt. Für mich zuständig
+        ist:
+      </p>
+      <address>
+        Unabhängiges Landeszentrum für Datenschutz Schleswig-Holstein (ULD)<br />
+        Holstenstraße 98<br />
+        24103 Kiel<br />
+        <a href="https://www.datenschutzzentrum.de" target="_blank" rel="noopener noreferrer">www.datenschutzzentrum.de</a>
+      </address>
+
+      <h2>§ 14 Änderung dieser Datenschutzerklärung</h2>
+      <p>
+        Ich behalte mir vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen
+        rechtlichen Anforderungen entspricht oder Änderungen meiner Leistungen berücksichtigt.
+        Maßgeblich ist die jeweils aktuell auf dieser Website veröffentlichte Fassung.
+      </p>
+    </LegalContent>
   </main>
 </BaseLayout>

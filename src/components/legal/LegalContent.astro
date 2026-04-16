@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+<article class="legal">
+  <div class="legal__inner">
+    <h1 class="legal__title">{title}</h1>
+    <slot />
+  </div>
+</article>
+
+<style is:global>
+  .legal {
+    padding: 6em 1.5em 6em;
+    max-width: 56em;
+    margin: 0 auto;
+    color: var(--color-brand-dark, #131313);
+  }
+  .legal__inner {
+    font-family: 'Chivo', system-ui, sans-serif;
+    font-size: 1em;
+    line-height: 1.6;
+  }
+  .legal__title {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: clamp(2.25em, 5vw, 3em);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.5em;
+  }
+  .legal__inner h2 {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 2.25em 0 0.5em;
+    color: var(--color-brand-dark, #131313);
+  }
+  .legal__inner h3 {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: 1.15em;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 1.75em 0 0.5em;
+  }
+  .legal__inner p {
+    margin: 0 0 1em;
+    color: rgba(19, 19, 19, 0.85);
+  }
+  .legal__inner ul,
+  .legal__inner ol {
+    padding-left: 1.5em;
+    margin: 0 0 1em;
+  }
+  .legal__inner li {
+    margin-bottom: 0.35em;
+    color: rgba(19, 19, 19, 0.85);
+  }
+  .legal__inner a {
+    color: var(--color-primary-700, oklch(0.42 0.18 290));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legal__inner address {
+    font-style: normal;
+    margin: 0 0 1em;
+  }
+  .legal__inner .legal-meta {
+    font-size: 0.9em;
+    color: rgba(19, 19, 19, 0.55);
+    margin-top: 3em;
+  }
+</style>
