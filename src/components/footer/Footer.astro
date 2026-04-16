@@ -20,9 +20,7 @@ const year = new Date().getFullYear();
 
 const pagesLinks = [
   { href: locale === 'de' ? '/' : `/${locale}/`, label: t('nav.home') },
-  { href: localizeRoute('blog', locale), label: t('nav.blog') },
   { href: localizeRoute('analyse', locale), label: locale === 'en' ? 'Analyze' : locale === 'es' ? 'Analizar' : 'Analyse' },
-  { href: `${locale === 'de' ? '' : '/' + locale}/#kontakt`, label: t('nav.contact') },
 ];
 
 // Short labels for footer column (avoid long words like "Datenschutzerklärung")

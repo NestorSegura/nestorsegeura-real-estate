@@ -102,22 +102,10 @@ const localeUrls: Record<'de' | 'en' | 'es', string> = navLocaleUrls ?? {
   es: localizeRoute('home', 'es'),   // → '/es/'
 };
 
-// Fallback nav items: used when Sanity siteSettings.navItems is empty (Studio not yet populated).
-// Kontakt anchors to the #kontakt section on the current locale's homepage.
-// Analyse link deferred — /analyse UI not shipping in v2.0.
-// The /api/analyze Cloudflare Worker is live but no consumer.
-const fallbackNavItems = [
-  {
-    href: localizeRoute('blog', locale),
-    label: locale === 'en' ? 'Blog' : locale === 'es' ? 'Blog' : 'Blog',
-  },
-  {
-    // Kontakt: anchor to #kontakt section on the current locale's homepage.
-    // Pages that have a dedicated /kontakt route can override via siteSettings navItems.
-    href: `${localeUrls[locale]}#kontakt`,
-    label: locale === 'en' ? 'Contact' : locale === 'es' ? 'Contacto' : 'Kontakt',
-  },
-];
+// Fallback nav items: used when Sanity siteSettings.navItems is empty.
+// Blog + Kontakt removed — no blog posts yet and no /kontakt page; the booking
+// CTA on the right side of the nav is the only call-to-action for now.
+const fallbackNavItems: { href: string; label: string }[] = [];
 
 const navItems = sanityNavItems.length ? sanityNavItems : fallbackNavItems;
 ---
