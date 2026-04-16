@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../../i18n/utils'
+import SectionHeader from '../ui/SectionHeader.astro'
 
 interface FaqItem {
   _key?: string
@@ -20,9 +21,7 @@ const { headline, faqs = [] } = Astro.props
 <section id="faq" class="bg-gray-50 py-[4em] md:py-[6em] px-[1.5em]">
   <div class="max-w-[48em] mx-auto">
     {headline && (
-      <h2 class="text-[1.875em] md:text-[2.25em] font-bold text-gray-900 mb-[3em]">
-        {headline}
-      </h2>
+      <SectionHeader headline={headline} align="left" marginBottom="3em" />
     )}
 
     {faqs.length > 0 && (

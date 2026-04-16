@@ -1,0 +1,78 @@
+---
+interface Props {
+  headline: string
+  eyebrow?: string
+  align?: 'left' | 'center'
+  tone?: 'dark' | 'light'
+  marginBottom?: string
+  class?: string
+}
+
+const {
+  headline,
+  eyebrow,
+  align = 'left',
+  tone = 'dark',
+  marginBottom,
+  class: className = '',
+} = Astro.props
+
+const styleAttr = marginBottom ? `--section-header-mb: ${marginBottom};` : undefined
+---
+<header
+  class:list={['section-header', `is--${align}`, `is--${tone}`, className]}
+  style={styleAttr}
+>
+  {eyebrow && <span class="section-header__eyebrow">{eyebrow}</span>}
+  <h2 class="section-header__title">{headline}</h2>
+</header>
+
+<style>
+  .section-header {
+    margin: 0 0 var(--section-header-mb, 2em);
+    display: flex;
+    flex-flow: column;
+    gap: 1.25em;
+  }
+
+  .section-header.is--center {
+    text-align: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-header.is--left {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .section-header__eyebrow {
+    display: inline-block;
+    font-family: 'Chivo', system-ui, sans-serif;
+    font-size: 0.75em;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary-700, oklch(0.42 0.18 290));
+    margin: 0;
+  }
+
+  .section-header.is--light .section-header__eyebrow {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .section-header__title {
+    font-family: 'Clash Display', system-ui, sans-serif;
+    font-size: clamp(1.75em, 5vw, 2.5em);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--color-brand-dark, #131313);
+  }
+
+  .section-header.is--light .section-header__title {
+    color: #fff;
+  }
+</style>

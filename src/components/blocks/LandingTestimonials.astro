@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/utils'
 import { urlFor } from '../../lib/imageUrl'
+import SectionHeader from '../ui/SectionHeader.astro'
 
 interface TestimonialItem {
   _key?: string
@@ -23,7 +24,7 @@ const { headline, subtitle, testimonials = [] } = Astro.props
 
 <section id="testimonials" class="testimonials">
   <div class="testimonials__inner">
-    {headline && <h2 class="testimonials__heading">{headline}</h2>}
+    {headline && <SectionHeader headline={headline} align="center" marginBottom="0.75em" />}
     {subtitle && <p class="testimonials__subtitle">{subtitle}</p>}
 
     {testimonials.length > 0 && (

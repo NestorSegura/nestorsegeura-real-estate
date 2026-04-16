@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/utils'
 import { urlFor } from '../../lib/imageUrl'
+import SectionHeader from '../ui/SectionHeader.astro'
 
 interface Props {
   locale: Locale
@@ -33,10 +34,12 @@ const imageSrcset = imageSrc
 <section id="guide" class="guide-editorial">
   <div class="guide-editorial__inner">
     {headline && (
-      <header class="guide-editorial__header">
-        <span class="section-eyebrow">{eyebrow}</span>
-        <h2 class="section-h2 guide-editorial__heading">{headline}</h2>
-      </header>
+      <SectionHeader
+        headline={headline}
+        eyebrow={eyebrow}
+        align="left"
+        class="guide-editorial__header"
+      />
     )}
 
     {paragraphs.length > 0 && (

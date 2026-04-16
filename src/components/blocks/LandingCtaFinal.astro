@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/utils'
 import Button from '../ui/Button.astro'
+import SectionHeader from '../ui/SectionHeader.astro'
 
 interface Props {
   locale: Locale
@@ -18,9 +19,7 @@ const { headline, copy, ctaLabel, ctaHref, scarcityText } = Astro.props
 <section id="cta-final" class="bg-primary-900 py-[4em] md:py-[6em] px-[1.5em] text-center">
   <div class="max-w-[48em] mx-auto">
     {headline && (
-      <h2 class="text-[1.875em] md:text-[2.25em] font-bold text-white mb-[1.5em] leading-tight">
-        {headline}
-      </h2>
+      <SectionHeader headline={headline} align="center" tone="light" marginBottom="1.5em" />
     )}
 
     {copy && (
