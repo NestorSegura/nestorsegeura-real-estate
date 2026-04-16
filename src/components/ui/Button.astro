@@ -125,6 +125,13 @@ const classes = [
   .btn-icon-link--normal { font-size: 1em; }
   .btn-icon-link--large  { font-size: 1.25em; }
 
+  /* Mobile: scale large buttons down so long German labels
+     ("Kostenloses Gespräch buchen") don't overflow on 390px viewports. */
+  @media (max-width: 640px) {
+    .btn-icon-link--large { font-size: 1em; }
+    .btn-icon-link--normal { font-size: 0.9375em; }
+  }
+
   /* Tone variants (base bg/text pair).
      All tones sweep to brand cyan #2ECFE0 on hover for a unified accent. */
   .btn-icon-link--tone-primary {
